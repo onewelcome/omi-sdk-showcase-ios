@@ -10,16 +10,12 @@ extension CategoryView {
 }
 
 struct CategoryView: View {
-   // @State private var category: Category
     @StateObject var system: AppState.System
     
     var body: some View {
-     //   Text(category.description)
-      //  Text(category.name)
         Text("cat")
             .onAppear() {
                 system.isEnrolled = true
-                system
             }
     }
 }
