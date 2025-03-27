@@ -15,8 +15,13 @@ struct CategoryView: View {
         Text(category.description)
         if let option = category.optionalActions.first {
             Button(action: {
-                interactor.initializeSDK { e in
-                    system.isSDKInitialized = e == nil
+                interactor.initializeSDK { result in
+                    switch result {
+                    case .success:
+                        system.isSDKInitialized = true
+                    case .failure(_):
+                        system.isSDKInitialized = false
+                    }
                 }
             }, label: {
                 Text(option.name)
