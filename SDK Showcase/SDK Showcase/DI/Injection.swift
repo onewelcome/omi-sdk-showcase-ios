@@ -22,14 +22,17 @@ final class Injection {
         // Global objects
         container.register(AppState.self) { _ in AppState() }
         container.register(Interactors.self) { resolver in
-            Interactors(categoriesInteractor: resolver.resolve(CategoriesInteractor.self)!)
+            Interactors(categoriesInteractor: resolver.resolve(CategoriesInteractor.self)!,
+                        sdkInteractor: resolver.resolve(SDKInteractor.self)!)
         }
 
         // Objects require network connection. For test purposes should be mocked
         #if DEBUG
             container.register(CategoriesInteractor.self)  { _ in StubCategoriesInteractor() }
+            container.register(SDKInteractor.self)  { _ in StubSDKInteractor() }
         #else
             container.register(CategoriesInteractor.self)  { _ in RealCategoriesInteractor() }
+            container.register(SDKInteractor.self)  { _ in RealSDKInteractor() }
         #endif
         
         return container

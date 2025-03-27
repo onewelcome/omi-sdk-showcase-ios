@@ -33,7 +33,7 @@ struct StubCategoriesInteractor: CategoriesInteractor {
                  description: "Description of SDK Initialization...",
                  options: [],
                  requiredActions: [],
-                 optionalActions: []),
+                 optionalActions: [Action(name: "Initialize", description: "Initializes the SDK")]),
         Category(name: "User registration", 
                  description: "Description of User registration...",
                  options: [],
