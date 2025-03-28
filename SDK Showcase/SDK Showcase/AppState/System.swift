@@ -5,7 +5,8 @@ import Foundation
 extension AppState {
     class System: Equatable, ObservableObject {
         static func == (lhs: AppState.System, rhs: AppState.System) -> Bool {
-            lhs.isSDKInitialized == rhs.isSDKInitialized
+            lhs.isSDKInitialized == rhs.isSDKInitialized &&
+            lhs.isEnrolled == rhs.isEnrolled
         }
         
         @Published var isSDKInitialized = false

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,14 +18,33 @@
 		578BC3242D4A582600713CF7 /* DeviceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC3232D4A582600713CF7 /* DeviceData.swift */; };
 		578BC3262D4A5A9100713CF7 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC3252D4A5A9100713CF7 /* Action.swift */; };
 		578BC3282D4A5CEA00713CF7 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC3272D4A5CEA00713CF7 /* Option.swift */; };
+		57AE066A2D8C20F5004A3CB9 /* SDKInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AE06692D8C20F5004A3CB9 /* SDKInteractor.swift */; };
+		57AE06702D92986B004A3CB9 /* Swinject.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57AE066F2D92986B004A3CB9 /* Swinject.xcframework */; };
+		57AE06712D92986B004A3CB9 /* Swinject.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57AE066F2D92986B004A3CB9 /* Swinject.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		57AE06752D929D5A004A3CB9 /* SDKSPM in Frameworks */ = {isa = PBXBuildFile; productRef = 57AE06742D929D5A004A3CB9 /* SDKSPM */; };
+		57AE06782D929EC6004A3CB9 /* SDKDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 57AE06772D929EC6004A3CB9 /* SDKDependencies */; };
+		57AE067B2D952A43004A3CB9 /* SDKResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AE067A2D952A43004A3CB9 /* SDKResult.swift */; };
 		57F464632D3F80DB00C64156 /* SDK_ShowcaseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464622D3F80DB00C64156 /* SDK_ShowcaseApp.swift */; };
 		57F464652D3F80DB00C64156 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464642D3F80DB00C64156 /* ContentView.swift */; };
 		57F464672D3F80E200C64156 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57F464662D3F80E200C64156 /* Assets.xcassets */; };
 		57F4646A2D3F80E200C64156 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57F464692D3F80E200C64156 /* Preview Assets.xcassets */; };
 		57F4647B2D43831700C64156 /* Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F4647A2D43831700C64156 /* Injection.swift */; };
-		57F4647E2D43839600C64156 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 57F4647D2D43839600C64156 /* Swinject */; };
 		57F464822D4383C000C64156 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464812D4383C000C64156 /* AppState.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		57AE06722D92986B004A3CB9 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				57AE06712D92986B004A3CB9 /* Swinject.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		578BC30A2D4397A700713CF7 /* Interactors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors.swift; sourceTree = "<group>"; };
@@ -39,6 +58,9 @@
 		578BC3232D4A582600713CF7 /* DeviceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceData.swift; sourceTree = "<group>"; };
 		578BC3252D4A5A9100713CF7 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		578BC3272D4A5CEA00713CF7 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
+		57AE06692D8C20F5004A3CB9 /* SDKInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKInteractor.swift; sourceTree = "<group>"; };
+		57AE066F2D92986B004A3CB9 /* Swinject.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Swinject.xcframework; path = "SDK Showcase/Supporting Files/Swinject.xcframework"; sourceTree = "<group>"; };
+		57AE067A2D952A43004A3CB9 /* SDKResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKResult.swift; sourceTree = "<group>"; };
 		57F4645F2D3F80DB00C64156 /* SDK Showcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SDK Showcase.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F464622D3F80DB00C64156 /* SDK_ShowcaseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDK_ShowcaseApp.swift; sourceTree = "<group>"; };
 		57F464642D3F80DB00C64156 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -53,7 +75,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57F4647E2D43839600C64156 /* Swinject in Frameworks */,
+				57AE06752D929D5A004A3CB9 /* SDKSPM in Frameworks */,
+				57AE06782D929EC6004A3CB9 /* SDKDependencies in Frameworks */,
+				57AE06702D92986B004A3CB9 /* Swinject.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +89,7 @@
 			children = (
 				578BC30A2D4397A700713CF7 /* Interactors.swift */,
 				578BC30F2D43A5A700713CF7 /* CategoriesInteractor.swift */,
+				57AE06692D8C20F5004A3CB9 /* SDKInteractor.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -126,11 +151,28 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		57AE066E2D92986B004A3CB9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				57AE066F2D92986B004A3CB9 /* Swinject.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		57AE06792D952A29004A3CB9 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				57AE067A2D952A43004A3CB9 /* SDKResult.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		57F464562D3F80DB00C64156 = {
 			isa = PBXGroup;
 			children = (
 				57F464612D3F80DB00C64156 /* SDK Showcase */,
 				57F464602D3F80DB00C64156 /* Products */,
+				57AE066E2D92986B004A3CB9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -145,6 +187,7 @@
 		57F464612D3F80DB00C64156 /* SDK Showcase */ = {
 			isa = PBXGroup;
 			children = (
+				57AE06792D952A29004A3CB9 /* Helpers */,
 				578BC31B2D4A1AD600713CF7 /* Model */,
 				578BC3132D43A62C00713CF7 /* DI */,
 				578BC3122D43A60600713CF7 /* Views */,
@@ -174,6 +217,7 @@
 				57F4645B2D3F80DB00C64156 /* Sources */,
 				57F4645C2D3F80DB00C64156 /* Frameworks */,
 				57F4645D2D3F80DB00C64156 /* Resources */,
+				57AE06722D92986B004A3CB9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -181,7 +225,8 @@
 			);
 			name = "SDK Showcase";
 			packageProductDependencies = (
-				57F4647D2D43839600C64156 /* Swinject */,
+				57AE06742D929D5A004A3CB9 /* SDKSPM */,
+				57AE06772D929EC6004A3CB9 /* SDKDependencies */,
 			);
 			productName = "SDK Showcase";
 			productReference = 57F4645F2D3F80DB00C64156 /* SDK Showcase.app */;
@@ -214,7 +259,8 @@
 			);
 			mainGroup = 57F464562D3F80DB00C64156;
 			packageReferences = (
-				57F4647C2D43839600C64156 /* XCRemoteSwiftPackageReference "Swinject" */,
+				57AE06732D929D5A004A3CB9 /* XCRemoteSwiftPackageReference "SDKSPM-dev" */,
+				57AE06762D929EC6004A3CB9 /* XCRemoteSwiftPackageReference "sdkdependencies" */,
 			);
 			productRefGroup = 57F464602D3F80DB00C64156 /* Products */;
 			projectDirPath = "";
@@ -253,6 +299,8 @@
 				578BC30D2D439BED00713CF7 /* System.swift in Sources */,
 				578BC3212D4A305C00713CF7 /* CategoryView.swift in Sources */,
 				578BC3102D43A5A700713CF7 /* CategoriesInteractor.swift in Sources */,
+				57AE066A2D8C20F5004A3CB9 /* SDKInteractor.swift in Sources */,
+				57AE067B2D952A43004A3CB9 /* SDKResult.swift in Sources */,
 				578BC3242D4A582600713CF7 /* DeviceData.swift in Sources */,
 				578BC3262D4A5A9100713CF7 /* Action.swift in Sources */,
 				578BC31A2D4A1AD100713CF7 /* Category.swift in Sources */,
@@ -301,6 +349,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -387,10 +436,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SDK Showcase/Preview Content\"";
 				DEVELOPMENT_TEAM = FSS5X3XZNY;
+				ENABLE_CODE_COVERAGE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -421,10 +472,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SDK Showcase/Preview Content\"";
 				DEVELOPMENT_TEAM = FSS5X3XZNY;
+				ENABLE_CODE_COVERAGE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -474,21 +527,34 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		57F4647C2D43839600C64156 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+		57AE06732D929D5A004A3CB9 /* XCRemoteSwiftPackageReference "SDKSPM-dev" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Swinject/Swinject.git";
+			repositoryURL = "OneWelcome.SDKSPM-dev";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 2.9.1;
+				minimumVersion = 0.9.0;
+			};
+		};
+		57AE06762D929EC6004A3CB9 /* XCRemoteSwiftPackageReference "sdkdependencies" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = OneWelcome.sdkdependencies;
+			requirement = {
+				kind = exactVersion;
+				version = 0.9.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		57F4647D2D43839600C64156 /* Swinject */ = {
+		57AE06742D929D5A004A3CB9 /* SDKSPM */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 57F4647C2D43839600C64156 /* XCRemoteSwiftPackageReference "Swinject" */;
-			productName = Swinject;
+			package = 57AE06732D929D5A004A3CB9 /* XCRemoteSwiftPackageReference "SDKSPM-dev" */;
+			productName = SDKSPM;
+		};
+		57AE06772D929EC6004A3CB9 /* SDKDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57AE06762D929EC6004A3CB9 /* XCRemoteSwiftPackageReference "sdkdependencies" */;
+			productName = SDKDependencies;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

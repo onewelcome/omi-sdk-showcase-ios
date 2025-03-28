@@ -3,5 +3,6 @@
 import Foundation
 
 struct Action: AppModel {
-    
+    let name: String
+    let description: String
 }

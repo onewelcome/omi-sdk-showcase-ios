@@ -9,7 +9,7 @@ protocol CategoriesInteractor {
 }
 
 //MARK: - Real methods
-struct RealCategoriesInteractor: CategoriesInteractor {
+struct CategoriesInteractorReal: CategoriesInteractor {
     func category(id: UUID) -> Category? {
         loadCategories().first { $0.id == id }
     }
@@ -23,7 +23,7 @@ struct RealCategoriesInteractor: CategoriesInteractor {
 }
 
 //MARK: - Stubbed methods
-struct StubCategoriesInteractor: CategoriesInteractor {
+struct CategoriesInteractorStub: CategoriesInteractor {
     func category(id: UUID) -> Category? {
         loadCategories().first
     }
@@ -33,7 +33,7 @@ struct StubCategoriesInteractor: CategoriesInteractor {
                  description: "Description of SDK Initialization...",
                  options: [],
                  requiredActions: [],
-                 optionalActions: []),
+                 optionalActions: [Action(name: "Initialize", description: "Initializes the SDK")]),
         Category(name: "User registration", 
                  description: "Description of User registration...",
                  options: [],

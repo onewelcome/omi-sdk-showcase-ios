@@ -11,18 +11,28 @@ struct CategoriesList: View {
         return interactors.categoriesInteractor
     }
     @State private var categories = [Category]()
-    @Injected private var appState: AppState
-
+    @ObservedObject private var system: AppState.System = {
+        @Injected var appState: AppState
+        return appState.system
+    }()
     var body: some View {
+        if system.isSDKInitialized {
+            Text("initialized")
+        } else {
+            Text("not")
+        }
+
         NavigationView {
             List(categories) { category in
-                NavigationLink(destination: CategoryView(category: category)) {
+                NavigationLink(destination: CategoryView(system: system, category: category)) {
                     Text(category.name)
                 }
             }
-            .environmentObject(appState.system)
             .onAppear {
                 categories = interactor.loadCategories()
+            }
+            .onReceive(system.$isSDKInitialized) { output in
+                print("CL output=\(output)")
             }
         }
     }
