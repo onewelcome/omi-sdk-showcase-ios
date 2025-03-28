@@ -28,11 +28,11 @@ final class Injection {
 
         // Objects require network connection. For test purposes should be mocked
         #if DEBUG
-            container.register(CategoriesInteractor.self)  { _ in StubCategoriesInteractor() }
-            container.register(SDKInteractor.self)  { _ in StubSDKInteractor() }
+            container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorStub() }
+            container.register(SDKInteractor.self)  { _ in SDKInteractorStub() }
         #else
-            container.register(CategoriesInteractor.self)  { _ in RealCategoriesInteractor() }
-            container.register(SDKInteractor.self)  { _ in RealSDKInteractor() }
+            container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorReal() }
+            container.register(SDKInteractor.self)  { _ in SDKInteractorReal() }
         #endif
         
         return container

@@ -8,22 +8,22 @@ protocol SDKInteractor {
     func initializeSDK(result: @escaping SDKResult)
 }
 
-//MARK: - Stubb methods
-struct StubSDKInteractor: SDKInteractor {
-    func initializeSDK(result: @escaping SDKResult) {
-        return result(.success)
-    }
-}
-
 //MARK: - Real methods
-struct RealSDKInteractor: SDKInteractor {
+struct SDKInteractorReal: SDKInteractor {
     func initializeSDK(result: @escaping SDKResult) {
-        SharedClient.instance.start { e in
-            if let e {
-                return result(.failure(e))
+        SharedClient.instance.start { error in
+            if let error {
+                return result(.failure(error))
             } else {
                 return result(.success)
             }
         }
+    }
+}
+
+//MARK: - Stubbed methods
+struct SDKInteractorStub: SDKInteractor {
+    func initializeSDK(result: @escaping SDKResult) {
+        return result(.success)
     }
 }
