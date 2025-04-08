@@ -2,7 +2,7 @@
 
 import Foundation
 
-protocol AppModel: Identifiable {}
+protocol AppModel: Identifiable, Hashable {}
 
 protocol Runable {
     func run() 

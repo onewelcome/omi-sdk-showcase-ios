@@ -16,23 +16,11 @@ struct CategoriesList: View {
         return appState.system
     }()
     var body: some View {
-        if system.isSDKInitialized {
-            Text("initialized")
-        } else {
-            Text("not")
-        }
-
-        NavigationView {
-            List(categories) { category in
-                NavigationLink(destination: CategoryView(system: system, category: category)) {
-                    Text(category.name)
-                }
-            }
-            .onAppear {
-                categories = interactor.loadCategories()
-            }
-            .onReceive(system.$isSDKInitialized) { output in
-                print("CL output=\(output)")
+        ForEach(interactor.loadCategories()) { category in
+            NavigationLink {
+                CategoryView(system: system, category: category)
+            } label: {
+                Text(category.name)
             }
         }
     }
