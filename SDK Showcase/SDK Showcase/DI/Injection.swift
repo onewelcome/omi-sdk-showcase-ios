@@ -28,9 +28,9 @@ final class Injection {
 
         // Objects require network connection. For test purposes should be mocked
         #if DEBUG
-            container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorStub() }
+            container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorReal() }
             container.register(SDKInteractor.self)  { resolver in
-                SDKInteractorStub(appState: resolver.resolve(AppState.self)!)
+                SDKInteractorReal(appState: resolver.resolve(AppState.self)!)
             }
         #else
             container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorReal() }

@@ -1,4 +1,5 @@
 //  Copyright © 2025 Onewelcome Mobile Identity. All rights reserved.
+
 import SwiftUI
 
 struct ActionView: View {

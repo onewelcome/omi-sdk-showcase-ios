@@ -1,7 +1,6 @@
 //  Copyright © 2025 Onewelcome Mobile Identity. All rights reserved.
 
 import Foundation
-import OneginiSDKiOS
 
 extension AppState {
     class DeviceData: Equatable, ObservableObject {
@@ -10,7 +9,6 @@ extension AppState {
         }
         
         var deviceId: String?
-        @Published var configModel: ConfigModel?
         @Published var certs = [String]()
         @Published var publicKey: String?
     }

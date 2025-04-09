@@ -6,10 +6,6 @@ import SwiftUI
 struct CategoryView: View {
     @ObservedObject var system: AppState.System
     @State var category: Category
-    private var interactor: SDKInteractor {
-        @Injected var interactors: Interactors
-        return interactors.sdkInteractor
-    }
     @State private var isExpanded = false
     @State private var actionValue = [String: Any]()
     @State private var errorValue = ""
@@ -70,21 +66,15 @@ extension CategoryView {
             resetSDK()
         default:
             break
-        }
-        
+        }        
     }
 }
 
 //MARK: - Private
 private extension CategoryView {
     func setBuilder() {
-        let model = SDKConfigModel(dictionary: ["ONGAppIdentifier": "ONGAppIdentifier",
-                                                "ONGAppPlatform": "ONGAppPlatform",
-                                                "ONGAppVersion": "1.0.0",
-                                                "ONGAppBaseURL": "https://...",
-                                                "ONGResourceBaseURL": "https://.../",
-                                                "ONGRedirectURL": "...://loginsuccess"])
-        interactor.setConfigModel(model)
+        errorValue.removeAll()
+        interactor.setConfigModel(SDKConfigModel.default)
         
         if let key = actionValue["setPublicKey"] as? String {
             interactor.setPublicKey(key)
@@ -150,6 +140,11 @@ private extension CategoryView {
                 }
             }
         )
+    }
+    
+    var interactor: SDKInteractor {
+        @Injected var interactors: Interactors
+        return interactors.sdkInteractor
     }
 }
 

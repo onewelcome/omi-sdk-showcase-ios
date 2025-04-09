@@ -3,9 +3,14 @@
 import SwiftUI
 import OneginiSDKiOS
 
-//MARK: - Protocol
+//MARK: - Protocol the SDK interacts with
 protocol SDKInteractor {
+    
+    /// Initializes the SDK, requires setting below methods
+    /// - Parameter result: The result from the SDK
     func initializeSDK(result: @escaping SDKResult)
+    /// Resets the SDK to the
+    /// - Parameter result: The result from the SDK
     func resetSDK(result: @escaping SDKResult)
     
     func setConfigModel(_ model: SDKConfigModel)
@@ -19,96 +24,12 @@ protocol SDKInteractor {
 
 //MARK: - Real methods
 struct SDKInteractorReal: SDKInteractor {
-    func setDeviceConfigCacheDuration(_ cacheDuration: TimeInterval) {
-        
-    }
-    
-    func setHttpRequestTimeout(_ requestTimeout: TimeInterval) {
-        
-    }
-    
-    func setStoreCookies(_ storeCookies: Bool) {
-        
-    }
-    
-    func setAdditionalResourceURL(_ url: String) {
-        
-    }
-    
-    func setPublicKey(_ key: String) {
-        
-    }
-    
-    func setCertificates(_ certs: [String]) {
-        
-    }
-    
-    
-    func setConfigModel(_ model: SDKConfigModel) {
-        
-    }
-    
-    func initializeSDK(result: @escaping SDKResult) {
-        withoutActuallyEscaping(result) { r in
-            SharedClient.instance.start { error in
-                if let error {                    
-                    return r(.failure(error))
-                } else {
-                    return r(.success)
-                }
-            }
-        }
-    }
-    
-    func resetSDK(result: @escaping SDKResult) {
-        
-    }
-}
-
-//MARK: - Stubbed methods
-struct SDKInteractorStub: SDKInteractor {
-
     @ObservedObject var appState: AppState
-    private var device: AppState.DeviceData {
-        return appState.deviceData
-    }
-    
-    private static let builder = ClientBuilder()
+    private static let staticBuilder = ClientBuilder() // ?
+    private let builder = Self.staticBuilder
 
-    func setConfigModel(_ model: SDKConfigModel) {
-        let mappedModel = mapSDKConfigModel(model)
-        device.configModel = mappedModel // tu?
-        _ = Self.builder.setConfigModel(mappedModel)
-    }
-    func setCertificates(_ certs: [String]) {
-        device.certs = certs // tu?
-        _ = Self.builder.setX509PEMCertificates(certs) // a moze builder w DeviceData?
-    }
-    
-    func setAdditionalResourceURL(_ url: String) {
-        _ = Self.builder.setAdditionalResourceUrls([url])
-    }
-    
-    func setDeviceConfigCacheDuration(_ cacheDuration: TimeInterval) {
-        _ = Self.builder.setDeviceConfigCacheDuration(cacheDuration)
-    }
-    
-    func setHttpRequestTimeout(_ requestTimeout: TimeInterval) {
-        _ = Self.builder.setHttpRequestTimeout(requestTimeout)
-    }
-    
-    func setStoreCookies(_ storeCookies: Bool) {
-        _ = Self.builder.setStoreCookies(storeCookies)
-    }
-    
-    
-    func setPublicKey(_ key: String) {
-        device.publicKey = key
-        Self.builder.setServerPublicKey(key)
-    }
-    
     func initializeSDK(result: @escaping SDKResult) {
-        Self.builder.buildAndWaitForProtectedData { client in
+        builder.buildAndWaitForProtectedData { client in
             client.start { error in
                 if let error {
                     return result(.failure(error))
@@ -120,7 +41,7 @@ struct SDKInteractorStub: SDKInteractor {
     }
     
     func resetSDK(result: @escaping SDKResult) {
-        Self.builder.buildAndWaitForProtectedData { client in
+        builder.buildAndWaitForProtectedData { client in
             client.reset { error in
                 if let error {
                     return result(.failure(error))
@@ -130,11 +51,49 @@ struct SDKInteractorStub: SDKInteractor {
             }
         }
     }
-
 }
 
-//MARK: - Private
+//MARK: - Real methods' extension
+extension SDKInteractorReal {
+    
+    private var device: AppState.DeviceData {
+        return appState.deviceData
+    }
+
+    func setPublicKey(_ key: String) {
+        device.publicKey = key
+        builder.setServerPublicKey(key)
+    }
+    
+    func setConfigModel(_ model: SDKConfigModel) {
+        let mappedModel = mapSDKConfigModel(model)
+        _ = builder.setConfigModel(mappedModel)
+    }
+    func setCertificates(_ certs: [String]) {
+        device.certs = certs // tu?
+        _ = builder.setX509PEMCertificates(certs) // a moze builder w DeviceData?
+    }
+    
+    func setAdditionalResourceURL(_ url: String) {
+        _ = builder.setAdditionalResourceUrls([url])
+    }
+    
+    func setDeviceConfigCacheDuration(_ cacheDuration: TimeInterval) {
+        _ = builder.setDeviceConfigCacheDuration(cacheDuration)
+    }
+    
+    func setHttpRequestTimeout(_ requestTimeout: TimeInterval) {
+        _ = builder.setHttpRequestTimeout(requestTimeout)
+    }
+    
+    func setStoreCookies(_ storeCookies: Bool) {
+        _ = builder.setStoreCookies(storeCookies)
+    }
+}
+
+//MARK: - Private Protocol Extension
 private extension SDKInteractor {
+    
     func mapSDKConfigModel(_ model: SDKConfigModel) -> OneginiSDKiOS.ConfigModel {
         return ConfigModel(dictionary: model.dictionary)
     }
