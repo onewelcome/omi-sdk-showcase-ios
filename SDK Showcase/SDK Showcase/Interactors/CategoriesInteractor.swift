@@ -6,7 +6,6 @@ import SwiftUI
 //MARK: - Protocol
 protocol CategoriesInteractor {
     func loadCategories() -> [Category]
-    func category(id: UUID) -> Category?
 }
 
 //MARK: - Real methods
@@ -15,9 +14,7 @@ struct CategoriesInteractorReal: CategoriesInteractor {
         @Injected var interactors: Interactors
         return interactors.sdkInteractor
     }
-    
-    func category(id: UUID) -> Category? { loadCategories().first }
-    
+        
     func loadCategories() -> [Category] {[
         Category(name: "SDK Initialization",
                  description: "Description of SDK Initialization...",
@@ -56,10 +53,5 @@ struct CategoriesInteractorReal: CategoriesInteractor {
                  options: [],
                  requiredActions: [],
                  optionalActions: []),
-        /*
-         
-         ... other categories
-         
-         */
     ]}
 }
