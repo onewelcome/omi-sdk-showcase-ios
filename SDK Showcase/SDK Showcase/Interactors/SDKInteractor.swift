@@ -46,6 +46,7 @@ struct SDKInteractorReal: SDKInteractor {
                 if let error {
                     return result(.failure(error))
                 } else {
+                    clearDeviceData()
                     return result(.success)
                 }
             }
@@ -66,12 +67,13 @@ extension SDKInteractorReal {
     }
     
     func setConfigModel(_ model: SDKConfigModel) {
+        device.model = model
         let mappedModel = mapSDKConfigModel(model)
         _ = builder.setConfigModel(mappedModel)
     }
     func setCertificates(_ certs: [String]) {
-        device.certs = certs // tu?
-        _ = builder.setX509PEMCertificates(certs) // a moze builder w DeviceData?
+        device.certs = certs
+        _ = builder.setX509PEMCertificates(certs)
     }
     
     func setAdditionalResourceURL(_ url: String) {
@@ -88,6 +90,12 @@ extension SDKInteractorReal {
     
     func setStoreCookies(_ storeCookies: Bool) {
         _ = builder.setStoreCookies(storeCookies)
+    }
+    
+    func clearDeviceData() {
+        device.model = nil
+        device.publicKey = nil
+        device.certs.removeAll()
     }
 }
 
