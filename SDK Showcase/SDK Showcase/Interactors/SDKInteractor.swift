@@ -5,6 +5,7 @@ import OneginiSDKiOS
 
 //MARK: - Protocol the SDK interacts with
 protocol SDKInteractor {
+    var builder: ClientBuilder { get }
     
     /// Initializes the SDK, requires setting below methods
     /// - Parameter result: The result from the SDK
@@ -25,8 +26,11 @@ protocol SDKInteractor {
 //MARK: - Real methods
 struct SDKInteractorReal: SDKInteractor {
     @ObservedObject var appState: AppState
-    private static let staticBuilder = ClientBuilder() // ?
-    private let builder = Self.staticBuilder
+    private static let staticBuilder = ClientBuilder()
+    
+    var builder: ClientBuilder {
+        Self.staticBuilder
+    }
     
     func initializeSDK(result: @escaping SDKResult) {
         builder.buildAndWaitForProtectedData { client in
