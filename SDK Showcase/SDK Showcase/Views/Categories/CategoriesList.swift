@@ -11,7 +11,7 @@ struct CategoriesList: View {
         @Injected var appState: AppState
         return appState.system
     }()
-
+    
     var body: some View {
         ForEach(interactor.loadCategories()) { category in
             NavigationLink {

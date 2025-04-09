@@ -14,7 +14,7 @@ final class Injection {
             _container = newValue
         }
     }
-
+    
     private var _container: Container?
     private func buildContainer() -> Container {
         let container = Container()
@@ -25,26 +25,26 @@ final class Injection {
             Interactors(categoriesInteractor: resolver.resolve(CategoriesInteractor.self)!,
                         sdkInteractor: resolver.resolve(SDKInteractor.self)!)
         }
-
+        
         // Objects require network connection. For test purposes should be mocked
-        #if DEBUG
-            container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorReal() }
-            container.register(SDKInteractor.self)  { resolver in
-                SDKInteractorReal(appState: resolver.resolve(AppState.self)!)
-            }
-        #else
-            container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorReal() }
-            container.register(SDKInteractor.self)  { _ in SDKInteractorReal() }
-        #endif
+#if DEBUG
+        container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorReal() }
+        container.register(SDKInteractor.self)  { resolver in
+            SDKInteractorReal(appState: resolver.resolve(AppState.self)!)
+        }
+#else
+        container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorReal() }
+        container.register(SDKInteractor.self)  { _ in SDKInteractorReal() }
+#endif
         
         return container
     }
 }
 
-@propertyWrapper 
+@propertyWrapper
 struct Injected<Dependency> {
     var wrappedValue: Dependency
-
+    
     init() {
         wrappedValue = Injection.shared.container.resolve(Dependency.self)!
     }

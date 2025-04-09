@@ -27,7 +27,7 @@ struct SDKInteractorReal: SDKInteractor {
     @ObservedObject var appState: AppState
     private static let staticBuilder = ClientBuilder() // ?
     private let builder = Self.staticBuilder
-
+    
     func initializeSDK(result: @escaping SDKResult) {
         builder.buildAndWaitForProtectedData { client in
             client.start { error in
@@ -59,7 +59,7 @@ extension SDKInteractorReal {
     private var device: AppState.DeviceData {
         return appState.deviceData
     }
-
+    
     func setPublicKey(_ key: String) {
         device.publicKey = key
         builder.setServerPublicKey(key)

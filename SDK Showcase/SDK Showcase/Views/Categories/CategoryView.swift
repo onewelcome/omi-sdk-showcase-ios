@@ -9,7 +9,8 @@ struct CategoryView: View {
     @State private var isExpanded = false
     @State private var actionValue = [String: Any]()
     @State private var errorValue = ""
-
+    @State private var isProcessing = false
+    
     var body: some View {
         HStack {
             List {
@@ -30,10 +31,16 @@ struct CategoryView: View {
                     }
                 }
                 
-                Section(header: Text("Result")) {
-                    TextResult(result: system.isSDKInitialized ? "SDK is initialized" : "SDK is not initialized: \(errorValue)")
-                }
-                
+                Section(content: {
+                    if isProcessing {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                    } else {
+                        TextResult(result: system.isSDKInitialized ? "SDK initialized" : "SDK not initialized \(errorValue)")
+                    }
+                }, header: {
+                    Text("Result")
+                })
             }
             .listStyle(.insetGrouped)
         }
@@ -59,6 +66,7 @@ struct CategoryView: View {
 //MARK: - Actions
 extension CategoryView {
     func buttonAction(for option: Option) {
+        isProcessing = true
         switch option.name {
         case "Initialize":
             initializeSDK()
@@ -66,7 +74,7 @@ extension CategoryView {
             resetSDK()
         default:
             break
-        }        
+        }
     }
 }
 
@@ -106,6 +114,7 @@ private extension CategoryView {
                 errorValue = error.localizedDescription
                 system.isSDKInitialized = false
             }
+            isProcessing = false
         }
     }
     
@@ -119,9 +128,10 @@ private extension CategoryView {
                 errorValue = error.localizedDescription
                 system.isSDKInitialized = false
             }
+            isProcessing = false
         }
     }
-
+    
     func binding(for action: Action) -> Binding<Action> {
         DispatchQueue.main.async {
             actionValue[action.name] = action.defaultValue
@@ -147,5 +157,3 @@ private extension CategoryView {
         return interactors.sdkInteractor
     }
 }
-
-
