@@ -2,7 +2,7 @@
 import SwiftUI
 
 struct TextResult: View {
-    var result: String
+    let result: String
     var body: some View {
         Text(result)
             .font(.system(size: 12))

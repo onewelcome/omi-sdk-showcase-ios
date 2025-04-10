@@ -12,12 +12,12 @@ struct ActionView: View {
                 .font(.system(size: 15))
                 .foregroundStyle(.secondary)
             HStack {
-                if action.type == .string {
-                    TextField(text: $action.value) {
-                        Text(action.defaultValue)
+                if action.valueType == .string {
+                    TextField(text: binding(for: action.providedValue as? String)) {
+                        Text(action.defaultValue as? String ?? "")
                     }
                 } else {
-                    Toggle(action.name, isOn: $action.boolValue)
+                    Toggle(action.name, isOn: binding(for: action.providedValue as? Bool))
                 }
             }
         } label: {
@@ -25,5 +25,24 @@ struct ActionView: View {
                 Text(action.name)
             }
         }
+    }
+}
+
+private extension ActionView {
+    
+    func binding<T>(for value: T?) -> Binding<T> {
+        return .init(
+            get: {
+                switch action.valueType {
+                case .string:
+                    return value ?? "" as! T
+                case .boolean:
+                    return value ?? false as! T
+                }
+            },
+            set: {
+                action.providedValue = $0
+            }
+        )
     }
 }

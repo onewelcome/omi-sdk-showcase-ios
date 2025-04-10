@@ -93,8 +93,8 @@ private extension CategoryView {
         if let resourceURL = actionValue["setAdditionalResourceURL"] as? String {
             interactor.setAdditionalResourceURL(resourceURL)
         }
-        if let cookies = actionValue["setStoreCookies"] as? String, let bcookies = Bool(cookies) {
-            interactor.setStoreCookies(bcookies)
+        if let cookies = actionValue["setStoreCookies"] as? Bool {
+            interactor.setStoreCookies(cookies)
         }
         if let timeout = actionValue["setHttpRequestTimeout"] as? String, let ttimeout = TimeInterval(timeout) {
             interactor.setHttpRequestTimeout(ttimeout)
@@ -142,11 +142,11 @@ private extension CategoryView {
                 return action
             },
             set: {
-                switch action.type {
+                switch action.valueType {
                 case .boolean:
-                    actionValue[action.name] = $0.boolValue
+                    actionValue[action.name] = $0.providedValue
                 case .string:
-                    actionValue[action.name] = $0.value;
+                    actionValue[action.name] = $0.providedValue
                 }
             }
         )
