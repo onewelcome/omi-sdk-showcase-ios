@@ -22,7 +22,8 @@ struct CategoriesList: View {
         }
     }
 }
-//
+
+//MARK: - Private
 private extension CategoriesList {
     var interactor: CategoriesInteractor {
         @Injected var interactors: Interactors

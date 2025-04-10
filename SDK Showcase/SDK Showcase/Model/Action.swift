@@ -3,7 +3,7 @@
 import Foundation
 
 struct Action: AppModel {
-    var name: String
+    let name: String
     let description: String
     var defaultValue: String = ""
     var boolValue = false

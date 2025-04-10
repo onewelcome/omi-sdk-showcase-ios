@@ -2,15 +2,15 @@
 
 struct SDKConfigModel {
     let dictionary: [String: String]
-    var appIdentifier: String?
-    var appPlatform: String?
-    var appVersion: String?
-    var serverType: String?
-    var serverVersion: String?
-    var baseURL: String?
-    var resourceBaseURL: String?
-    var redirectURL: String?
-    var appScheme: String?
+    let appIdentifier: String? = nil
+    let appPlatform: String? = nil
+    let appVersion: String? = nil
+    let serverType: String? = nil
+    let serverVersion: String? = nil
+    let baseURL: String? = nil
+    let resourceBaseURL: String? = nil
+    let redirectURL: String? = nil
+    let appScheme: String? = nil
     
     /// Default config model
     static let `default` = SDKConfigModel(dictionary: ["ONGAppIdentifier": "ExampleApp",
