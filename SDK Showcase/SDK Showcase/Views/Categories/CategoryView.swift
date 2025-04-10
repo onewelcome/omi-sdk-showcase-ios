@@ -142,12 +142,7 @@ private extension CategoryView {
                 return action
             },
             set: {
-                switch action.valueType {
-                case .boolean:
-                    actionValue[action.name] = $0.providedValue
-                case .string:
-                    actionValue[action.name] = $0.providedValue
-                }
+                actionValue[action.name] = $0.providedValue
             }
         )
     }
