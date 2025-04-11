@@ -3,5 +3,6 @@
 import Foundation
 
 struct Option: AppModel {
-    
+    let name: String
+    private(set) var logo: String?
 }
