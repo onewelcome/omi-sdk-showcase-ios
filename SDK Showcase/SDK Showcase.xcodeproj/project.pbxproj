@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		570AB2642DA90CD400BF2D7F /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570AB2632DA90CD400BF2D7F /* Binding.swift */; };
 		578BC30B2D4397A700713CF7 /* Interactors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30A2D4397A700713CF7 /* Interactors.swift */; };
 		578BC30D2D439BED00713CF7 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30C2D439BED00713CF7 /* System.swift */; };
 		578BC3102D43A5A700713CF7 /* CategoriesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30F2D43A5A700713CF7 /* CategoriesInteractor.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		570AB2632DA90CD400BF2D7F /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		578BC30A2D4397A700713CF7 /* Interactors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors.swift; sourceTree = "<group>"; };
 		578BC30C2D439BED00713CF7 /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		578BC30F2D43A5A700713CF7 /* CategoriesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesInteractor.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 		57AE06792D952A29004A3CB9 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				570AB2632DA90CD400BF2D7F /* Binding.swift */,
 				57AE067A2D952A43004A3CB9 /* SDKResult.swift */,
 			);
 			path = Helpers;
@@ -309,6 +312,7 @@
 				578DC4E72D9E6858008D2576 /* TextResult.swift in Sources */,
 				57F464632D3F80DB00C64156 /* SDK_ShowcaseApp.swift in Sources */,
 				578BC3162D43A6A400713CF7 /* CategoriesList.swift in Sources */,
+				570AB2642DA90CD400BF2D7F /* Binding.swift in Sources */,
 				578BC3282D4A5CEA00713CF7 /* Option.swift in Sources */,
 				578DC4EB2D9E88BE008D2576 /* SDKConfigModel.swift in Sources */,
 				578BC30D2D439BED00713CF7 /* System.swift in Sources */,

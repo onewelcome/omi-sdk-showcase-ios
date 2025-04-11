@@ -7,7 +7,7 @@ struct CategoryView: View {
     @ObservedObject var system: AppState.System
     @State var category: Category
     @State private var isExpanded = false
-    @State private var actionValue = [String: Any]()
+    @State private var actions = [Action]()
     @State private var errorValue = ""
     @State private var isProcessing = false
     
@@ -80,31 +80,19 @@ extension CategoryView {
 
 //MARK: - Private
 private extension CategoryView {
+
     func setBuilder() {
-        errorValue.removeAll()
         interactor.setConfigModel(SDKConfigModel.default)
-        
-        if let key = actionValue["setPublicKey"] as? String {
-            interactor.setPublicKey(key)
-        }
-        if let cert = actionValue["setX509PEMCertificates"] as? String {
-            interactor.setCertificates([cert])
-        }
-        if let resourceURL = actionValue["setAdditionalResourceURL"] as? String {
-            interactor.setAdditionalResourceURL(resourceURL)
-        }
-        if let cookies = actionValue["setStoreCookies"] as? Bool {
-            interactor.setStoreCookies(cookies)
-        }
-        if let timeout = actionValue["setHttpRequestTimeout"] as? String, let ttimeout = TimeInterval(timeout) {
-            interactor.setHttpRequestTimeout(ttimeout)
-        }
-        if let duration = actionValue["setDeviceConfigCacheDuration"] as? String, let tduration = TimeInterval(duration) {
-            interactor.setDeviceConfigCacheDuration(tduration)
-        }
+        interactor.setPublicKey(value(for: "setPublicKey"))
+        interactor.setCertificates([value(for: "setX509PEMCertificates")])
+        interactor.setAdditionalResourceURL(value(for: "setAdditionalResourceURL"))
+        interactor.setStoreCookies(value(for: "setStoreCookies"))
+        interactor.setHttpRequestTimeout(value(for: "setHttpRequestTimeout"))
+        interactor.setDeviceConfigCacheDuration(value(for: "setDeviceConfigCacheDuration"))
     }
     
     func initializeSDK() {
+        errorValue.removeAll()
         setBuilder()
         interactor.initializeSDK { result in
             switch result {
@@ -119,6 +107,7 @@ private extension CategoryView {
     }
     
     func resetSDK() {
+        errorValue.removeAll()
         setBuilder()
         interactor.resetSDK { result in
             switch result {
@@ -133,18 +122,48 @@ private extension CategoryView {
     }
     
     func binding(for action: Action) -> Binding<Action> {
-        DispatchQueue.main.async {
-            actionValue[action.name] = action.defaultValue
-        }
-        
+        setDefaultValueIfNeeded(for: action)
         return .init(
             get: {
-                return action
+                return actions.first { $0 == action } ?? action
             },
-            set: {
-                actionValue[action.name] = $0.providedValue
+            set: { newAction in
+                actions.removeAll { $0 == action }
+                actions.append(newAction)
             }
         )
+    }
+    
+    func setDefaultValueIfNeeded(for action: Action) {
+        DispatchQueue.main.async {
+            if !actions.contains(action) {
+                actions.append(action)
+            }
+        }
+    }
+    
+    func value<T>(for key: String) -> T {
+        guard let action = actions.first(where: { $0.name == key }),
+            let value = action.providedValue ?? action.defaultValue else {
+            return String() as? T
+            ?? Int() as? T
+            ?? Double() as? T
+            ?? Bool() as! T
+        }
+        
+        guard let cast = value as? T else {
+            switch T.self {
+            case is Int.Type:
+                return Int(value as! String) as! T
+            case is Double.Type:
+                return Double(value as! String) as! T
+            default:
+                fatalError("Unsupported type \(type(of: value))")
+            }
+        }
+
+        print("[v] Setting value `\(value)` for key `\(key)`")
+        return cast
     }
     
     var interactor: SDKInteractor {

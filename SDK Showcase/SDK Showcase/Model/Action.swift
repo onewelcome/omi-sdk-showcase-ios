@@ -4,10 +4,9 @@ import Foundation
 
 struct Action: AppModel {
     let name: String
-    let description: String
+    var description: String? = nil
     var providedValue: Any? = nil
     private(set) var defaultValue: Any? = nil
-    private(set) var valueType: ActionType = .string
 }
 
 extension Action: Equatable, Hashable {

@@ -7,17 +7,19 @@ struct ActionView: View {
     
     var body: some View {
         DisclosureGroup() {
-            Text(action.description)
-                .multilineTextAlignment(.leading)
-                .font(.system(size: 15))
-                .foregroundStyle(.secondary)
+            if let description = action.description {
+                Text(description)
+                    .multilineTextAlignment(.leading)
+                    .font(.system(size: 15))
+                    .foregroundStyle(.secondary)
+            }
             HStack {
-                if action.valueType == .string {
-                    TextField(text: binding(for: action.providedValue as? String)) {
+                if (action.providedValue is Bool || action.defaultValue is Bool) {
+                    Toggle(action.name, isOn: Binding(isNotNil: $action.providedValue, defaultValue: action.defaultValue))
+                } else {
+                    TextField(text: Binding(isNotNil: $action.providedValue, defaultValue: nil)) {
                         Text(action.defaultValue as? String ?? "")
                     }
-                } else {
-                    Toggle(action.name, isOn: binding(for: action.providedValue as? Bool))
                 }
             }
         } label: {
@@ -25,24 +27,5 @@ struct ActionView: View {
                 Text(action.name)
             }
         }
-    }
-}
-
-private extension ActionView {
-    
-    func binding<T>(for value: T?) -> Binding<T> {
-        return .init(
-            get: {
-                switch action.valueType {
-                case .string:
-                    return value ?? "" as! T
-                case .boolean:
-                    return value ?? false as! T
-                }
-            },
-            set: {
-                action.providedValue = $0
-            }
-        )
     }
 }
