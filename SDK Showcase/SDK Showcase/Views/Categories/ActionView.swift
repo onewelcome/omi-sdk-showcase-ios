@@ -4,6 +4,7 @@ import SwiftUI
 
 struct ActionView: View {
     @Binding var action: Action
+    @State var position: Double = 0.0
     
     var body: some View {
         DisclosureGroup() {
@@ -18,8 +19,12 @@ struct ActionView: View {
                     Toggle(action.name, isOn: Binding(isNotNil: $action.providedValue, defaultValue: action.defaultValue))
                 }
                 else if (action.providedValue is Double || action.defaultValue is Double) {
-                    Slider(value: Binding(isNotNil: $action.providedValue, defaultValue: action.defaultValue), in: 0...100, step: 1.0)
-                    Text("\((action.providedValue ?? action.defaultValue) as! Double, specifier: "%.0f")")
+                    HStack {
+                        Text("\(position, specifier: "%.0f")")
+                        Slider(value: $position, in: 0...100, step: 1.0)
+                            .onChange(of: position) { $action.wrappedValue.providedValue = $1 }
+                            .onAppear { $position.wrappedValue = action.defaultValue as? Double ?? 0 }
+                    }
                 }
                 else {
                     TextField(text: Binding(isNotNil: $action.providedValue, defaultValue: nil)) {
