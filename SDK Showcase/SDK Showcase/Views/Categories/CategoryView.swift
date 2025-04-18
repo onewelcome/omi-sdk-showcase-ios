@@ -85,7 +85,7 @@ private extension CategoryView {
         interactor.setConfigModel(SDKConfigModel.default)
         interactor.setPublicKey(value(for: "setPublicKey"))
         interactor.setCertificates([value(for: "setX509PEMCertificates")])
-        interactor.setAdditionalResourceURL(value(for: "setAdditionalResourceURL"))
+        interactor.setAdditionalResourceUrls(value(for: "setAdditionalResourceURL"))
         interactor.setStoreCookies(value(for: "setStoreCookies"))
         interactor.setHttpRequestTimeout(value(for: "setHttpRequestTimeout"))
         interactor.setDeviceConfigCacheDuration(value(for: "setDeviceConfigCacheDuration"))
@@ -146,7 +146,8 @@ private extension CategoryView {
     func value<T>(for key: String) -> T {
         guard let action = actions.first(where: { $0.name == key }),
             let value = action.providedValue ?? action.defaultValue else {
-            return String() as? T
+            return [] as? T
+            ?? String() as? T
             ?? Int() as? T
             ?? Double() as? T
             ?? Bool() as! T

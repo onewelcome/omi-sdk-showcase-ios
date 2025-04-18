@@ -5,8 +5,7 @@ import OneginiSDKiOS
 
 //MARK: - Protocol the SDK interacts with
 protocol SDKInteractor {
-    var builder: ClientBuilder { get }
-    
+    var builder: ClientBuilder { get set }
     /// Initializes the SDK, requires setting below methods
     /// - Parameter result: The result from the SDK
     func initializeSDK(result: @escaping SDKResult)
@@ -17,7 +16,7 @@ protocol SDKInteractor {
     func setConfigModel(_ model: SDKConfigModel)
     func setCertificates(_ certs: [String])
     func setPublicKey(_ key: String)
-    func setAdditionalResourceURL(_ url: String)
+    func setAdditionalResourceUrls(_ url: [String])
     func setDeviceConfigCacheDuration(_ cacheDuration: TimeInterval)
     func setHttpRequestTimeout(_ requestTimeout: TimeInterval)
     func setStoreCookies(_ storeCookies: Bool)
@@ -25,19 +24,18 @@ protocol SDKInteractor {
 
 //MARK: - Real methods
 struct SDKInteractorReal: SDKInteractor {
+    var builder = Self.staticBuilder
+    static var staticBuilder = ClientBuilder()
     @ObservedObject var appState: AppState
-    private static let staticBuilder = ClientBuilder()
-    
-    var builder: ClientBuilder {
-        Self.staticBuilder
-    }
     
     func initializeSDK(result: @escaping SDKResult) {
         builder.buildAndWaitForProtectedData { client in
             client.start { error in
                 if let error {
+                    appState.system.isSDKInitialized = false
                     return result(.failure(error))
                 } else {
+                    appState.system.isSDKInitialized = true
                     return result(.success)
                 }
             }
@@ -80,8 +78,8 @@ extension SDKInteractorReal {
         _ = builder.setX509PEMCertificates(certs)
     }
     
-    func setAdditionalResourceURL(_ url: String) {
-        _ = builder.setAdditionalResourceUrls([url])
+    func setAdditionalResourceUrls(_ url: [String]) {
+        _ = builder.setAdditionalResourceUrls(url)
     }
     
     func setDeviceConfigCacheDuration(_ cacheDuration: TimeInterval) {
