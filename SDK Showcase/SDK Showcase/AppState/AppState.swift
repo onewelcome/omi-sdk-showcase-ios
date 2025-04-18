@@ -6,6 +6,21 @@ class AppState: ObservableObject {
     @Published var system = System()
     @Published var deviceData = DeviceData()
     @Published var userData = UserData()
+    
+    func reset() {
+        system.isEnrolled = false
+        system.isSDKInitialized = false
+        system.isMobileEnrolled = false
+        system.isPushEnrolled = false
+        
+        deviceData.certs.removeAll()
+        deviceData.deviceId = nil
+        deviceData.model = nil
+        deviceData.publicKey = nil
+        
+        userData.isStateless = false
+        userData.userId = nil
+    }
 }
 
 //MARK: - Equatable
