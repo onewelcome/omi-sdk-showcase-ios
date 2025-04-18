@@ -93,6 +93,7 @@ private extension CategoryView {
     
     func initializeSDK() {
         errorValue.removeAll()
+        /// You can comment the below line if the app is configured with the configurator and do have OneginiConfigModel set.
         setBuilder()
         interactor.initializeSDK { result in
             switch result {

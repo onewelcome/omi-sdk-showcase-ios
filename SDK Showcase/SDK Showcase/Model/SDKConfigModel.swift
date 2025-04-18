@@ -13,11 +13,11 @@ struct SDKConfigModel {
     let appScheme: String? = nil
     
     /// Default config model
-    static let defaultDictionary = ["ONGAppIdentifier": "ExampleApp",
+    static let defaultDictionary = ["ONGAppIdentifier": "SDKShowCase",
                                                 "ONGAppPlatform": "ios",
-                                                "ONGAppVersion": "6.2.4",
+                                                "ONGAppVersion": "1.0.0",
                                                 "ONGAppBaseURL": "https://mobile-security-proxy.onegini.com",
                                                 "ONGResourceBaseURL": "https://mobile-security-proxy.onegini.com/resources/",
-                                                "ONGRedirectURL": "oneginiexample://loginsuccess"]
+                                                "ONGRedirectURL": "sdkshowcase://loginsuccess"]
     static let `default` = SDKConfigModel(dictionary: defaultDictionary)
 }
