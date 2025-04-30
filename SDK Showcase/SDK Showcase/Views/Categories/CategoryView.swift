@@ -10,6 +10,7 @@ struct CategoryView: View {
     @State private var actions = [Action]()
     @State private var errorValue = ""
     @State private var isProcessing = false
+    @State private var isPresentingSheet = false
     
     var body: some View {
         HStack {
@@ -19,15 +20,37 @@ struct CategoryView: View {
                     .font(.system(size: 15))
                     .foregroundStyle(.secondary)
                 
-                Section(header: Text("Required Actions")) {
-                    ForEach(category.requiredActions, id:\.self) { action in
-                        ActionView(action: binding(for: action))
+                if !category.requiredActions.isEmpty {
+                    Section(header: Text("Required Actions")) {
+                        ForEach(category.requiredActions, id:\.self) { action in
+                            ActionView(action: binding(for: action))
+                        }
                     }
                 }
                 
-                Section(header: Text("Optional Actions")) {
-                    ForEach(category.optionalActions, id:\.self) { action in
-                        ActionView(action: binding(for: action))
+                if !category.optionalActions.isEmpty {
+                    Section(header: Text("Optional Actions")) {
+                        ForEach(category.optionalActions, id:\.self) { action in
+                            ActionView(action: binding(for: action))
+                        }
+                    }
+                }
+                
+                if !category.selection.isEmpty {
+                    Section(header: Text("Select")) {
+                        ForEach(category.selection, id:\.self) { selection in
+                            Button(action: {
+                                buttonAction(for: selection)
+                            }, label: {
+                                HStack {
+                                    if let logo = selection.logo {
+                                        Image(systemName: logo)
+                                    }
+                                    Text(selection.name)
+                                }
+                            })
+                        }
+                        
                     }
                 }
                 
@@ -46,6 +69,9 @@ struct CategoryView: View {
         }
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $isPresentingSheet) {
+            SheetViewForWebView(urlString: browserInteractor.registerUrl)
+        }
         
         ForEach(category.options) { option in
             Button(action: {
@@ -73,29 +99,45 @@ extension CategoryView {
         case "Reset":
             resetSDK()
         default:
-            break
+            fatalError("Option `\(option.name)` not handled!")
+        }
+    }
+    
+    func buttonAction(for selection: Selection) {
+        switch selection.name {
+        case "Browser registration":
+            browserRegistration()
+        default:
+            fatalError("Selection `\(selection.name)` not handled!")
+        }
+    }
+}
+
+private extension CategoryView {
+    func browserRegistration() {
+        browserInteractor.register {
+            isPresentingSheet = true
         }
     }
 }
 
 //MARK: - Private
 private extension CategoryView {
-
     func setBuilder() {
-        interactor.setConfigModel(SDKConfigModel.default)
-        interactor.setPublicKey(value(for: "setPublicKey"))
-        interactor.setCertificates([value(for: "setX509PEMCertificates")])
-        interactor.setAdditionalResourceUrls(value(for: "setAdditionalResourceURL"))
-        interactor.setStoreCookies(value(for: "setStoreCookies"))
-        interactor.setHttpRequestTimeout(value(for: "setHttpRequestTimeout"))
-        interactor.setDeviceConfigCacheDuration(value(for: "setDeviceConfigCacheDuration"))
+        sdkInteractor.setConfigModel(SDKConfigModel.default)
+        sdkInteractor.setPublicKey(value(for: "setPublicKey"))
+        sdkInteractor.setCertificates([value(for: "setX509PEMCertificates")])
+        sdkInteractor.setAdditionalResourceUrls(value(for: "setAdditionalResourceURL"))
+        sdkInteractor.setStoreCookies(value(for: "setStoreCookies"))
+        sdkInteractor.setHttpRequestTimeout(value(for: "setHttpRequestTimeout"))
+        sdkInteractor.setDeviceConfigCacheDuration(value(for: "setDeviceConfigCacheDuration"))
     }
     
     func initializeSDK() {
         errorValue.removeAll()
         /// You can comment the below line if the app is configured with the configurator and do have OneginiConfigModel set.
         setBuilder()
-        interactor.initializeSDK { result in
+        sdkInteractor.initializeSDK { result in
             switch result {
             case .success:
                 system.isSDKInitialized = true
@@ -110,7 +152,7 @@ private extension CategoryView {
     func resetSDK() {
         errorValue.removeAll()
         setBuilder()
-        interactor.resetSDK { result in
+        sdkInteractor.resetSDK { result in
             switch result {
             case .success:
                 system.isSDKInitialized = false
@@ -168,8 +210,13 @@ private extension CategoryView {
         return cast
     }
     
-    var interactor: SDKInteractor {
+    var sdkInteractor: SDKInteractor {
         @Injected var interactors: Interactors
         return interactors.sdkInteractor
+    }
+    
+    var browserInteractor: BrowserRegistrationInteractor {
+        @Injected var interactors: Interactors
+        return interactors.browserInteractor
     }
 }

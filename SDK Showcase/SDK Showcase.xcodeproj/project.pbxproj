@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		570AB2642DA90CD400BF2D7F /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570AB2632DA90CD400BF2D7F /* Binding.swift */; };
+		5723966E2DB90AB400C8A3B7 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5723966D2DB90AB400C8A3B7 /* Spinner.swift */; };
+		5730A8BF2DC2045500528BC2 /* MyIdentityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5730A8BE2DC2045500528BC2 /* MyIdentityProvider.swift */; };
 		578BC30B2D4397A700713CF7 /* Interactors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30A2D4397A700713CF7 /* Interactors.swift */; };
 		578BC30D2D439BED00713CF7 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30C2D439BED00713CF7 /* System.swift */; };
 		578BC3102D43A5A700713CF7 /* CategoriesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30F2D43A5A700713CF7 /* CategoriesInteractor.swift */; };
@@ -28,6 +30,12 @@
 		57AE06752D929D5A004A3CB9 /* SDKSPM in Frameworks */ = {isa = PBXBuildFile; productRef = 57AE06742D929D5A004A3CB9 /* SDKSPM */; };
 		57AE06782D929EC6004A3CB9 /* SDKDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 57AE06772D929EC6004A3CB9 /* SDKDependencies */; };
 		57AE067B2D952A43004A3CB9 /* SDKResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AE067A2D952A43004A3CB9 /* SDKResult.swift */; };
+		57E9E1382DB2426C00168A93 /* Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1372DB2425F00168A93 /* Selection.swift */; };
+		57E9E13A2DB2484D00168A93 /* BrowserRegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */; };
+		57E9E13C2DB271AA00168A93 /* SheetViewForWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */; };
+		57E9E13E2DB272EA00168A93 /* LoadingWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E13D2DB272EA00168A93 /* LoadingWebView.swift */; };
+		57E9E1402DB2734200168A93 /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E13F2DB2734200168A93 /* BrowserView.swift */; };
+		57E9E1422DB7AE8700168A93 /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1412DB7AE8700168A93 /* BrowserViewModel.swift */; };
 		57F464632D3F80DB00C64156 /* SDK_ShowcaseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464622D3F80DB00C64156 /* SDK_ShowcaseApp.swift */; };
 		57F464652D3F80DB00C64156 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464642D3F80DB00C64156 /* ContentView.swift */; };
 		57F464672D3F80E200C64156 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57F464662D3F80E200C64156 /* Assets.xcassets */; };
@@ -65,6 +73,8 @@
 /* Begin PBXFileReference section */
 		570AB2632DA90CD400BF2D7F /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		570AB2692DA9406400BF2D7F /* SDK ShowcaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SDK ShowcaseTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5723966D2DB90AB400C8A3B7 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
+		5730A8BE2DC2045500528BC2 /* MyIdentityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyIdentityProvider.swift; sourceTree = "<group>"; };
 		578BC30A2D4397A700713CF7 /* Interactors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors.swift; sourceTree = "<group>"; };
 		578BC30C2D439BED00713CF7 /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		578BC30F2D43A5A700713CF7 /* CategoriesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesInteractor.swift; sourceTree = "<group>"; };
@@ -82,6 +92,13 @@
 		57AE06692D8C20F5004A3CB9 /* SDKInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKInteractor.swift; sourceTree = "<group>"; };
 		57AE066F2D92986B004A3CB9 /* Swinject.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Swinject.xcframework; path = "SDK Showcase/Supporting Files/Swinject.xcframework"; sourceTree = "<group>"; };
 		57AE067A2D952A43004A3CB9 /* SDKResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKResult.swift; sourceTree = "<group>"; };
+		57E9E1372DB2425F00168A93 /* Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selection.swift; sourceTree = "<group>"; };
+		57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserRegistrationInteractor.swift; sourceTree = "<group>"; };
+		57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewForWebView.swift; sourceTree = "<group>"; };
+		57E9E13D2DB272EA00168A93 /* LoadingWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingWebView.swift; sourceTree = "<group>"; };
+		57E9E13F2DB2734200168A93 /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
+		57E9E1412DB7AE8700168A93 /* BrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewModel.swift; sourceTree = "<group>"; };
+		57E9E1452DB7B24300168A93 /* SDK-Showcase-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "SDK-Showcase-Info.plist"; sourceTree = SOURCE_ROOT; };
 		57F4645F2D3F80DB00C64156 /* SDK Showcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SDK Showcase.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F464622D3F80DB00C64156 /* SDK_ShowcaseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDK_ShowcaseApp.swift; sourceTree = "<group>"; };
 		57F464642D3F80DB00C64156 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -133,6 +150,7 @@
 				578BC30A2D4397A700713CF7 /* Interactors.swift */,
 				578BC30F2D43A5A700713CF7 /* CategoriesInteractor.swift */,
 				57AE06692D8C20F5004A3CB9 /* SDKInteractor.swift */,
+				57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -151,9 +169,11 @@
 		578BC3122D43A60600713CF7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				578BC3142D43A69300713CF7 /* Categories */,
-				578DC4E62D9E6858008D2576 /* TextResult.swift */,
 				57F464642D3F80DB00C64156 /* ContentView.swift */,
+				5723966D2DB90AB400C8A3B7 /* Spinner.swift */,
+				578DC4E62D9E6858008D2576 /* TextResult.swift */,
+				57E9E1462DB7BA1F00168A93 /* WebView */,
+				578BC3142D43A69300713CF7 /* Categories */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -179,6 +199,9 @@
 		578BC31B2D4A1AD600713CF7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5730A8BE2DC2045500528BC2 /* MyIdentityProvider.swift */,
+				57E9E1412DB7AE8700168A93 /* BrowserViewModel.swift */,
+				57E9E1372DB2425F00168A93 /* Selection.swift */,
 				578DC4EA2D9E88B7008D2576 /* SDKConfigModel.swift */,
 				578BC31C2D4A2A2300713CF7 /* AppModel.swift */,
 				578BC3192D4A1AD100713CF7 /* Category.swift */,
@@ -214,6 +237,16 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		57E9E1462DB7BA1F00168A93 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				57E9E13F2DB2734200168A93 /* BrowserView.swift */,
+				57E9E13D2DB272EA00168A93 /* LoadingWebView.swift */,
+				57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */,
+			);
+			path = WebView;
+			sourceTree = "<group>";
+		};
 		57F464562D3F80DB00C64156 = {
 			isa = PBXGroup;
 			children = (
@@ -237,6 +270,7 @@
 		57F464612D3F80DB00C64156 /* SDK Showcase */ = {
 			isa = PBXGroup;
 			children = (
+				57E9E1452DB7B24300168A93 /* SDK-Showcase-Info.plist */,
 				57AE06792D952A29004A3CB9 /* Helpers */,
 				578BC31B2D4A1AD600713CF7 /* Model */,
 				578BC3132D43A62C00713CF7 /* DI */,
@@ -348,8 +382,8 @@
 			);
 			mainGroup = 57F464562D3F80DB00C64156;
 			packageReferences = (
-				57AE06732D929D5A004A3CB9 /* XCRemoteSwiftPackageReference "OneWelcome.SDKSPM-dev" */,
-				57AE06762D929EC6004A3CB9 /* XCRemoteSwiftPackageReference "OneWelcome.sdkdependencies" */,
+				57AE06732D929D5A004A3CB9 /* XCRemoteSwiftPackageReference "SDKSPM-dev" */,
+				57AE06762D929EC6004A3CB9 /* XCRemoteSwiftPackageReference "sdkdependencies" */,
 			);
 			productRefGroup = 57F464602D3F80DB00C64156 /* Products */;
 			projectDirPath = "";
@@ -392,8 +426,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57E9E13A2DB2484D00168A93 /* BrowserRegistrationInteractor.swift in Sources */,
 				578DC4ED2D9FDC83008D2576 /* ActionView.swift in Sources */,
+				57E9E1402DB2734200168A93 /* BrowserView.swift in Sources */,
 				57F4647B2D43831700C64156 /* Injection.swift in Sources */,
+				5723966E2DB90AB400C8A3B7 /* Spinner.swift in Sources */,
 				57F464652D3F80DB00C64156 /* ContentView.swift in Sources */,
 				578BC31D2D4A2A2300713CF7 /* AppModel.swift in Sources */,
 				578BC30B2D4397A700713CF7 /* Interactors.swift in Sources */,
@@ -403,11 +440,16 @@
 				578BC3162D43A6A400713CF7 /* CategoriesList.swift in Sources */,
 				570AB2642DA90CD400BF2D7F /* Binding.swift in Sources */,
 				578BC3282D4A5CEA00713CF7 /* Option.swift in Sources */,
+				57E9E1422DB7AE8700168A93 /* BrowserViewModel.swift in Sources */,
+				57E9E13C2DB271AA00168A93 /* SheetViewForWebView.swift in Sources */,
 				578DC4EB2D9E88BE008D2576 /* SDKConfigModel.swift in Sources */,
 				578BC30D2D439BED00713CF7 /* System.swift in Sources */,
 				578BC3212D4A305C00713CF7 /* CategoryView.swift in Sources */,
 				578BC3102D43A5A700713CF7 /* CategoriesInteractor.swift in Sources */,
+				5730A8BF2DC2045500528BC2 /* MyIdentityProvider.swift in Sources */,
 				57AE066A2D8C20F5004A3CB9 /* SDKInteractor.swift in Sources */,
+				57E9E13E2DB272EA00168A93 /* LoadingWebView.swift in Sources */,
+				57E9E1382DB2426C00168A93 /* Selection.swift in Sources */,
 				57AE067B2D952A43004A3CB9 /* SDKResult.swift in Sources */,
 				578BC3242D4A582600713CF7 /* DeviceData.swift in Sources */,
 				578BC3262D4A5A9100713CF7 /* Action.swift in Sources */,
@@ -599,6 +641,8 @@
 				ENABLE_CODE_COVERAGE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SDK-Showcase-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -635,6 +679,8 @@
 				ENABLE_CODE_COVERAGE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SDK-Showcase-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -691,7 +737,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		57AE06732D929D5A004A3CB9 /* XCRemoteSwiftPackageReference "OneWelcome.SDKSPM-dev" */ = {
+		57AE06732D929D5A004A3CB9 /* XCRemoteSwiftPackageReference "SDKSPM-dev" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "OneWelcome.SDKSPM-dev";
 			requirement = {
@@ -699,7 +745,7 @@
 				minimumVersion = 0.9.0;
 			};
 		};
-		57AE06762D929EC6004A3CB9 /* XCRemoteSwiftPackageReference "OneWelcome.sdkdependencies" */ = {
+		57AE06762D929EC6004A3CB9 /* XCRemoteSwiftPackageReference "sdkdependencies" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = OneWelcome.sdkdependencies;
 			requirement = {
@@ -712,12 +758,12 @@
 /* Begin XCSwiftPackageProductDependency section */
 		57AE06742D929D5A004A3CB9 /* SDKSPM */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 57AE06732D929D5A004A3CB9 /* XCRemoteSwiftPackageReference "OneWelcome.SDKSPM-dev" */;
+			package = 57AE06732D929D5A004A3CB9 /* XCRemoteSwiftPackageReference "SDKSPM-dev" */;
 			productName = SDKSPM;
 		};
 		57AE06772D929EC6004A3CB9 /* SDKDependencies */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 57AE06762D929EC6004A3CB9 /* XCRemoteSwiftPackageReference "OneWelcome.sdkdependencies" */;
+			package = 57AE06762D929EC6004A3CB9 /* XCRemoteSwiftPackageReference "sdkdependencies" */;
 			productName = SDKDependencies;
 		};
 /* End XCSwiftPackageProductDependency section */
