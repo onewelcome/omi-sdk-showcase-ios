@@ -14,7 +14,7 @@ protocol BrowserRegistrationInteractor {
     func didReceiveBrowserRegistrationChallenge(_ challenge: any BrowserRegistrationChallenge)
     func didReceiveBrowserRegistrationRedirect(_ url: URL)
     func didReceiveCreatePinChallenge(_ challenge: any CreatePinChallenge)
-    func didFailToRegisterUser()
+    func didFailToRegisterUser(with error: Error)
 }
 
 //MARK: - Real methods
@@ -34,6 +34,10 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
     }
     
     func register(completion: @escaping () -> Void) {
+        guard appState.system.isSDKInitialized else {
+            appState.system.lastErrorDescription = "SDK not initialized"
+            return
+        }
         sdkInteractor.register(with: ShowCaseIdentityProvider.example, completion: completion)
     }
 }
@@ -55,8 +59,9 @@ extension BrowserRegistrationInteractorReal {
         setChallenge(challenge)
     }
     
-    func didFailToRegisterUser() {
+    func didFailToRegisterUser(with error: Error) {
         appState.system.isRegistered = false
+        appState.system.lastErrorDescription = error.localizedDescription
     }
 
 }

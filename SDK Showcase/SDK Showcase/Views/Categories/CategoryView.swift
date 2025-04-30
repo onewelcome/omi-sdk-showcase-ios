@@ -15,60 +15,70 @@ struct CategoryView: View {
     
     var body: some View {
         HStack {
-            List {
-                Text(category.description)
-                    .multilineTextAlignment(.leading)
-                    .font(.system(size: 15))
-                    .foregroundStyle(.secondary)
-                
-                if !category.requiredActions.isEmpty {
-                    Section(header: Text("Required Actions")) {
-                        ForEach(category.requiredActions, id:\.self) { action in
-                            ActionView(action: binding(for: action))
+            ZStack {
+                List {
+                    Text(category.description)
+                        .multilineTextAlignment(.leading)
+                        .font(.system(size: 15))
+                        .foregroundStyle(.secondary)
+                    
+                    if !category.requiredActions.isEmpty {
+                        Section(header: Text("Required Actions")) {
+                            ForEach(category.requiredActions, id:\.self) { action in
+                                ActionView(action: binding(for: action))
+                            }
                         }
                     }
-                }
-                
-                if !category.optionalActions.isEmpty {
-                    Section(header: Text("Optional Actions")) {
-                        ForEach(category.optionalActions, id:\.self) { action in
-                            ActionView(action: binding(for: action))
+                    
+                    if !category.optionalActions.isEmpty {
+                        Section(header: Text("Optional Actions")) {
+                            ForEach(category.optionalActions, id:\.self) { action in
+                                ActionView(action: binding(for: action))
+                            }
                         }
                     }
-                }
-                
-                if !category.selection.isEmpty {
-                    Section(header: Text("Select")) {
-                        ForEach(category.selection, id:\.self) { selection in
-                            Button(action: {
-                                buttonAction(for: selection)
-                            }, label: {
-                                HStack {
-                                    if let logo = selection.logo {
-                                        Image(systemName: logo)
+                    
+                    if !category.selection.isEmpty {
+                        Section(header: Text("Select")) {
+                            ForEach(category.selection, id:\.self) { selection in
+                                Button(action: {
+                                    buttonAction(for: selection)
+                                }, label: {
+                                    HStack {
+                                        if let logo = selection.logo {
+                                            Image(systemName: logo)
+                                        }
+                                        Text(selection.name)
                                     }
-                                    Text(selection.name)
-                                }
-                            })
+                                })
+                            }
+                            
                         }
-                        
                     }
+                    
+                    Section(content: {
+                        if isProcessing {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                        } else {
+                            TextResult(result: system.isSDKInitialized ? "SDK initialized" : "SDK not initialized \(errorValue)")
+                            TextResult(result: system.isRegistered ? "User registered as \(userData.userId ?? "")" : "User not registered")
+                        }
+                    }, header: {
+                        Text("Result")
+                    })
+                }
+                .listStyle(.insetGrouped)
+                
+                if isProcessing {
+                    Spinner()
                 }
                 
-                Section(content: {
-                    if isProcessing {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
-                    } else {
-                        TextResult(result: system.isSDKInitialized ? "SDK initialized" : "SDK not initialized \(errorValue)")
-                        TextResult(result: system.isRegistered ? "Registered as \(userData.userId ?? "")" : "Not registered")
-                    }
-                }, header: {
-                    Text("Result")
-                })
-            }
-            .listStyle(.insetGrouped)
-        }
+                if let info = system.lastErrorDescription {
+                    Alert(text: info)
+                }
+            } // ZStack
+        } // HStack
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $isPresentingSheet) {
@@ -118,6 +128,7 @@ extension CategoryView {
 private extension CategoryView {
     func browserRegistration() {
         browserInteractor.register {
+            isProcessing = false
             isPresentingSheet = true
         }
     }

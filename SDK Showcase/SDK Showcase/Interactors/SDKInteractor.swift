@@ -130,9 +130,12 @@ extension SDKInteractorReal: RegistrationDelegate {
     }
     
     func userClient(_ userClient: any UserClient, didFailToRegisterUserWith identityProvider: any IdentityProvider, error: any Error) {
-        browserInteractor.didFailToRegisterUser()
+        browserInteractor.didFailToRegisterUser(with: error)
     }
 
+    func userClientDidStartRegistration(_ userClient: any UserClient) {
+        
+    }
 }
 
 //MARK: - Private Protocol Extension

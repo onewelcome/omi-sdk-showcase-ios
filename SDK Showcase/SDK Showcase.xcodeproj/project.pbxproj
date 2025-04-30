@@ -10,6 +10,7 @@
 		570AB2642DA90CD400BF2D7F /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570AB2632DA90CD400BF2D7F /* Binding.swift */; };
 		5723966E2DB90AB400C8A3B7 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5723966D2DB90AB400C8A3B7 /* Spinner.swift */; };
 		5730A8BF2DC2045500528BC2 /* ShowCaseIdentityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5730A8BE2DC2045500528BC2 /* ShowCaseIdentityProvider.swift */; };
+		5730A8C12DC2448200528BC2 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5730A8C02DC2448200528BC2 /* Alert.swift */; };
 		578BC30B2D4397A700713CF7 /* Interactors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30A2D4397A700713CF7 /* Interactors.swift */; };
 		578BC30D2D439BED00713CF7 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30C2D439BED00713CF7 /* System.swift */; };
 		578BC3102D43A5A700713CF7 /* CategoriesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30F2D43A5A700713CF7 /* CategoriesInteractor.swift */; };
@@ -75,6 +76,7 @@
 		570AB2692DA9406400BF2D7F /* SDK ShowcaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SDK ShowcaseTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5723966D2DB90AB400C8A3B7 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		5730A8BE2DC2045500528BC2 /* ShowCaseIdentityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCaseIdentityProvider.swift; sourceTree = "<group>"; };
+		5730A8C02DC2448200528BC2 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		578BC30A2D4397A700713CF7 /* Interactors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors.swift; sourceTree = "<group>"; };
 		578BC30C2D439BED00713CF7 /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		578BC30F2D43A5A700713CF7 /* CategoriesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesInteractor.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 		578BC3122D43A60600713CF7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5730A8C02DC2448200528BC2 /* Alert.swift */,
 				57F464642D3F80DB00C64156 /* ContentView.swift */,
 				5723966D2DB90AB400C8A3B7 /* Spinner.swift */,
 				578DC4E62D9E6858008D2576 /* TextResult.swift */,
@@ -450,6 +453,7 @@
 				57AE066A2D8C20F5004A3CB9 /* SDKInteractor.swift in Sources */,
 				57E9E13E2DB272EA00168A93 /* LoadingWebView.swift in Sources */,
 				57E9E1382DB2426C00168A93 /* Selection.swift in Sources */,
+				5730A8C12DC2448200528BC2 /* Alert.swift in Sources */,
 				57AE067B2D952A43004A3CB9 /* SDKResult.swift in Sources */,
 				578BC3242D4A582600713CF7 /* DeviceData.swift in Sources */,
 				578BC3262D4A5A9100713CF7 /* Action.swift in Sources */,
