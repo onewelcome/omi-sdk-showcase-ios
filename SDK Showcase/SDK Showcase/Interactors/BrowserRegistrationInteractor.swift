@@ -34,8 +34,7 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
     }
     
     func register(completion: @escaping () -> Void) {
-        let provider = MyIdentityProvider(identifier: "919dcf6e-1d62-40c6-9b91-fb3e248757b3", name: "demo-cim.onegini.com")
-        sdkInteractor.register(with: provider, completion: completion)
+        sdkInteractor.register(with: ShowCaseIdentityProvider.example, completion: completion)
     }
 }
 
@@ -44,7 +43,7 @@ extension BrowserRegistrationInteractorReal {
     
     func didReceiveCreatePinChallenge(_ challenge: any OneginiSDKiOS.CreatePinChallenge) {
         //TODO: Next story to handle PIN creation
-        challenge.sender.respond(with: "21354", to: challenge)
+        challenge.sender.respond(with: "21370", to: challenge)
     }
     
     func didReceiveBrowserRegistrationRedirect(_ url: URL) {
@@ -57,7 +56,7 @@ extension BrowserRegistrationInteractorReal {
     }
     
     func didFailToRegisterUser() {
-        
+        appState.system.isRegistered = false
     }
 
 }

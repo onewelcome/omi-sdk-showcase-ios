@@ -75,14 +75,11 @@ extension BrowserViewModel: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping @MainActor (WKNavigationActionPolicy) -> Void) {
-        errorMessage = ""
-        
         guard let url = navigationAction.request.url else {
-            //let oneginiConfig = OneginiConfigModel.configuration() as? [String: String],
-            //let redirectUrl = oneginiConfig["ONGRedirectURL"] else {
             decisionHandler(.allow)
             return
         }
+        
         if url.absoluteString.hasPrefix("sdkshowcase://loginsuccess") {
             handleRedirectURL(url)
             decisionHandler(.cancel)

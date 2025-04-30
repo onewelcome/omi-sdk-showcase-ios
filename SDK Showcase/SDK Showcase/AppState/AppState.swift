@@ -9,6 +9,7 @@ class AppState: ObservableObject {
     
     func reset() {
         system.isEnrolled = false
+        system.isRegistered = false
         system.isSDKInitialized = false
         system.isMobileEnrolled = false
         system.isPushEnrolled = false

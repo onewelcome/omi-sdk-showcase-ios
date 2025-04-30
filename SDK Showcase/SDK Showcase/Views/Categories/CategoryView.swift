@@ -5,6 +5,7 @@ import SwiftUI
 
 struct CategoryView: View {
     @ObservedObject var system: AppState.System
+    @ObservedObject var userData: AppState.UserData
     @State var category: Category
     @State private var isExpanded = false
     @State private var actions = [Action]()
@@ -60,6 +61,7 @@ struct CategoryView: View {
                             .progressViewStyle(CircularProgressViewStyle())
                     } else {
                         TextResult(result: system.isSDKInitialized ? "SDK initialized" : "SDK not initialized \(errorValue)")
+                        TextResult(result: system.isRegistered ? "Registered as \(userData.userId ?? "")" : "Not registered")
                     }
                 }, header: {
                     Text("Result")
