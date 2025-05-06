@@ -6,6 +6,7 @@ struct Category: AppModel {
     let name: String
     let description: String
     let options: [Option]
+    let selection: [Selection]
     let requiredActions: [Action]
     let optionalActions: [Action]
 }

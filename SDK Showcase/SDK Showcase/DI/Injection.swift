@@ -5,42 +5,43 @@ import Swinject
 
 final class Injection {
     static let shared = Injection()
-    
+    private var internalContainer: Container?
     var container: Container {
-        get {
-            _container ?? buildContainer()
-        }
-        set {
-            _container = newValue
-        }
+        get { internalContainer ?? buildContainer() }
     }
-    
-    private var _container: Container?
-    private func buildContainer() -> Container {
+}
+
+//MARK: - Private extension
+private extension Injection {
+    func buildContainer() -> Container {
         let container = Container()
+        internalContainer = container
         
-        // Global objects
         container.register(AppState.self) { _ in AppState() }
+            .inObjectScope(.container)
+        
         container.register(Interactors.self) { resolver in
             Interactors(categoriesInteractor: resolver.resolve(CategoriesInteractor.self)!,
-                        sdkInteractor: resolver.resolve(SDKInteractor.self)!)
-        }
+                        sdkInteractor: resolver.resolve(SDKInteractor.self)!,
+                        browserInteractor: resolver.resolve(BrowserRegistrationInteractor.self)!)
+        }.inObjectScope(.container)
         
-        // Objects require network connection. For test purposes should be mocked
-#if DEBUG
         container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorReal() }
+            .inObjectScope(.container)
+        
         container.register(SDKInteractor.self)  { resolver in
             SDKInteractorReal(appState: resolver.resolve(AppState.self)!)
-        }
-#else
-        container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorReal() }
-        container.register(SDKInteractor.self)  { _ in SDKInteractorReal() }
-#endif
+        }.inObjectScope(.container)
+        
+        container.register(BrowserRegistrationInteractor.self)  { resolver in
+            BrowserRegistrationInteractorReal(appState: resolver.resolve(AppState.self)!)
+        }.inObjectScope(.container)
         
         return container
     }
 }
 
+//MARK: - Property wrapper
 @propertyWrapper
 struct Injected<Dependency> {
     var wrappedValue: Dependency

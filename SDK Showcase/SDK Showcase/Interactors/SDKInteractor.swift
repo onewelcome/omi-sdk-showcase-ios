@@ -20,22 +20,36 @@ protocol SDKInteractor {
     func setDeviceConfigCacheDuration(_ cacheDuration: TimeInterval)
     func setHttpRequestTimeout(_ requestTimeout: TimeInterval)
     func setStoreCookies(_ storeCookies: Bool)
+    
+    func register(with provider: IdentityProvider, completion: @escaping ()->Void)
 }
 
 //MARK: - Real methods
-struct SDKInteractorReal: SDKInteractor {
-    var builder = Self.staticBuilder
-    static var staticBuilder = ClientBuilder()
+
+class SDKInteractorReal: SDKInteractor {
     @ObservedObject var appState: AppState
+    private static let staticBuilder = ClientBuilder()
+    private var device: AppState.DeviceData { appState.deviceData }
+    private var client: Client?
+    private var completion: (()->Void)?
+    var builder: ClientBuilder
+    var browserInteractor: BrowserRegistrationInteractor {
+        @Injected var interactors: Interactors
+        return interactors.browserInteractor
+    }
+    
+    init(appState: AppState, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder) {
+        self.appState = appState
+        self.client = client
+        self.builder = builder
+    }
     
     func initializeSDK(result: @escaping SDKResult) {
         builder.buildAndWaitForProtectedData { client in
             client.start { error in
                 if let error {
-                    appState.system.isSDKInitialized = false
                     return result(.failure(error))
                 } else {
-                    appState.system.isSDKInitialized = true
                     return result(.success)
                 }
             }
@@ -44,7 +58,7 @@ struct SDKInteractorReal: SDKInteractor {
     
     func resetSDK(result: @escaping SDKResult) {
         builder.buildAndWaitForProtectedData { client in
-            client.reset { error in
+            client.reset { [self] error in
                 if let error {
                     return result(.failure(error))
                 } else {
@@ -54,15 +68,7 @@ struct SDKInteractorReal: SDKInteractor {
             }
         }
     }
-}
 
-//MARK: - Real methods' extension
-extension SDKInteractorReal {
-    
-    private var device: AppState.DeviceData {
-        return appState.deviceData
-    }
-    
     func setPublicKey(_ key: String) {
         device.publicKey = key
         builder.setServerPublicKey(key)
@@ -98,6 +104,37 @@ extension SDKInteractorReal {
         device.model = nil
         device.publicKey = nil
         device.certs.removeAll()
+    }
+
+    func register(with provider: IdentityProvider, completion: @escaping ()->Void ) {
+        self.completion = completion
+        let userClient = SharedUserClient.instance
+        userClient.registerUserWith(identityProvider: provider, scopes: ["read", "openid", "email"], delegate: self)
+    }
+}
+
+//MARK: - RegistrationDelegate
+extension SDKInteractorReal: RegistrationDelegate {
+    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didReceiveCreatePinChallenge challenge: any OneginiSDKiOS.CreatePinChallenge) {
+        browserInteractor.didReceiveCreatePinChallenge(challenge)
+    }
+
+    func userClient(_ userClient: any UserClient, didRegisterUser profile: any UserProfile, with identityProvider: any IdentityProvider, info: (any CustomInfo)?) {
+        appState.system.isRegistered = true
+        appState.userData.userId = profile.profileId
+    }
+    
+    func userClient(_ userClient: any UserClient, didReceiveBrowserRegistrationChallenge challenge: any BrowserRegistrationChallenge) {
+        browserInteractor.didReceiveBrowserRegistrationChallenge(challenge)
+        completion?()
+    }
+    
+    func userClient(_ userClient: any UserClient, didFailToRegisterUserWith identityProvider: any IdentityProvider, error: any Error) {
+        browserInteractor.didFailToRegisterUser(with: error)
+    }
+
+    func userClientDidStartRegistration(_ userClient: any UserClient) {
+        
     }
 }
 

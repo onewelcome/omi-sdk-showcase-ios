@@ -5,4 +5,5 @@ import Foundation
 struct Interactors {
     var categoriesInteractor: CategoriesInteractor
     var sdkInteractor: SDKInteractor
+    var browserInteractor: BrowserRegistrationInteractor
 }
