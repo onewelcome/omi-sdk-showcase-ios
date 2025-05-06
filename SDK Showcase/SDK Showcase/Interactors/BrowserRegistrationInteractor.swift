@@ -20,8 +20,8 @@ protocol BrowserRegistrationInteractor {
 //MARK: - Real methods
 class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
     @ObservedObject var appState: AppState
+    private var challenge: BrowserRegistrationChallenge?
     var registerUrl: String
-    var challenge: BrowserRegistrationChallenge?
 
     init(registerUrl: String = "", appState: AppState) {
         self.registerUrl = registerUrl

@@ -13,6 +13,7 @@ class AppState: ObservableObject {
         system.isSDKInitialized = false
         system.isMobileEnrolled = false
         system.isPushEnrolled = false
+        system.lastErrorDescription = nil
         
         deviceData.certs.removeAll()
         deviceData.deviceId = nil
