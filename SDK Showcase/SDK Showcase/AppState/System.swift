@@ -14,6 +14,7 @@ extension AppState {
         @Published var isEnrolled = false
         @Published var isMobileEnrolled = false
         @Published var isPushEnrolled = false
+        @Published var isError = false
         @Published var lastErrorDescription: String? = nil
     }
 }

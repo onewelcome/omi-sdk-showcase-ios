@@ -10,7 +10,7 @@ protocol BrowserRegistrationInteractor {
     
     func setChallenge(_ challenge: BrowserRegistrationChallenge)
     func register(completion: @escaping () -> Void)
-    
+    func cancelRegistration()
     func didReceiveBrowserRegistrationChallenge(_ challenge: any BrowserRegistrationChallenge)
     func didReceiveBrowserRegistrationRedirect(_ url: URL)
     func didReceiveCreatePinChallenge(_ challenge: any CreatePinChallenge)
@@ -40,6 +40,13 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
         }
         sdkInteractor.register(with: ShowCaseIdentityProvider.example, completion: completion)
     }
+    
+    func cancelRegistration() {
+        guard let challenge else { return }
+        
+        challenge.sender.cancel(challenge)
+        appState.system.isError = false
+    }
 }
 
 //MARK: - SDK Delegates
@@ -61,6 +68,7 @@ extension BrowserRegistrationInteractorReal {
     
     func didFailToRegisterUser(with error: Error) {
         appState.system.isRegistered = false
+        appState.system.isError = true
         appState.system.lastErrorDescription = error.localizedDescription
     }
 
