@@ -4,5 +4,6 @@ import Foundation
 
 struct Selection: AppModel {
     let name: String
+    var disabled = false
     private(set) var logo: String?
 }

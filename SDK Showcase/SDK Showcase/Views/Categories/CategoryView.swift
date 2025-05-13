@@ -41,6 +41,7 @@ struct CategoryView: View {
                     if !category.selection.isEmpty {
                         Section(header: Text("Select")) {
                             ForEach(category.selection, id:\.self) { selection in
+                                let disabled = selection.disabled && !system.isError
                                 Button(action: {
                                     buttonAction(for: selection)
                                 }, label: {
@@ -50,9 +51,8 @@ struct CategoryView: View {
                                         }
                                         Text(selection.name)
                                     }
-                                })
+                                }).disabled(disabled)
                             }
-                            
                         }
                     }
                     
@@ -117,6 +117,8 @@ extension CategoryView {
     
     func buttonAction(for selection: Selection) {
         switch selection.name {
+        case "Cancel registration":
+            cancelRegistration()
         case "Browser registration":
             browserRegistration()
         default:
@@ -131,6 +133,10 @@ private extension CategoryView {
             isProcessing = false
             isPresentingSheet = true
         }
+    }
+    
+    func cancelRegistration() {
+        browserInteractor.cancelRegistration()
     }
 }
 
@@ -153,6 +159,7 @@ private extension CategoryView {
         sdkInteractor.initializeSDK { result in
             switch result {
             case .success:
+                system.isError = false
                 system.isSDKInitialized = true
             case .failure(let error):
                 errorValue = error.localizedDescription
@@ -168,6 +175,7 @@ private extension CategoryView {
         sdkInteractor.resetSDK { result in
             switch result {
             case .success:
+                system.isError = false
                 system.isSDKInitialized = false
             case .failure(let error):
                 errorValue = error.localizedDescription
