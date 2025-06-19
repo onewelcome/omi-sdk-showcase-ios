@@ -18,6 +18,6 @@ struct SDKConfigModel {
                                                 "ONGAppVersion": "1.0.0",
                                                 "ONGAppBaseURL": "https://mobile-security-proxy.onegini.com",
                                                 "ONGResourceBaseURL": "https://mobile-security-proxy.onegini.com/resources/",
-                                                "ONGRedirectURL": "sdkshowcase://loginsuccess"]
+                                                "ONGRedirectURL": "showcase://loginsuccess"]
     static let `default` = SDKConfigModel(dictionary: defaultDictionary)
 }

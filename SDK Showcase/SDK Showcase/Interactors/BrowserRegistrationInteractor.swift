@@ -53,8 +53,8 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
 extension BrowserRegistrationInteractorReal {
     
     func didReceiveCreatePinChallenge(_ challenge: any OneginiSDKiOS.CreatePinChallenge) {
-        //TODO: Next story to handle PIN creation
-        challenge.sender.respond(with: "21370", to: challenge)
+        pinPadInteractor.setChallenge(challenge)
+        pinPadInteractor.showPinPad()
     }
     
     func didReceiveBrowserRegistrationRedirect(_ url: URL) {
@@ -78,6 +78,11 @@ private extension BrowserRegistrationInteractorReal {
     var sdkInteractor: SDKInteractor {
         @Injected var interactors: Interactors
         return interactors.sdkInteractor
+    }
+    
+    var pinPadInteractor: PinPadInteractor {
+        @Injected var interactors: Interactors
+        return interactors.pinPadInteractor
     }
 
     var device: AppState.DeviceData { appState.deviceData }

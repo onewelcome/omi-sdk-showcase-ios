@@ -37,6 +37,10 @@ class SDKInteractorReal: SDKInteractor {
         @Injected var interactors: Interactors
         return interactors.browserInteractor
     }
+    var pinPadInteractor: PinPadInteractor {
+        @Injected var interactors: Interactors
+        return interactors.pinPadInteractor
+    }
     
     init(appState: AppState, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder) {
         self.appState = appState
@@ -116,11 +120,16 @@ class SDKInteractorReal: SDKInteractor {
 //MARK: - RegistrationDelegate
 extension SDKInteractorReal: RegistrationDelegate {
     func userClient(_ userClient: any OneginiSDKiOS.UserClient, didReceiveCreatePinChallenge challenge: any OneginiSDKiOS.CreatePinChallenge) {
-        browserInteractor.didReceiveCreatePinChallenge(challenge)
+        guard let error = challenge.error else {
+            browserInteractor.didReceiveCreatePinChallenge(challenge)
+            return
+        }
+        pinPadInteractor.showError(error)
     }
 
     func userClient(_ userClient: any UserClient, didRegisterUser profile: any UserProfile, with identityProvider: any IdentityProvider, info: (any CustomInfo)?) {
         appState.system.isRegistered = true
+        appState.system.isPreregistered = false
         appState.userData.userId = profile.profileId
     }
     

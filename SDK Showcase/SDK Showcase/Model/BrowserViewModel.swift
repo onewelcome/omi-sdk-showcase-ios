@@ -63,7 +63,6 @@ extension BrowserViewModel: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: any Error) {
         isFinished = true
         guard rediredURL != nil else { return }
-        
         errorMessage = error.localizedDescription
     }
     
@@ -73,14 +72,14 @@ extension BrowserViewModel: WKNavigationDelegate {
         
         errorMessage = error.localizedDescription
     }
-    
+//    
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping @MainActor (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else {
             decisionHandler(.allow)
             return
         }
         
-        if url.absoluteString.hasPrefix("sdkshowcase://loginsuccess") {
+        if url.absoluteString.hasPrefix("showcase://loginsucess") {
             handleRedirectURL(url)
             decisionHandler(.cancel)
         } else {

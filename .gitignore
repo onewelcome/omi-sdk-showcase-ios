@@ -1,3 +1,7 @@
 SDK Showcase/SDK Showcase.xcodeproj/xcuserdata
 SDK Showcase/SDK Showcase.xcodeproj/project.xcworkspace/xcuserdata
 SDK Showcase/SDK Showcase/Supporting Files/*.xcframework
+SDK Showcase/Pods
+SDK Showcase/Podfile
+SDK Showcase/Podfile.lock
+SDK Showcase/SDK Showcase.xcworkspace

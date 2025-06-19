@@ -6,7 +6,7 @@ import SwiftUI
 struct SDK_ShowcaseApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
     }
 }

@@ -10,6 +10,7 @@ extension AppState {
         }
         
         @Published var isSDKInitialized = false
+        @Published var isPreregistered = false
         @Published var isRegistered = false
         @Published var isEnrolled = false
         @Published var isMobileEnrolled = false
