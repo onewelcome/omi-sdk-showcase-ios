@@ -22,9 +22,7 @@ struct SheetViewForPinPad: View {
                 }
                 Spacer()
             }
-            PinPad() {
-                dismiss()
-            }
+            PinPad()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
         .padding()

@@ -124,6 +124,7 @@ extension SDKInteractorReal: RegistrationDelegate {
             browserInteractor.didReceiveCreatePinChallenge(challenge)
             return
         }
+        pinPadInteractor.setChallenge(challenge)
         pinPadInteractor.showError(error)
     }
 
