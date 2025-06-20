@@ -8,21 +8,9 @@ class AppState: ObservableObject {
     @Published var userData = UserData()
     
     func reset() {
-        system.isEnrolled = false
-        system.isRegistered = false
-        system.isSDKInitialized = false
-        system.isMobileEnrolled = false
-        system.isPushEnrolled = false
-        system.isError = false
-        system.lastErrorDescription = nil
-        
-        deviceData.certs.removeAll()
-        deviceData.deviceId = nil
-        deviceData.model = nil
-        deviceData.publicKey = nil
-        
-        userData.isStateless = false
-        userData.userId = nil
+        system.reset()
+        deviceData.reset()
+        userData.reset()
     }
 }
 

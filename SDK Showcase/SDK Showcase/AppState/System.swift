@@ -17,5 +17,16 @@ extension AppState {
         @Published var isPushEnrolled = false
         @Published var isError = false
         @Published var lastErrorDescription: String? = nil
+        
+        func reset() {
+            isEnrolled = false
+            isRegistered = false
+            isPreregistered = false
+            isSDKInitialized = false
+            isMobileEnrolled = false
+            isPushEnrolled = false
+            isError = false
+            lastErrorDescription = nil
+        }
     }
 }

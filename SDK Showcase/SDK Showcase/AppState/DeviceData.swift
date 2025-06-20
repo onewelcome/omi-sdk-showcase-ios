@@ -8,7 +8,15 @@ extension AppState {
         @Published var model: SDKConfigModel?
         @Published var certs = [String]()
         @Published var publicKey: String?
+        
+        func reset() {
+            model = nil
+            publicKey = nil
+            deviceId = nil
+            certs.removeAll()
+        }
     }
+
 }
 
 extension AppState.DeviceData: Equatable {

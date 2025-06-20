@@ -105,9 +105,7 @@ class SDKInteractorReal: SDKInteractor {
     }
     
     func clearDeviceData() {
-        device.model = nil
-        device.publicKey = nil
-        device.certs.removeAll()
+        appState.reset()
     }
 
     func register(with provider: IdentityProvider, completion: @escaping ()->Void ) {
