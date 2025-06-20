@@ -4,7 +4,7 @@ import SwiftUI
 import WebKit
 
 class BrowserViewModel: NSObject, ObservableObject {
-    var browserInteractor: BrowserRegistrationInteractor {
+    private var browserInteractor: BrowserRegistrationInteractor {
         @Injected var interactors: Interactors
         return interactors.browserInteractor
     }
@@ -63,6 +63,7 @@ extension BrowserViewModel: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: any Error) {
         isFinished = true
         guard rediredURL != nil else { return }
+        
         errorMessage = error.localizedDescription
     }
     
@@ -72,7 +73,7 @@ extension BrowserViewModel: WKNavigationDelegate {
         
         errorMessage = error.localizedDescription
     }
-//    
+    
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping @MainActor (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else {
             decisionHandler(.allow)
