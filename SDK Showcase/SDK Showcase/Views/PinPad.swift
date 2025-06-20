@@ -1,11 +1,10 @@
-
 import SwiftUI
 
 struct PinPad: View {
     @Injected private var interactor: PinPadInteractor
     @Injected private var appState: AppState
     @State private var errorText = ""
-    @State private var pin: String = "" {
+    @State private var pin = "" {
         didSet {
             if pin.count == interactor.pinLength {
                 interactor.validate(pin: pin)
@@ -29,7 +28,8 @@ struct PinPad: View {
                     }
             } else {
                 let maskedPin = pin.replacingOccurrences(of: "\\d", with: "*", options: .regularExpression)
-                Text(maskedPin)
+                let text = maskedPin + String(repeating: "_", count: Int(interactor.pinLength) - pin.count)
+                Text(text)
                     .font(.largeTitle)
                     .monospaced()
                     .frame(width: 300, height: 80, alignment: .center)
@@ -100,15 +100,14 @@ struct PinPadStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundColor(.white)
-            .font(.title)
-            .padding(EdgeInsets(top: 20, leading: 30, bottom: 30, trailing: 30))
+            .font(.title).bold()
+            .padding(EdgeInsets(top: 20, leading: 30, bottom: 20, trailing: 30))
             .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.gray))
             .compositingGroup()
             .shadow(radius:configuration.isPressed ? 0 : 5,
                     x: 0,
-                    y: configuration.isPressed ? 0 : 3)
+                    y: configuration.isPressed ? 0 : 5)
             .scaleEffect(configuration.isPressed ? 0.9 : 1)
-            .animation(.smooth(), value: configuration.isPressed)
-            .monospaced()
+            .animation(.easeInOut, value: configuration.isPressed)
     }
 }
