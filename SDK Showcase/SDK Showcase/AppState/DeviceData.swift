@@ -16,7 +16,6 @@ extension AppState {
             certs.removeAll()
         }
     }
-
 }
 
 extension AppState.DeviceData: Equatable {

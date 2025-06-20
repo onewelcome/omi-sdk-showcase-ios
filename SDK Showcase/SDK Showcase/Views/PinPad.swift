@@ -23,13 +23,10 @@ struct PinPad: View {
                     .monospaced()
                     .frame(width: 300, height: 80, alignment: .center)
                     .onAppear() {
-                        errorText = appState.system.lastErrorDescription ?? ""
                         reset()
                     }
             } else {
-                let maskedPin = pin.replacingOccurrences(of: "\\d", with: "*", options: .regularExpression)
-                let text = maskedPin + String(repeating: "_", count: Int(interactor.pinLength) - pin.count)
-                Text(text)
+                Text(pinText)
                     .font(.largeTitle)
                     .monospaced()
                     .frame(width: 300, height: 80, alignment: .center)
@@ -85,17 +82,29 @@ struct PinPad: View {
             Spacer()
         }
     }
-    
+
+}
+
+//MARK: - Private
+private extension PinPad {
     func reset() {
         pin.removeAll()
+        errorText = appState.system.lastErrorDescription ?? ""
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             errorText = ""
             appState.system.lastErrorDescription = nil
         }
     }
+    
+    var pinText: String {
+        let maskedPin = pin.replacingOccurrences(of: "\\d", with: "*", options: .regularExpression)
+        let text = maskedPin + String(repeating: "_", count: Int(interactor.pinLength) - pin.count)
+        
+        return text
+    }
 }
 
-/// Button Style
+//MARK: - Button Style
 struct PinPadStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label

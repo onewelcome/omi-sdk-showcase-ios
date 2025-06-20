@@ -44,5 +44,4 @@ class PinPadInteractorReal: PinPadInteractor {
         @Injected var interactors: Interactors
         return interactors.sdkInteractor
     }
-   
 }

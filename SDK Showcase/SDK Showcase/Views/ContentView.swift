@@ -58,18 +58,14 @@ struct ContentView: View {
                     }
                     
                     Section(content: {
-                        if isProcessing {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle())
-                        } else {
-                            TextResult(result: system.isSDKInitialized ? "SDK initialized" : "SDK not initialized \(errorValue)")
-                            TextResult(result: system.isRegistered ? "User registered as \(userData.userId ?? "")" : "User not registered")
-                        }
+                        TextResult(result: system.isSDKInitialized ? "✅ SDK initialized" : "❌ SDK not initialized \(errorValue)")
+                        TextResult(result: system.isRegistered ? "👤 User registered as \(userData.userId ?? "")" : "🚫 User not registered")
                     }, header: {
                         Text("Result")
                     })
                 }
                 .listStyle(.insetGrouped)
+                .shadow(radius: 5, x: 0, y: 5)
                 
                 if isProcessing {
                     Spinner()
@@ -88,19 +84,20 @@ struct ContentView: View {
         .sheet(isPresented: $system.isPreregistered) {
             SheetViewForPinPad()
         }
-        
-        ForEach(category.options) { option in
-            Button(action: {
-                buttonAction(for: option)
-            }, label: {
-                HStack {
-                    if let logo = option.logo {
-                        Image(systemName: logo)
+        HStack {
+            ForEach(category.options) { option in
+                Button(action: {
+                    buttonAction(for: option)
+                }, label: {
+                    HStack {
+                        if let logo = option.logo {
+                            Image(systemName: logo)
+                        }
+                        Text(option.name)
                     }
-                    Text(option.name)
-                }
-            })
-            .padding()
+                })
+                .padding()
+            }
         }
     }
 }
@@ -159,7 +156,7 @@ private extension ContentView {
     func initializeSDK() {
         errorValue.removeAll()
         /// You can comment the below line if the app is configured with the configurator and do have OneginiConfigModel set.
-        //setBuilder()
+        setBuilder()
         sdkInteractor.initializeSDK { result in
             switch result {
             case .success:
@@ -231,7 +228,6 @@ private extension ContentView {
             }
         }
 
-        print("[v] Setting value `\(value)` for key `\(key)`")
         return cast
     }
     
