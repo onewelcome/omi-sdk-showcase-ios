@@ -4,7 +4,7 @@ import SwiftUI
 import WebKit
 
 class BrowserViewModel: NSObject, ObservableObject {
-    var browserInteractor: BrowserRegistrationInteractor {
+    private var browserInteractor: BrowserRegistrationInteractor {
         @Injected var interactors: Interactors
         return interactors.browserInteractor
     }
@@ -80,7 +80,7 @@ extension BrowserViewModel: WKNavigationDelegate {
             return
         }
         
-        if url.absoluteString.hasPrefix("sdkshowcase://loginsuccess") {
+        if url.absoluteString.hasPrefix("showcase://loginsucess") {
             handleRedirectURL(url)
             decisionHandler(.cancel)
         } else {

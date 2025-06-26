@@ -19,13 +19,7 @@ private extension Injection {
         
         container.register(AppState.self) { _ in AppState() }
             .inObjectScope(.container)
-        
-        container.register(Interactors.self) { resolver in
-            Interactors(categoriesInteractor: resolver.resolve(CategoriesInteractor.self)!,
-                        sdkInteractor: resolver.resolve(SDKInteractor.self)!,
-                        browserInteractor: resolver.resolve(BrowserRegistrationInteractor.self)!)
-        }.inObjectScope(.container)
-        
+
         container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorReal() }
             .inObjectScope(.container)
         
@@ -35,6 +29,17 @@ private extension Injection {
         
         container.register(BrowserRegistrationInteractor.self)  { resolver in
             BrowserRegistrationInteractorReal(appState: resolver.resolve(AppState.self)!)
+        }.inObjectScope(.container)
+        
+        container.register(PinPadInteractor.self)  { resolver in
+            PinPadInteractorReal()
+        }.inObjectScope(.container)
+        
+        container.register(Interactors.self) { resolver in
+            Interactors(categoriesInteractor: resolver.resolve(CategoriesInteractor.self)!,
+                        sdkInteractor: resolver.resolve(SDKInteractor.self)!,
+                        browserInteractor: resolver.resolve(BrowserRegistrationInteractor.self)!,
+                        pinPadInteractor: resolver.resolve(PinPadInteractor.self)!)
         }.inObjectScope(.container)
         
         return container

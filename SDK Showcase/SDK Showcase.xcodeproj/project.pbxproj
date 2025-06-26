@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,7 +18,7 @@
 		578BC3182D43A73500713CF7 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC3172D43A73500713CF7 /* UserData.swift */; };
 		578BC31A2D4A1AD100713CF7 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC3192D4A1AD100713CF7 /* Category.swift */; };
 		578BC31D2D4A2A2300713CF7 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC31C2D4A2A2300713CF7 /* AppModel.swift */; };
-		578BC3212D4A305C00713CF7 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC3202D4A305C00713CF7 /* CategoryView.swift */; };
+		578BC3212D4A305C00713CF7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC3202D4A305C00713CF7 /* ContentView.swift */; };
 		578BC3242D4A582600713CF7 /* DeviceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC3232D4A582600713CF7 /* DeviceData.swift */; };
 		578BC3262D4A5A9100713CF7 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC3252D4A5A9100713CF7 /* Action.swift */; };
 		578BC3282D4A5CEA00713CF7 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC3272D4A5CEA00713CF7 /* Option.swift */; };
@@ -28,8 +28,6 @@
 		57AE066A2D8C20F5004A3CB9 /* SDKInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AE06692D8C20F5004A3CB9 /* SDKInteractor.swift */; };
 		57AE06702D92986B004A3CB9 /* Swinject.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57AE066F2D92986B004A3CB9 /* Swinject.xcframework */; };
 		57AE06712D92986B004A3CB9 /* Swinject.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57AE066F2D92986B004A3CB9 /* Swinject.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		57AE06752D929D5A004A3CB9 /* SDKSPM in Frameworks */ = {isa = PBXBuildFile; productRef = 57AE06742D929D5A004A3CB9 /* SDKSPM */; };
-		57AE06782D929EC6004A3CB9 /* SDKDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 57AE06772D929EC6004A3CB9 /* SDKDependencies */; };
 		57AE067B2D952A43004A3CB9 /* SDKResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AE067A2D952A43004A3CB9 /* SDKResult.swift */; };
 		57E9E1382DB2426C00168A93 /* Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1372DB2425F00168A93 /* Selection.swift */; };
 		57E9E13A2DB2484D00168A93 /* BrowserRegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */; };
@@ -37,14 +35,19 @@
 		57E9E13E2DB272EA00168A93 /* LoadingWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E13D2DB272EA00168A93 /* LoadingWebView.swift */; };
 		57E9E1402DB2734200168A93 /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E13F2DB2734200168A93 /* BrowserView.swift */; };
 		57E9E1422DB7AE8700168A93 /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1412DB7AE8700168A93 /* BrowserViewModel.swift */; };
+		57EB52962DF9B7CD0072E496 /* SDKSPM in Frameworks */ = {isa = PBXBuildFile; productRef = 57EB52952DF9B7CD0072E496 /* SDKSPM */; };
+		57EB55E32E03E2C50072E496 /* PinPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EB55E22E03E2C50072E496 /* PinPad.swift */; };
+		57EB55E52E03E3420072E496 /* PinPadInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EB55E42E03E3420072E496 /* PinPadInteractor.swift */; };
+		57EB55E72E03E4D10072E496 /* SheetViewForPinPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EB55E62E03E4D10072E496 /* SheetViewForPinPad.swift */; };
+		57EB55E92E0540570072E496 /* SheetViewDismiss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EB55E82E0540570072E496 /* SheetViewDismiss.swift */; };
 		57F464632D3F80DB00C64156 /* SDK_ShowcaseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464622D3F80DB00C64156 /* SDK_ShowcaseApp.swift */; };
-		57F464652D3F80DB00C64156 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464642D3F80DB00C64156 /* ContentView.swift */; };
+		57F464652D3F80DB00C64156 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464642D3F80DB00C64156 /* RootView.swift */; };
 		57F464672D3F80E200C64156 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57F464662D3F80E200C64156 /* Assets.xcassets */; };
 		57F4646A2D3F80E200C64156 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57F464692D3F80E200C64156 /* Preview Assets.xcassets */; };
 		57F4647B2D43831700C64156 /* Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F4647A2D43831700C64156 /* Injection.swift */; };
 		57F464822D4383C000C64156 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464812D4383C000C64156 /* AppState.swift */; };
-		5C156EBC7AA4983D4DE8109D /* OneginiConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AE379EDDF1C2C2F396469B /* OneginiConfigModel.m */; };
-		A80DE6417B213EDA6E1665D9 /* OneginiConfigModel.h in Headers */ = {isa = PBXBuildFile; fileRef = FA2E4EDFCBA41380F98581A2 /* OneginiConfigModel.h */; };
+		C74C414AFA857D101C71411F /* OneginiConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA6110C3FBFD511DB8EADE4 /* OneginiConfigModel.m */; };
+		D99FC8F8E1D6A51A6CDEEF03 /* OneginiConfigModel.h in Headers */ = {isa = PBXBuildFile; fileRef = D9B0665B0B42A61C01C8351A /* OneginiConfigModel.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,7 +87,7 @@
 		578BC3172D43A73500713CF7 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		578BC3192D4A1AD100713CF7 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		578BC31C2D4A2A2300713CF7 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
-		578BC3202D4A305C00713CF7 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
+		578BC3202D4A305C00713CF7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		578BC3232D4A582600713CF7 /* DeviceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceData.swift; sourceTree = "<group>"; };
 		578BC3252D4A5A9100713CF7 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		578BC3272D4A5CEA00713CF7 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
@@ -101,19 +104,27 @@
 		57E9E13F2DB2734200168A93 /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
 		57E9E1412DB7AE8700168A93 /* BrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewModel.swift; sourceTree = "<group>"; };
 		57E9E1452DB7B24300168A93 /* SDK-Showcase-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "SDK-Showcase-Info.plist"; sourceTree = SOURCE_ROOT; };
+		57EB55E22E03E2C50072E496 /* PinPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinPad.swift; sourceTree = "<group>"; };
+		57EB55E42E03E3420072E496 /* PinPadInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinPadInteractor.swift; sourceTree = "<group>"; };
+		57EB55E62E03E4D10072E496 /* SheetViewForPinPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewForPinPad.swift; sourceTree = "<group>"; };
+		57EB55E82E0540570072E496 /* SheetViewDismiss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewDismiss.swift; sourceTree = "<group>"; };
 		57F4645F2D3F80DB00C64156 /* SDK Showcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SDK Showcase.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F464622D3F80DB00C64156 /* SDK_ShowcaseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDK_ShowcaseApp.swift; sourceTree = "<group>"; };
-		57F464642D3F80DB00C64156 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		57F464642D3F80DB00C64156 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		57F464662D3F80E200C64156 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		57F464692D3F80E200C64156 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		57F4647A2D43831700C64156 /* Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injection.swift; sourceTree = "<group>"; };
 		57F464812D4383C000C64156 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		83AE379EDDF1C2C2F396469B /* OneginiConfigModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OneginiConfigModel.m; path = Configuration/OneginiConfigModel.m; sourceTree = "<group>"; };
-		FA2E4EDFCBA41380F98581A2 /* OneginiConfigModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OneginiConfigModel.h; path = Configuration/OneginiConfigModel.h; sourceTree = "<group>"; };
+		D9B0665B0B42A61C01C8351A /* OneginiConfigModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OneginiConfigModel.h; path = Configuration/OneginiConfigModel.h; sourceTree = "<group>"; };
+		FFA6110C3FBFD511DB8EADE4 /* OneginiConfigModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OneginiConfigModel.m; path = Configuration/OneginiConfigModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		570AB26A2DA9406400BF2D7F /* SDK ShowcaseTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "SDK ShowcaseTests"; sourceTree = "<group>"; };
+		570AB26A2DA9406400BF2D7F /* SDK ShowcaseTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "SDK ShowcaseTests";
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,8 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57AE06752D929D5A004A3CB9 /* SDKSPM in Frameworks */,
-				57AE06782D929EC6004A3CB9 /* SDKDependencies in Frameworks */,
+				57EB52962DF9B7CD0072E496 /* SDKSPM in Frameworks */,
 				57AE06702D92986B004A3CB9 /* Swinject.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,8 +150,8 @@
 		065F9E48627BA8FD210C428B /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				83AE379EDDF1C2C2F396469B /* OneginiConfigModel.m */,
-				FA2E4EDFCBA41380F98581A2 /* OneginiConfigModel.h */,
+				FFA6110C3FBFD511DB8EADE4 /* OneginiConfigModel.m */,
+				D9B0665B0B42A61C01C8351A /* OneginiConfigModel.h */,
 			);
 			name = Configuration;
 			sourceTree = "<group>";
@@ -153,6 +163,7 @@
 				578BC30F2D43A5A700713CF7 /* CategoriesInteractor.swift */,
 				57AE06692D8C20F5004A3CB9 /* SDKInteractor.swift */,
 				57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */,
+				57EB55E42E03E3420072E496 /* PinPadInteractor.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -171,12 +182,16 @@
 		578BC3122D43A60600713CF7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				57F464642D3F80DB00C64156 /* RootView.swift */,
+				578BC3202D4A305C00713CF7 /* ContentView.swift */,
 				5730A8C02DC2448200528BC2 /* Alert.swift */,
-				57F464642D3F80DB00C64156 /* ContentView.swift */,
 				5723966D2DB90AB400C8A3B7 /* Spinner.swift */,
 				578DC4E62D9E6858008D2576 /* TextResult.swift */,
+				578DC4EC2D9FDC83008D2576 /* ActionView.swift */,
+				578BC3152D43A6A400713CF7 /* CategoriesList.swift */,
+				57EB55E22E03E2C50072E496 /* PinPad.swift */,
+				57EB55EA2E0540F10072E496 /* SheetView */,
 				57E9E1462DB7BA1F00168A93 /* WebView */,
-				578BC3142D43A69300713CF7 /* Categories */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -187,16 +202,6 @@
 				57F4647A2D43831700C64156 /* Injection.swift */,
 			);
 			path = DI;
-			sourceTree = "<group>";
-		};
-		578BC3142D43A69300713CF7 /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				578DC4EC2D9FDC83008D2576 /* ActionView.swift */,
-				578BC3152D43A6A400713CF7 /* CategoriesList.swift */,
-				578BC3202D4A305C00713CF7 /* CategoryView.swift */,
-			);
-			path = Categories;
 			sourceTree = "<group>";
 		};
 		578BC31B2D4A1AD600713CF7 /* Model */ = {
@@ -245,9 +250,18 @@
 			children = (
 				57E9E13F2DB2734200168A93 /* BrowserView.swift */,
 				57E9E13D2DB272EA00168A93 /* LoadingWebView.swift */,
-				57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */,
 			);
 			path = WebView;
+			sourceTree = "<group>";
+		};
+		57EB55EA2E0540F10072E496 /* SheetView */ = {
+			isa = PBXGroup;
+			children = (
+				57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */,
+				57EB55E62E03E4D10072E496 /* SheetViewForPinPad.swift */,
+				57EB55E82E0540570072E496 /* SheetViewDismiss.swift */,
+			);
+			path = SheetView;
 			sourceTree = "<group>";
 		};
 		57F464562D3F80DB00C64156 = {
@@ -301,7 +315,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A80DE6417B213EDA6E1665D9 /* OneginiConfigModel.h in Headers */,
+				D99FC8F8E1D6A51A6CDEEF03 /* OneginiConfigModel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,8 +339,6 @@
 				570AB26A2DA9406400BF2D7F /* SDK ShowcaseTests */,
 			);
 			name = "SDK ShowcaseTests";
-			packageProductDependencies = (
-			);
 			productName = "SDK ShowcaseTests";
 			productReference = 570AB2692DA9406400BF2D7F /* SDK ShowcaseTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -347,8 +359,7 @@
 			);
 			name = "SDK Showcase";
 			packageProductDependencies = (
-				57AE06742D929D5A004A3CB9 /* SDKSPM */,
-				57AE06772D929EC6004A3CB9 /* SDKDependencies */,
+				57EB52952DF9B7CD0072E496 /* SDKSPM */,
 			);
 			productName = "SDK Showcase";
 			productReference = 57F4645F2D3F80DB00C64156 /* SDK Showcase.app */;
@@ -376,7 +387,6 @@
 				};
 			};
 			buildConfigurationList = 57F4645A2D3F80DB00C64156 /* Build configuration list for PBXProject "SDK Showcase" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -385,9 +395,9 @@
 			);
 			mainGroup = 57F464562D3F80DB00C64156;
 			packageReferences = (
-				57AE06732D929D5A004A3CB9 /* XCRemoteSwiftPackageReference "SDKSPM-dev" */,
-				57AE06762D929EC6004A3CB9 /* XCRemoteSwiftPackageReference "sdkdependencies" */,
+				57EB52942DF9B7CD0072E496 /* XCRemoteSwiftPackageReference "SDKSPM-dev" */,
 			);
+			preferredProjectObjectVersion = 77;
 			productRefGroup = 57F464602D3F80DB00C64156 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -431,10 +441,12 @@
 			files = (
 				57E9E13A2DB2484D00168A93 /* BrowserRegistrationInteractor.swift in Sources */,
 				578DC4ED2D9FDC83008D2576 /* ActionView.swift in Sources */,
+				57EB55E72E03E4D10072E496 /* SheetViewForPinPad.swift in Sources */,
 				57E9E1402DB2734200168A93 /* BrowserView.swift in Sources */,
+				57EB55E32E03E2C50072E496 /* PinPad.swift in Sources */,
 				57F4647B2D43831700C64156 /* Injection.swift in Sources */,
 				5723966E2DB90AB400C8A3B7 /* Spinner.swift in Sources */,
-				57F464652D3F80DB00C64156 /* ContentView.swift in Sources */,
+				57F464652D3F80DB00C64156 /* RootView.swift in Sources */,
 				578BC31D2D4A2A2300713CF7 /* AppModel.swift in Sources */,
 				578BC30B2D4397A700713CF7 /* Interactors.swift in Sources */,
 				578BC3182D43A73500713CF7 /* UserData.swift in Sources */,
@@ -447,19 +459,21 @@
 				57E9E13C2DB271AA00168A93 /* SheetViewForWebView.swift in Sources */,
 				578DC4EB2D9E88BE008D2576 /* SDKConfigModel.swift in Sources */,
 				578BC30D2D439BED00713CF7 /* System.swift in Sources */,
-				578BC3212D4A305C00713CF7 /* CategoryView.swift in Sources */,
+				578BC3212D4A305C00713CF7 /* ContentView.swift in Sources */,
 				578BC3102D43A5A700713CF7 /* CategoriesInteractor.swift in Sources */,
 				5730A8BF2DC2045500528BC2 /* ShowCaseIdentityProvider.swift in Sources */,
 				57AE066A2D8C20F5004A3CB9 /* SDKInteractor.swift in Sources */,
+				57EB55E52E03E3420072E496 /* PinPadInteractor.swift in Sources */,
 				57E9E13E2DB272EA00168A93 /* LoadingWebView.swift in Sources */,
 				57E9E1382DB2426C00168A93 /* Selection.swift in Sources */,
 				5730A8C12DC2448200528BC2 /* Alert.swift in Sources */,
 				57AE067B2D952A43004A3CB9 /* SDKResult.swift in Sources */,
 				578BC3242D4A582600713CF7 /* DeviceData.swift in Sources */,
+				57EB55E92E0540570072E496 /* SheetViewDismiss.swift in Sources */,
 				578BC3262D4A5A9100713CF7 /* Action.swift in Sources */,
 				578BC31A2D4A1AD100713CF7 /* Category.swift in Sources */,
 				57F464822D4383C000C64156 /* AppState.swift in Sources */,
-				5C156EBC7AA4983D4DE8109D /* OneginiConfigModel.m in Sources */,
+				C74C414AFA857D101C71411F /* OneginiConfigModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -644,6 +658,7 @@
 				DEVELOPMENT_TEAM = FSS5X3XZNY;
 				ENABLE_CODE_COVERAGE = NO;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "SDK-Showcase-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
@@ -657,7 +672,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.onewelcome.omi.SDK-Showcase";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -682,6 +697,7 @@
 				DEVELOPMENT_TEAM = FSS5X3XZNY;
 				ENABLE_CODE_COVERAGE = NO;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "SDK-Showcase-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
@@ -695,7 +711,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.onewelcome.omi.SDK-Showcase";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -741,34 +757,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		57AE06732D929D5A004A3CB9 /* XCRemoteSwiftPackageReference "SDKSPM-dev" */ = {
+		57EB52942DF9B7CD0072E496 /* XCRemoteSwiftPackageReference "SDKSPM-dev" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "OneWelcome.SDKSPM-dev";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.9.0;
-			};
-		};
-		57AE06762D929EC6004A3CB9 /* XCRemoteSwiftPackageReference "sdkdependencies" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = OneWelcome.sdkdependencies;
-			requirement = {
-				kind = exactVersion;
-				version = 0.9.2;
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.5.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		57AE06742D929D5A004A3CB9 /* SDKSPM */ = {
+		57EB52952DF9B7CD0072E496 /* SDKSPM */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 57AE06732D929D5A004A3CB9 /* XCRemoteSwiftPackageReference "SDKSPM-dev" */;
+			package = 57EB52942DF9B7CD0072E496 /* XCRemoteSwiftPackageReference "SDKSPM-dev" */;
 			productName = SDKSPM;
-		};
-		57AE06772D929EC6004A3CB9 /* SDKDependencies */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 57AE06762D929EC6004A3CB9 /* XCRemoteSwiftPackageReference "sdkdependencies" */;
-			productName = SDKDependencies;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

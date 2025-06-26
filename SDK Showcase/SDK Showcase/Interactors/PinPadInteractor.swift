@@ -1,0 +1,49 @@
+//  Copyright © 2025 Onewelcome Mobile Identity. All rights reserved.
+
+import Foundation
+import SwiftUI
+import OneginiSDKiOS
+
+//MARK: - Protocol
+protocol PinPadInteractor {
+    var pinLength: UInt { get }
+    
+    func setChallenge(_ challenge: CreatePinChallenge)
+    func showPinPad()
+    func validate(pin: String)
+    func showError(_ error: Error)
+}
+
+//MARK: - Real methods
+class PinPadInteractorReal: PinPadInteractor {
+    @Injected var appState: AppState
+    private var pinChallenge: CreatePinChallenge?
+    
+    var pinLength: UInt {
+        return pinChallenge?.pinLength ?? 5
+    }
+
+    func setChallenge(_ challenge: CreatePinChallenge) {
+        pinChallenge = challenge
+    }
+    
+    func showError(_ error: any Error) {
+        appState.system.lastErrorDescription = error.localizedDescription
+    }
+    
+    func showPinPad() {
+        appState.system.isPreregistered = true
+    }
+    
+    func validate(pin: String) {
+        guard let pinChallenge else { return }
+        
+        appState.system.lastErrorDescription = nil
+        pinChallenge.sender.respond(with: pin, to: pinChallenge)
+    }
+    
+    private var interactor: SDKInteractor {
+        @Injected var interactors: Interactors
+        return interactors.sdkInteractor
+    }
+}
