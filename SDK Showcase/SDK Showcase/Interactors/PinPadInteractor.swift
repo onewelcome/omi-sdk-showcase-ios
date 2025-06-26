@@ -18,11 +18,13 @@ protocol PinPadInteractor {
 class PinPadInteractorReal: PinPadInteractor {
     @Injected var appState: AppState
     private var pinChallenge: CreatePinChallenge?
-    private(set) var pinLength: UInt = 5
+    
+    var pinLength: UInt {
+        return pinChallenge?.pinLength ?? 5
+    }
 
     func setChallenge(_ challenge: CreatePinChallenge) {
         pinChallenge = challenge
-        pinLength = challenge.pinLength
     }
     
     func showError(_ error: any Error) {
