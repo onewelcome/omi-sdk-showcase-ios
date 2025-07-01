@@ -33,6 +33,7 @@ class PinPadInteractorReal: PinPadInteractor {
     }
     
     func showPinPad() {
+        providedPin = nil
         appState.system.isPreregistered = true
     }
     

@@ -10,6 +10,10 @@ struct PinPad: View {
         didSet {
             if pin.count == interactor.pinLength {
                 interactor.validate(pin: pin)
+                
+                if appState.system.isPinProvided {
+                    reset()
+                }
             }
         }
     }

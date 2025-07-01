@@ -137,6 +137,7 @@ extension SDKInteractorReal: RegistrationDelegate {
     func userClient(_ userClient: any UserClient, didRegisterUser profile: any UserProfile, with identityProvider: any IdentityProvider, info: (any CustomInfo)?) {
         appState.system.isRegistered = true
         appState.system.isPreregistered = false
+        appState.system.isPinProvided = false
         appState.userData.userId = profile.profileId
     }
     
