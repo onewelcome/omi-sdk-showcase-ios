@@ -29,7 +29,7 @@ class PinPadInteractorReal: PinPadInteractor {
     }
     
     func showError(_ error: any Error) {
-        appState.system.lastErrorDescription = error.localizedDescription
+        appState.setSystemError(string: error.localizedDescription)
     }
     
     func showPinPad() {
@@ -40,7 +40,7 @@ class PinPadInteractorReal: PinPadInteractor {
     func validate(pin: String) {
         guard let pinChallenge else { return }
         if let providedPin, providedPin != pin {
-            appState.system.lastErrorDescription = "Provided PIN does not match the previous one"
+            appState.setSystemError(string: "Provided PIN does not match the previous one")
             return
         }
         
@@ -50,7 +50,7 @@ class PinPadInteractorReal: PinPadInteractor {
                     appState.system.isPinProvided = true
                     providedPin = pin
                 } else {
-                    appState.system.lastErrorDescription = nil
+                    appState.unsetSystemError()
                     pinChallenge.sender.respond(with: pin, to: pinChallenge)
                 }
                 
@@ -59,8 +59,6 @@ class PinPadInteractorReal: PinPadInteractor {
             
             showError(error)
         }
-        
-
     }
     
     private var interactor: SDKInteractor {

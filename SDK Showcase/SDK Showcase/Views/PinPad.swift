@@ -98,13 +98,13 @@ private extension PinPad {
         errorText = appState.system.lastErrorDescription ?? ""
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             errorText = ""
-            appState.system.lastErrorDescription = nil
+            appState.unsetSystemError()
         }
     }
     
     var pinText: String {
         let maskedPin = pin.replacingOccurrences(of: "\\d", with: "*", options: .regularExpression)
-        let text = maskedPin + String(repeating: "_", count: Int(interactor.pinLength) - pin.count)
+        let text = maskedPin + String(repeating: "_", count: max(Int(interactor.pinLength) - pin.count, 0))
         
         return text
     }

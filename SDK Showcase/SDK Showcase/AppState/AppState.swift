@@ -12,6 +12,14 @@ class AppState: ObservableObject {
         deviceData.reset()
         userData.reset()
     }
+    
+    func setSystemError(string: String) {
+        system.lastErrorDescription = string
+    }
+    
+    func unsetSystemError() {
+        system.lastErrorDescription = nil
+    }
 }
 
 //MARK: - Equatable
