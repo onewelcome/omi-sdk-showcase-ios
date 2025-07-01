@@ -22,11 +22,19 @@ protocol SDKInteractor {
     func setStoreCookies(_ storeCookies: Bool)
     
     func register(with provider: IdentityProvider, completion: @escaping ()->Void)
+    func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void)
 }
 
 //MARK: - Real methods
 
 class SDKInteractorReal: SDKInteractor {
+    func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void) {
+        let userClient = SharedUserClient.instance
+        userClient.validatePolicyCompliance(for: pin) { error in
+            completion(error)
+        }
+    }
+    
     @ObservedObject var appState: AppState
     private static let staticBuilder = ClientBuilder()
     private var device: AppState.DeviceData { appState.deviceData }

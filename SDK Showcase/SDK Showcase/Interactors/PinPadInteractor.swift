@@ -17,6 +17,7 @@ protocol PinPadInteractor {
 //MARK: - Real methods
 class PinPadInteractorReal: PinPadInteractor {
     @Injected var appState: AppState
+    private var providedPin: String?
     private var pinChallenge: CreatePinChallenge?
     
     var pinLength: UInt {
@@ -37,9 +38,28 @@ class PinPadInteractorReal: PinPadInteractor {
     
     func validate(pin: String) {
         guard let pinChallenge else { return }
+        if let providedPin, providedPin != pin {
+            appState.system.lastErrorDescription = "Provided PIN does not match the previous one"
+            return
+        }
         
-        appState.system.lastErrorDescription = nil
-        pinChallenge.sender.respond(with: pin, to: pinChallenge)
+        interactor.validatePolicy(for: pin) { [self] error in
+            guard let error else {
+                if !appState.system.isPinProvided {
+                    appState.system.isPinProvided = true
+                    providedPin = pin
+                } else {
+                    appState.system.lastErrorDescription = nil
+                    pinChallenge.sender.respond(with: pin, to: pinChallenge)
+                }
+                
+                return
+            }
+            
+            showError(error)
+        }
+        
+
     }
     
     private var interactor: SDKInteractor {

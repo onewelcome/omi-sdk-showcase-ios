@@ -16,7 +16,7 @@ struct PinPad: View {
     
     var body: some View {
         VStack {
-            Text("Create PIN")
+            Text(!appState.system.isPinProvided ? "Create PIN" : "Confirm PIN")
             Spacer()
             
             if appState.system.lastErrorDescription != nil {

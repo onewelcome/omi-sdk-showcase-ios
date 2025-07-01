@@ -11,6 +11,7 @@ extension AppState {
         
         @Published var isSDKInitialized = false
         @Published var isPreregistered = false
+        @Published var isPinProvided = false
         @Published var isRegistered = false
         @Published var isEnrolled = false
         @Published var isMobileEnrolled = false
@@ -21,6 +22,7 @@ extension AppState {
         func reset() {
             isEnrolled = false
             isRegistered = false
+            isPinProvided = false
             isPreregistered = false
             isSDKInitialized = false
             isMobileEnrolled = false
