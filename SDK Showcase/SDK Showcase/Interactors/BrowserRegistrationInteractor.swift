@@ -35,7 +35,7 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
     
     func register(completion: @escaping () -> Void) {
         guard appState.system.isSDKInitialized else {
-            appState.system.lastErrorDescription = "SDK not initialized"
+            appState.setSystemError(string: "SDK not initialized")
             return
         }
         sdkInteractor.register(with: ShowCaseIdentityProvider.default, completion: completion)
@@ -69,7 +69,7 @@ extension BrowserRegistrationInteractorReal {
     func didFailToRegisterUser(with error: Error) {
         appState.system.isRegistered = false
         appState.system.isError = true
-        appState.system.lastErrorDescription = error.localizedDescription
+        appState.setSystemError(string: error.localizedDescription)
     }
 
 }
