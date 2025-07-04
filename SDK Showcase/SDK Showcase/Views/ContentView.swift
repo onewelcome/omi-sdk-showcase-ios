@@ -11,8 +11,6 @@ struct ContentView: View {
     @State private var actions = [Action]()
     @State private var errorValue = ""
     @State private var isProcessing = false
-    @State private var isPresentingSheet = false
-    @State private var dupsko = true
     
     var body: some View {
         HStack {
