@@ -60,7 +60,7 @@ struct CategoriesInteractorReal: CategoriesInteractor {
                  description: "You can change your PIN here",
                  options: [Option(name: "Change PIN",
                                   logo: "pin")],
-                 selection: [Selection(name: "Cancel changing PIN", disabled: true)],
+                 selection: [],
                  requiredActions: [],
                  optionalActions: []),
     ]}

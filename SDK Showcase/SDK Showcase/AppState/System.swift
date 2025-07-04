@@ -5,27 +5,45 @@ import Foundation
 extension AppState {
     class System: Equatable, ObservableObject {
         @Published var isSDKInitialized = false
-        @Published var isRegistered = false
         @Published var isEnrolled = false
         @Published var isMobileEnrolled = false
         @Published var isPushEnrolled = false
-        @Published var isError = false
         @Published var lastErrorDescription: String? = nil
+        @Published var registationState: RegistrationState = .notRegistered
         @Published var pinPadState: PinPadState = .hidden
+        
+        var hasError: Bool {
+            lastErrorDescription != nil
+        }
+                
+        var shouldShowBrowser: Bool {
+            get { registationState == .registering }
+            set { registationState = newValue ? .registering : .notRegistered }
+        }
         
         var shouldShowPinPad: Bool {
             get { pinPadState != .hidden }
             set { pinPadState = newValue ? .changing : .hidden }
         }
+        
+        func setError(_ description: String) {
+            lastErrorDescription = description
+        }
+        
+        func unsetError() {
+            lastErrorDescription = nil
+        }
 
         func reset() {
             isEnrolled = false
-            isRegistered = false
             isSDKInitialized = false
             isMobileEnrolled = false
             isPushEnrolled = false
-            isError = false
-            lastErrorDescription = nil
+            
+            registationState = .notRegistered
+            pinPadState = .hidden
+            
+            unsetError()
         }
     }
 }

@@ -29,6 +29,8 @@
 		57AE06702D92986B004A3CB9 /* Swinject.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57AE066F2D92986B004A3CB9 /* Swinject.xcframework */; };
 		57AE06712D92986B004A3CB9 /* Swinject.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57AE066F2D92986B004A3CB9 /* Swinject.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57AE067B2D952A43004A3CB9 /* SDKResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AE067A2D952A43004A3CB9 /* SDKResult.swift */; };
+		57B8FA972E17C7F3007EBECE /* RegistrationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B8FA962E17C7F3007EBECE /* RegistrationState.swift */; };
+		57B8FA992E17C80B007EBECE /* PinPadState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B8FA982E17C80B007EBECE /* PinPadState.swift */; };
 		57E9E1382DB2426C00168A93 /* Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1372DB2425F00168A93 /* Selection.swift */; };
 		57E9E13A2DB2484D00168A93 /* BrowserRegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */; };
 		57E9E13C2DB271AA00168A93 /* SheetViewForWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */; };
@@ -97,6 +99,8 @@
 		57AE06692D8C20F5004A3CB9 /* SDKInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKInteractor.swift; sourceTree = "<group>"; };
 		57AE066F2D92986B004A3CB9 /* Swinject.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Swinject.xcframework; path = "SDK Showcase/Supporting Files/Swinject.xcframework"; sourceTree = "<group>"; };
 		57AE067A2D952A43004A3CB9 /* SDKResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKResult.swift; sourceTree = "<group>"; };
+		57B8FA962E17C7F3007EBECE /* RegistrationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationState.swift; sourceTree = "<group>"; };
+		57B8FA982E17C80B007EBECE /* PinPadState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinPadState.swift; sourceTree = "<group>"; };
 		57E9E1372DB2425F00168A93 /* Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selection.swift; sourceTree = "<group>"; };
 		57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserRegistrationInteractor.swift; sourceTree = "<group>"; };
 		57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewForWebView.swift; sourceTree = "<group>"; };
@@ -171,6 +175,8 @@
 		578BC3112D43A5DC00713CF7 /* AppState */ = {
 			isa = PBXGroup;
 			children = (
+				57B8FA982E17C80B007EBECE /* PinPadState.swift */,
+				57B8FA962E17C7F3007EBECE /* RegistrationState.swift */,
 				57F464812D4383C000C64156 /* AppState.swift */,
 				578BC30C2D439BED00713CF7 /* System.swift */,
 				578BC3172D43A73500713CF7 /* UserData.swift */,
@@ -445,6 +451,7 @@
 				57E9E1402DB2734200168A93 /* BrowserView.swift in Sources */,
 				57EB55E32E03E2C50072E496 /* PinPad.swift in Sources */,
 				57F4647B2D43831700C64156 /* Injection.swift in Sources */,
+				57B8FA972E17C7F3007EBECE /* RegistrationState.swift in Sources */,
 				5723966E2DB90AB400C8A3B7 /* Spinner.swift in Sources */,
 				57F464652D3F80DB00C64156 /* RootView.swift in Sources */,
 				578BC31D2D4A2A2300713CF7 /* AppModel.swift in Sources */,
@@ -472,6 +479,7 @@
 				57EB55E92E0540570072E496 /* SheetViewDismiss.swift in Sources */,
 				578BC3262D4A5A9100713CF7 /* Action.swift in Sources */,
 				578BC31A2D4A1AD100713CF7 /* Category.swift in Sources */,
+				57B8FA992E17C80B007EBECE /* PinPadState.swift in Sources */,
 				57F464822D4383C000C64156 /* AppState.swift in Sources */,
 				C74C414AFA857D101C71411F /* OneginiConfigModel.m in Sources */,
 			);

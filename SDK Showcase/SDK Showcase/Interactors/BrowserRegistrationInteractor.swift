@@ -9,7 +9,7 @@ protocol BrowserRegistrationInteractor {
     var registerUrl: String { get set }
     
     func setChallenge(_ challenge: BrowserRegistrationChallenge)
-    func register(completion: @escaping () -> Void)
+    func register()
     func cancelRegistration()
     func didReceiveBrowserRegistrationChallenge(_ challenge: any BrowserRegistrationChallenge)
     func didReceiveBrowserRegistrationRedirect(_ url: URL)
@@ -34,23 +34,23 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
         self.challenge = challenge
     }
     
-    func register(completion: @escaping () -> Void) {
+    func register() {
         guard appState.system.isSDKInitialized else {
             appState.setSystemError(string: "SDK not initialized")
             return
         }
-        sdkInteractor.register(with: ShowCaseIdentityProvider.default, completion: completion)
+        sdkInteractor.register(with: ShowCaseIdentityProvider.default)
     }
     
     func cancelRegistration() {
         guard let challenge else { return }
         
         challenge.sender.cancel(challenge)
-        appState.system.isError = false
+        appState.unsetSystemError()
     }
     
     func didRegisterUser(profileId: String) {
-        appState.system.isRegistered = true
+        appState.system.registationState = .registered
         appState.system.pinPadState = .hidden
         appState.userData.userId = profileId
         challenge = nil
@@ -72,11 +72,11 @@ extension BrowserRegistrationInteractorReal {
     
     func didReceiveBrowserRegistrationChallenge(_ challenge: any OneginiSDKiOS.BrowserRegistrationChallenge) {
         setChallenge(challenge)
+        appState.system.registationState = .registering
     }
     
     func didFailToRegisterUser(with error: Error) {
-        appState.system.isRegistered = false
-        appState.system.isError = true
+        appState.system.registationState = .notRegistered
         appState.setSystemError(string: error.localizedDescription)
         challenge = nil
     }

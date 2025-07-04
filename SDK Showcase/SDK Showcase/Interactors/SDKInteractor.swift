@@ -21,7 +21,7 @@ protocol SDKInteractor {
     func setHttpRequestTimeout(_ requestTimeout: TimeInterval)
     func setStoreCookies(_ storeCookies: Bool)
     
-    func register(with provider: IdentityProvider, completion: @escaping ()->Void)
+    func register(with provider: IdentityProvider)
     func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void)
     func changePin()
 }
@@ -34,7 +34,6 @@ class SDKInteractorReal: SDKInteractor {
     private static let staticBuilder = ClientBuilder()
     private var device: AppState.DeviceData { appState.deviceData }
     private var client: Client?
-    private var completion: (()->Void)?
     private let userClient = SharedUserClient.instance
     
     var builder: ClientBuilder
@@ -105,8 +104,7 @@ class SDKInteractorReal: SDKInteractor {
         appState.reset()
     }
 
-    func register(with provider: IdentityProvider, completion: @escaping ()->Void ) {
-        self.completion = completion
+    func register(with provider: IdentityProvider) {
         userClient.registerUserWith(identityProvider: provider, scopes: ["read", "openid", "email"], delegate: self)
     }
     
@@ -130,7 +128,6 @@ extension SDKInteractorReal: ChangePinDelegate {
     func userClient(_ userClient: any OneginiSDKiOS.UserClient, didReceivePinChallenge challenge: any OneginiSDKiOS.PinChallenge) {
         pinPadInteractor.setPinChallenge(challenge)
         if let _ = challenge.error {
-            appState.system.isError = true
             appState.setSystemError(string: "Wrong previous PIN, please try again (\(challenge.remainingFailureCount))")
             return
         }
@@ -143,7 +140,6 @@ extension SDKInteractorReal: ChangePinDelegate {
     }
 
     func userClient(_ userClient: any UserClient, didFailToChangePinForUser profile: any UserProfile, error: any Error) {
-        appState.system.isError = true
         appState.setSystemError(string: error.localizedDescription)
     }
 }
@@ -176,15 +172,10 @@ extension SDKInteractorReal: RegistrationDelegate {
     
     func userClient(_ userClient: any UserClient, didReceiveBrowserRegistrationChallenge challenge: any BrowserRegistrationChallenge) {
         browserInteractor.didReceiveBrowserRegistrationChallenge(challenge)
-        completion?()
     }
     
     func userClient(_ userClient: any UserClient, didFailToRegisterUserWith identityProvider: any IdentityProvider, error: any Error) {
         browserInteractor.didFailToRegisterUser(with: error)
-    }
-
-    func userClientDidStartRegistration(_ userClient: any UserClient) {
-        
     }
 }
 

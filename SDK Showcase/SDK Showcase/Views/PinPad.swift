@@ -2,13 +2,6 @@
 
 import SwiftUI
 
-enum PinPadState {
-    case hidden
-    case creating
-    case created
-    case changing
-}
-
 struct PinPad: View {
     @Injected private var interactor: PinPadInteractor
     @ObservedObject private var system: AppState.System = {
@@ -114,8 +107,7 @@ private extension PinPad {
         errorText = system.lastErrorDescription ?? ""
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             errorText = ""
-            system.isError = false
-            system.lastErrorDescription = nil
+            system.unsetError()
         }
     }
     

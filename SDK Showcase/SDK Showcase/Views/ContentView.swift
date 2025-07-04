@@ -42,7 +42,7 @@ struct ContentView: View {
                     if !category.selection.isEmpty {
                         Section(header: Text("Select")) {
                             ForEach(category.selection, id:\.self) { selection in
-                                let disabled = selection.disabled && !system.isError
+                                let disabled = selection.disabled && !system.hasError
                                 Button(action: {
                                     buttonAction(for: selection)
                                 }, label: {
@@ -59,7 +59,7 @@ struct ContentView: View {
                     
                     Section(content: {
                         TextResult(result: system.isSDKInitialized ? "✅ SDK initialized" : "❌ SDK not initialized \(errorValue)")
-                        TextResult(result: system.isRegistered ? "👤 User registered as \(userData.userId ?? "")" : "🚫 User not registered")
+                        TextResult(result: system.registationState == .registered ? "👤 User registered as \(userData.userId ?? "")" : "🚫 User not registered")
                     }, header: {
                         Text("Result")
                     })
@@ -78,7 +78,7 @@ struct ContentView: View {
         } // HStack
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $isPresentingSheet) {
+        .sheet(isPresented: $system.shouldShowBrowser) {
             SheetViewForWebView(urlString: browserInteractor.registerUrl)
         }
         .sheet(isPresented: $system.shouldShowPinPad) {
@@ -124,7 +124,6 @@ extension ContentView {
         case "Cancel registration":
             cancelRegistration()
         case "Browser registration":
-            isProcessing = true
             browserRegistration()
         default:
             fatalError("Selection `\(selection.name)` not handled!")
@@ -134,10 +133,7 @@ extension ContentView {
 
 private extension ContentView {
     func browserRegistration() {
-        browserInteractor.register {
-            isProcessing = false
-            isPresentingSheet = true
-        }
+        browserInteractor.register()
     }
     
     func cancelRegistration() {
@@ -164,10 +160,11 @@ private extension ContentView {
         sdkInteractor.initializeSDK { result in
             switch result {
             case .success:
-                system.isError = false
+                system.unsetError()
                 system.isSDKInitialized = true
             case .failure(let error):
                 errorValue = error.localizedDescription
+                system.setError(errorValue)
                 system.isSDKInitialized = false
             }
             isProcessing = false
@@ -180,10 +177,11 @@ private extension ContentView {
         sdkInteractor.resetSDK { result in
             switch result {
             case .success:
-                system.isError = false
+                system.unsetError()
                 system.isSDKInitialized = false
             case .failure(let error):
                 errorValue = error.localizedDescription
+                system.setError(errorValue)
                 system.isSDKInitialized = false
             }
             isProcessing = false
