@@ -7,12 +7,16 @@ struct SheetViewDismiss: View {
         @Injected var appState: AppState
         return appState.system
     }()
-    
+    @Injected private var pinPadInteractor: PinPadInteractor
+    @Injected private var browserInteractor: BrowserRegistrationInteractor
+
     var body: some View {
         HStack {
             Button {
                 dismiss()
-                system.isError = true
+                pinPadInteractor.cancelCreatingPIN()
+                pinPadInteractor.cancelChangingPIN()
+                browserInteractor.cancelRegistration()
             } label: {
                 Image(systemName: "xmark.circle")
                     .font(.largeTitle)

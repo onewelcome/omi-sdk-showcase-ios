@@ -81,7 +81,7 @@ struct ContentView: View {
         .sheet(isPresented: $isPresentingSheet) {
             SheetViewForWebView(urlString: browserInteractor.registerUrl)
         }
-        .sheet(isPresented: $system.isPreregistered) {
+        .sheet(isPresented: $system.shouldShowPinPad) {
             SheetViewForPinPad()
         }
         HStack {
@@ -105,12 +105,15 @@ struct ContentView: View {
 //MARK: - Actions
 extension ContentView {
     func buttonAction(for option: Option) {
-        isProcessing = true
         switch option.name {
         case "Initialize":
+            isProcessing = true
             initializeSDK()
         case "Reset":
+            isProcessing = true
             resetSDK()
+        case "Change PIN":
+            changePIN()
         default:
             fatalError("Option `\(option.name)` not handled!")
         }
@@ -121,6 +124,7 @@ extension ContentView {
         case "Cancel registration":
             cancelRegistration()
         case "Browser registration":
+            isProcessing = true
             browserRegistration()
         default:
             fatalError("Selection `\(selection.name)` not handled!")
@@ -186,6 +190,10 @@ private extension ContentView {
         }
     }
     
+    func changePIN() {
+        sdkInteractor.changePin()
+    }
+    
     func binding(for action: Action) -> Binding<Action> {
         setDefaultValueIfNeeded(for: action)
         return .init(
@@ -239,5 +247,10 @@ private extension ContentView {
     var browserInteractor: BrowserRegistrationInteractor {
         @Injected var interactors: Interactors
         return interactors.browserInteractor
+    }
+    
+    var pinPadInteractor: PinPadInteractor {
+        @Injected var interactors: Interactors
+        return interactors.pinPadInteractor
     }
 }

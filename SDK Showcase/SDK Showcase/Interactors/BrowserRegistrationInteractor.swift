@@ -15,6 +15,7 @@ protocol BrowserRegistrationInteractor {
     func didReceiveBrowserRegistrationRedirect(_ url: URL)
     func didReceiveCreatePinChallenge(_ challenge: any CreatePinChallenge)
     func didFailToRegisterUser(with error: Error)
+    func didRegisterUser(profileId: String)
 }
 
 //MARK: - Real methods
@@ -47,14 +48,21 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
         challenge.sender.cancel(challenge)
         appState.system.isError = false
     }
+    
+    func didRegisterUser(profileId: String) {
+        appState.system.isRegistered = true
+        appState.system.pinPadState = .hidden
+        appState.userData.userId = profileId
+        challenge = nil
+    }
 }
 
 //MARK: - SDK Delegates
 extension BrowserRegistrationInteractorReal {
     
     func didReceiveCreatePinChallenge(_ challenge: any OneginiSDKiOS.CreatePinChallenge) {
-        pinPadInteractor.setChallenge(challenge)
-        pinPadInteractor.showPinPad()
+        pinPadInteractor.setCreatePinChallenge(challenge)
+        pinPadInteractor.showPinPad(for: .creating)
     }
     
     func didReceiveBrowserRegistrationRedirect(_ url: URL) {
@@ -70,8 +78,8 @@ extension BrowserRegistrationInteractorReal {
         appState.system.isRegistered = false
         appState.system.isError = true
         appState.setSystemError(string: error.localizedDescription)
+        challenge = nil
     }
-
 }
 
 private extension BrowserRegistrationInteractorReal {

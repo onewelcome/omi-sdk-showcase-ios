@@ -23,33 +23,22 @@ protocol SDKInteractor {
     
     func register(with provider: IdentityProvider, completion: @escaping ()->Void)
     func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void)
+    func changePin()
 }
 
 //MARK: - Real methods
 
 class SDKInteractorReal: SDKInteractor {
-    func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void) {
-        let userClient = SharedUserClient.instance
-        userClient.validatePolicyCompliance(for: pin) { error in
-            completion(error)
-        }
-    }
-    
     @ObservedObject var appState: AppState
+    
     private static let staticBuilder = ClientBuilder()
     private var device: AppState.DeviceData { appState.deviceData }
     private var client: Client?
     private var completion: (()->Void)?
-    var builder: ClientBuilder
-    var browserInteractor: BrowserRegistrationInteractor {
-        @Injected var interactors: Interactors
-        return interactors.browserInteractor
-    }
-    var pinPadInteractor: PinPadInteractor {
-        @Injected var interactors: Interactors
-        return interactors.pinPadInteractor
-    }
+    private let userClient = SharedUserClient.instance
     
+    var builder: ClientBuilder
+
     init(appState: AppState, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder) {
         self.appState = appState
         self.client = client
@@ -118,27 +107,71 @@ class SDKInteractorReal: SDKInteractor {
 
     func register(with provider: IdentityProvider, completion: @escaping ()->Void ) {
         self.completion = completion
-        let userClient = SharedUserClient.instance
         userClient.registerUserWith(identityProvider: provider, scopes: ["read", "openid", "email"], delegate: self)
+    }
+    
+    func changePin() {
+        guard userClient.authenticatedUserProfile != nil else {
+            appState.setSystemError(string: "You must be authenticated to change your PIN.")
+            return
+        }
+        userClient.changePin(delegate: self)
+    }
+    
+    func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void) {
+        userClient.validatePolicyCompliance(for: pin) { error in
+            completion(error)
+        }
+    }
+}
+
+//MARK: - ChangePinDelegate
+extension SDKInteractorReal: ChangePinDelegate {
+    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didReceivePinChallenge challenge: any OneginiSDKiOS.PinChallenge) {
+        pinPadInteractor.setPinChallenge(challenge)
+        if let _ = challenge.error {
+            appState.system.isError = true
+            appState.setSystemError(string: "Wrong previous PIN, please try again (\(challenge.remainingFailureCount))")
+            return
+        }
+        
+        pinPadInteractor.showPinPad(for: .changing)
+    }
+    
+    func userClient(_ userClient: any UserClient, didChangePinForUser profile: any UserProfile) {
+        pinPadInteractor.didChangePinForUser()
+    }
+
+    func userClient(_ userClient: any UserClient, didFailToChangePinForUser profile: any UserProfile, error: any Error) {
+        appState.system.isError = true
+        appState.setSystemError(string: error.localizedDescription)
     }
 }
 
 //MARK: - RegistrationDelegate
 extension SDKInteractorReal: RegistrationDelegate {
+    
     func userClient(_ userClient: any OneginiSDKiOS.UserClient, didReceiveCreatePinChallenge challenge: any OneginiSDKiOS.CreatePinChallenge) {
-        guard let error = challenge.error else {
-            browserInteractor.didReceiveCreatePinChallenge(challenge)
+        if let error = challenge.error {
+            pinPadInteractor.setCreatePinChallenge(challenge)
+            pinPadInteractor.showError(error)
             return
         }
-        pinPadInteractor.setChallenge(challenge)
-        pinPadInteractor.showError(error)
+        switch appState.system.pinPadState {
+        case .changing:
+            appState.system.pinPadState = .hidden
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                guard let self else { return }
+                self.pinPadInteractor.setCreatePinChallenge(challenge)
+                self.pinPadInteractor.showPinPad(for: .creating)
+            }
+        default:
+            browserInteractor.didReceiveCreatePinChallenge(challenge)
+        }
     }
 
     func userClient(_ userClient: any UserClient, didRegisterUser profile: any UserProfile, with identityProvider: any IdentityProvider, info: (any CustomInfo)?) {
-        appState.system.isRegistered = true
-        appState.system.isPreregistered = false
-        appState.system.isPinProvided = false
-        appState.userData.userId = profile.profileId
+        browserInteractor.didRegisterUser(profileId: profile.profileId)
     }
     
     func userClient(_ userClient: any UserClient, didReceiveBrowserRegistrationChallenge challenge: any BrowserRegistrationChallenge) {
@@ -157,6 +190,14 @@ extension SDKInteractorReal: RegistrationDelegate {
 
 //MARK: - Private Protocol Extension
 private extension SDKInteractor {
+    var browserInteractor: BrowserRegistrationInteractor {
+        @Injected var interactors: Interactors
+        return interactors.browserInteractor
+    }
+    var pinPadInteractor: PinPadInteractor {
+        @Injected var interactors: Interactors
+        return interactors.pinPadInteractor
+    }
     
     func mapSDKConfigModel(_ model: SDKConfigModel) -> OneginiSDKiOS.ConfigModel {
         return ConfigModel(dictionary: model.dictionary)
