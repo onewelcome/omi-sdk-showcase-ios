@@ -11,8 +11,6 @@ struct ContentView: View {
     @State private var actions = [Action]()
     @State private var errorValue = ""
     @State private var isProcessing = false
-    @State private var isPresentingSheet = false
-    @State private var dupsko = true
     
     var body: some View {
         HStack {
@@ -42,7 +40,7 @@ struct ContentView: View {
                     if !category.selection.isEmpty {
                         Section(header: Text("Select")) {
                             ForEach(category.selection, id:\.self) { selection in
-                                let disabled = selection.disabled && !system.isError
+                                let disabled = selection.disabled && !system.hasError
                                 Button(action: {
                                     buttonAction(for: selection)
                                 }, label: {
@@ -59,7 +57,7 @@ struct ContentView: View {
                     
                     Section(content: {
                         TextResult(result: system.isSDKInitialized ? "✅ SDK initialized" : "❌ SDK not initialized \(errorValue)")
-                        TextResult(result: system.isRegistered ? "👤 User registered as \(userData.userId ?? "")" : "🚫 User not registered")
+                        TextResult(result: system.registationState == .registered ? "👤 User registered as \(userData.userId ?? "")" : "🚫 User not registered")
                     }, header: {
                         Text("Result")
                     })
@@ -78,10 +76,10 @@ struct ContentView: View {
         } // HStack
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $isPresentingSheet) {
+        .sheet(isPresented: $system.shouldShowBrowser) {
             SheetViewForWebView(urlString: browserInteractor.registerUrl)
         }
-        .sheet(isPresented: $system.isPreregistered) {
+        .sheet(isPresented: $system.shouldShowPinPad) {
             SheetViewForPinPad()
         }
         HStack {
@@ -105,12 +103,15 @@ struct ContentView: View {
 //MARK: - Actions
 extension ContentView {
     func buttonAction(for option: Option) {
-        isProcessing = true
         switch option.name {
         case "Initialize":
+            isProcessing = true
             initializeSDK()
         case "Reset":
+            isProcessing = true
             resetSDK()
+        case "Change PIN":
+            changePIN()
         default:
             fatalError("Option `\(option.name)` not handled!")
         }
@@ -130,10 +131,7 @@ extension ContentView {
 
 private extension ContentView {
     func browserRegistration() {
-        browserInteractor.register {
-            isProcessing = false
-            isPresentingSheet = true
-        }
+        browserInteractor.register()
     }
     
     func cancelRegistration() {
@@ -160,10 +158,11 @@ private extension ContentView {
         sdkInteractor.initializeSDK { result in
             switch result {
             case .success:
-                system.isError = false
+                system.unsetError()
                 system.isSDKInitialized = true
             case .failure(let error):
                 errorValue = error.localizedDescription
+                system.setError(errorValue)
                 system.isSDKInitialized = false
             }
             isProcessing = false
@@ -176,14 +175,19 @@ private extension ContentView {
         sdkInteractor.resetSDK { result in
             switch result {
             case .success:
-                system.isError = false
+                system.unsetError()
                 system.isSDKInitialized = false
             case .failure(let error):
                 errorValue = error.localizedDescription
+                system.setError(errorValue)
                 system.isSDKInitialized = false
             }
             isProcessing = false
         }
+    }
+    
+    func changePIN() {
+        sdkInteractor.changePin()
     }
     
     func binding(for action: Action) -> Binding<Action> {
@@ -239,5 +243,10 @@ private extension ContentView {
     var browserInteractor: BrowserRegistrationInteractor {
         @Injected var interactors: Interactors
         return interactors.browserInteractor
+    }
+    
+    var pinPadInteractor: PinPadInteractor {
+        @Injected var interactors: Interactors
+        return interactors.pinPadInteractor
     }
 }

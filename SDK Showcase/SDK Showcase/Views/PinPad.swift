@@ -4,26 +4,35 @@ import SwiftUI
 
 struct PinPad: View {
     @Injected private var interactor: PinPadInteractor
-    @Injected private var appState: AppState
+    @ObservedObject private var system: AppState.System = {
+        @Injected var appState: AppState
+        return appState.system
+    }()
     @State private var errorText = ""
     @State private var pin = "" {
         didSet {
             if pin.count == interactor.pinLength {
                 interactor.validate(pin: pin)
-                
-                if appState.system.isPinProvided {
-                    reset()
-                }
+                reset()
             }
         }
     }
     
     var body: some View {
         VStack {
-            Text(!appState.system.isPinProvided ? "Create PIN" : "Confirm PIN")
-            Spacer()
+            switch system.pinPadState {
+            case .creating:
+                Text("Create PIN")
+            case .created:
+                Text("Confirm PIN")
+            case .changing:
+                Text("Provide the current PIN")
+            case .hidden:
+                Spacer()
+            }
             
-            if appState.system.lastErrorDescription != nil {
+            Spacer()
+            if system.lastErrorDescription != nil {
                 Text(errorText)
                     .foregroundColor(.red)
                     .monospaced()
@@ -95,10 +104,10 @@ struct PinPad: View {
 private extension PinPad {
     func reset() {
         pin.removeAll()
-        errorText = appState.system.lastErrorDescription ?? ""
+        errorText = system.lastErrorDescription ?? ""
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             errorText = ""
-            appState.unsetSystemError()
+            system.unsetError()
         }
     }
     

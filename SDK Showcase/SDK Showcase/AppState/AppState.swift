@@ -14,11 +14,11 @@ class AppState: ObservableObject {
     }
     
     func setSystemError(string: String) {
-        system.lastErrorDescription = string
+        system.setError(string)
     }
     
     func unsetSystemError() {
-        system.lastErrorDescription = nil
+        system.unsetError()
     }
 }
 
