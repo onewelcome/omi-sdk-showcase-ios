@@ -6,6 +6,7 @@ import OneginiSDKiOS
 //MARK: - Protocol the SDK interacts with
 protocol SDKInteractor {
     var builder: ClientBuilder { get set }
+    var registeredAuthenticators: [OneginiSDKiOS.Authenticator] { get }
     /// Initializes the SDK, requires setting below methods
     /// - Parameter result: The result from the SDK
     func initializeSDK(result: @escaping SDKResult)
@@ -26,7 +27,6 @@ protocol SDKInteractor {
     func changePin()
     
     func fetchUserProfiles()
-    var registeredAuthenticators: [OneginiSDKiOS.Authenticator] { get }
     func authenticateUser(with authenticator: Authenticator)
 }
 
@@ -44,7 +44,7 @@ class SDKInteractorReal: SDKInteractor {
     
     var registeredAuthenticators: [OneginiSDKiOS.Authenticator] {
         return appState.userData.userId
-            .flatMap { SimpleUserProfile(profileId: $0) }
+            .flatMap { ShowCaseProfile(profileId: $0) }
             .flatMap { userClient.authenticators(.registered, for: $0) } ?? []
     }
 
@@ -132,12 +132,20 @@ class SDKInteractorReal: SDKInteractor {
         }
     }
     
+    func fetchUserProfiles() {
+        // for Showcase we support only one user at the time
+        userClient.userProfiles.first.flatMap { userProfile in
+            appState.system.registationState = .registered
+            appState.userData.userId = userProfile.profileId
+        }
+    }
+    
     func authenticateUser(with authenticator: Authenticator) {
         guard let userId = appState.userData.userId else {
             // TODO: handle failure somehow 
             return
         }
-        userClient.authenticateUserWith(profile: SimpleUserProfile(profileId: userId), authenticator: authenticator, delegate: self)
+        userClient.authenticateUserWith(profile: ShowCaseProfile(profileId: userId), authenticator: authenticator, delegate: self)
     }
 }
 
@@ -159,14 +167,6 @@ extension SDKInteractorReal: ChangePinDelegate {
 
     func userClient(_ userClient: any UserClient, didFailToChangePinForUser profile: any UserProfile, error: any Error) {
         appState.setSystemError(string: error.localizedDescription)
-    }
-    
-    func fetchUserProfiles() {
-        // for Showcase we support only one user at the time
-        userClient.userProfiles.first.flatMap { userProfile in
-            appState.system.registationState = .registered
-            appState.userData.userId = userProfile.profileId
-        }
     }
 }
 
@@ -237,7 +237,7 @@ private extension SDKInteractor {
     }
 }
 
-private class SimpleUserProfile: UserProfile {
+private class ShowCaseProfile: UserProfile {
     let profileId: String
     
     init(profileId: String) {

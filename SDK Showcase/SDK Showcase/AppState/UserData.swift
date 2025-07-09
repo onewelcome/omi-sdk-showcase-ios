@@ -4,7 +4,7 @@ import Foundation
 
 extension AppState {
     class UserData: Equatable, ObservableObject {
-        var userId: String? // TODO: how about having UserProfile here?
+        var userId: String?
         var isStateless = false
         
         static func == (lhs: AppState.UserData, rhs: AppState.UserData) -> Bool {
