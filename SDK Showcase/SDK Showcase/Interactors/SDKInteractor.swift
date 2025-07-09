@@ -24,6 +24,10 @@ protocol SDKInteractor {
     func register(with provider: IdentityProvider)
     func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void)
     func changePin()
+    
+    func fetchUserProfiles()
+    var registeredAuthenticators: [OneginiSDKiOS.Authenticator] { get }
+    func authenticateUser(with authenticator: Authenticator)
 }
 
 //MARK: - Real methods
@@ -37,6 +41,12 @@ class SDKInteractorReal: SDKInteractor {
     private let userClient = SharedUserClient.instance
     
     var builder: ClientBuilder
+    
+    var registeredAuthenticators: [OneginiSDKiOS.Authenticator] {
+        return appState.userData.userId
+            .flatMap { SimpleUserProfile(profileId: $0) }
+            .flatMap { userClient.authenticators(.registered, for: $0) } ?? []
+    }
 
     init(appState: AppState, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder) {
         self.appState = appState
@@ -121,6 +131,14 @@ class SDKInteractorReal: SDKInteractor {
             completion(error)
         }
     }
+    
+    func authenticateUser(with authenticator: Authenticator) {
+        guard let userId = appState.userData.userId else {
+            // TODO: handle failure somehow 
+            return
+        }
+        userClient.authenticateUserWith(profile: SimpleUserProfile(profileId: userId), authenticator: authenticator, delegate: self)
+    }
 }
 
 //MARK: - ChangePinDelegate
@@ -141,6 +159,14 @@ extension SDKInteractorReal: ChangePinDelegate {
 
     func userClient(_ userClient: any UserClient, didFailToChangePinForUser profile: any UserProfile, error: any Error) {
         appState.setSystemError(string: error.localizedDescription)
+    }
+    
+    func fetchUserProfiles() {
+        // for Showcase we support only one user at the time
+        userClient.userProfiles.first.flatMap { userProfile in
+            appState.system.registationState = .registered
+            appState.userData.userId = userProfile.profileId
+        }
     }
 }
 
@@ -179,6 +205,22 @@ extension SDKInteractorReal: RegistrationDelegate {
     }
 }
 
+//MARK: - AuthenticationDelegate (apart from didReceivePinChallenge)
+extension SDKInteractorReal: AuthenticationDelegate {
+    func userClient(_ userClient: UserClient, didReceiveCustomAuthFinishAuthenticationChallenge challenge: CustomAuthFinishAuthenticationChallenge) {
+        // TODO: handle somehow
+    }
+    
+    func userClient(_ userClient: UserClient, didAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, info customAuthInfo: CustomInfo?) {
+        appState.system.authenticationState = .authenticated
+        appState.system.pinPadState = .hidden
+    }
+    
+    func userClient(_ userClient: UserClient, didFailToAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, error: Error) {
+        // TODO: handle somehow
+    }
+}
+
 //MARK: - Private Protocol Extension
 private extension SDKInteractor {
     var browserInteractor: BrowserRegistrationInteractor {
@@ -194,3 +236,12 @@ private extension SDKInteractor {
         return ConfigModel(dictionary: model.dictionary)
     }
 }
+
+private class SimpleUserProfile: UserProfile {
+    let profileId: String
+    
+    init(profileId: String) {
+        self.profileId = profileId
+    }
+}
+

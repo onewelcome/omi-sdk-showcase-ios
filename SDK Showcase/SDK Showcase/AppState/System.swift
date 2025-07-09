@@ -10,6 +10,7 @@ extension AppState {
         @Published var isPushEnrolled = false
         @Published var lastErrorDescription: String? = nil
         @Published var registationState: RegistrationState = .notRegistered
+        @Published var authenticationState: AuthenticationState = .notAuthenticated
         @Published var pinPadState: PinPadState = .hidden
         
         var hasError: Bool {
@@ -41,6 +42,7 @@ extension AppState {
             isPushEnrolled = false
             
             registationState = .notRegistered
+            authenticationState = .notAuthenticated
             pinPadState = .hidden
             
             unsetError()

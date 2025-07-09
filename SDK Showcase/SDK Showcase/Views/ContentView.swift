@@ -2,6 +2,7 @@
 
 import Foundation
 import SwiftUI
+import OneginiSDKiOS
 
 struct ContentView: View {
     @ObservedObject var system: AppState.System
@@ -58,6 +59,7 @@ struct ContentView: View {
                     Section(content: {
                         TextResult(result: system.isSDKInitialized ? "✅ SDK initialized" : "❌ SDK not initialized \(errorValue)")
                         TextResult(result: system.registationState == .registered ? "👤 User registered as \(userData.userId ?? "")" : "🚫 User not registered")
+                        TextResult(result: system.authenticationState == .authenticated ? "👤 User authenticated as \(userData.userId ?? "")" : "🚫 User not authenticated")
                     }, header: {
                         Text("Result")
                     })
@@ -118,11 +120,15 @@ extension ContentView {
     }
     
     func buttonAction(for selection: Selection) {
+        let registeredAuthenticatorsNames = sdkInteractor.registeredAuthenticators.flatMap { $0.name }
         switch selection.name {
         case "Cancel registration":
             cancelRegistration()
         case "Browser registration":
             browserRegistration()
+        case let optionName where registeredAuthenticatorsNames.contains(optionName):
+            let authenticator = sdkInteractor.registeredAuthenticators.first { $0.name == optionName }!
+            authenticateUser(with: authenticator)
         default:
             fatalError("Selection `\(selection.name)` not handled!")
         }
@@ -160,6 +166,7 @@ private extension ContentView {
             case .success:
                 system.unsetError()
                 system.isSDKInitialized = true
+                sdkInteractor.fetchUserProfiles()
             case .failure(let error):
                 errorValue = error.localizedDescription
                 system.setError(errorValue)
@@ -188,6 +195,10 @@ private extension ContentView {
     
     func changePIN() {
         sdkInteractor.changePin()
+    }
+    
+    func authenticateUser(with authenticator: Authenticator) {
+        sdkInteractor.authenticateUser(with: authenticator)
     }
     
     func binding(for action: Action) -> Binding<Action> {
