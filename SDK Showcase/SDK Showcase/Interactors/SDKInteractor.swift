@@ -241,7 +241,7 @@ extension SDKInteractorReal: AuthenticationDelegate {
     
     func userClient(_ userClient: UserClient, didAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, info customAuthInfo: CustomInfo?) {
 //        delegate?.loginInteractor(self, didLoginUser: userProfile)
-        appState.system.authenticationState = .authenticated
+        appState.system.authenticationState = .authenticated(userProfile.profileId)
         appState.system.pinPadState = .hidden
     }
     

@@ -2,5 +2,5 @@
 
 enum AuthenticationState {
     case notAuthenticated
-    case authenticated
+    case authenticated(String)
 }
