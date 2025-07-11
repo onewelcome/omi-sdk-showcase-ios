@@ -144,12 +144,12 @@ class SDKInteractorReal: SDKInteractor {
     }
     
     func fetchUserProfiles() {
-        // for Showcase we support only one user at the time
-//        TODO: adjust to .registered([AppState.UserData])
-//        userClient.userProfiles.first.flatMap { userProfile in
-//            appState.system.registationState = .registered
-//            appState.userData.userId = userProfile.profileId
-//        }
+        let users = userClient.userProfiles.map { userProfile in
+            let user = AppState.UserData()
+            user.userId = userProfile.profileId
+            return user
+        }
+        appState.system.registrationState = .registered(users)
     }
     
     func authenticateUser(optionName: String) {

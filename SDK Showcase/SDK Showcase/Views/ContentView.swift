@@ -56,9 +56,7 @@ struct ContentView: View {
                     
                     Section(content: {
                         TextResult(result: system.isSDKInitialized ? "✅ SDK initialized" : "❌ SDK not initialized \(errorValue)")
-                        // TODO: why it doesn't want to work?
-                        let registrationResult = /*system.registrationState == .registered ? "👤 At least one user is registered" :*/ "🚫 No registered"
-                        TextResult(result: registrationResult)
+                        TextResult(result: registrationStatus)
 //                        TextResult(result: system.authenticationState == .authenticated ? "👤 User authenticated as \(userData.userId ?? "")" : "🚫 User not authenticated")
                     }, header: {
                         Text("Result")
@@ -145,6 +143,15 @@ private extension ContentView {
 
 //MARK: - Private
 private extension ContentView {
+    var registrationStatus: String {
+        switch system.registrationState {
+        case .registered:
+            "👤 At least one user is registered"
+        default:
+            "🚫 No registered"
+        }
+    }
+    
     func setBuilder() {
         sdkInteractor.setConfigModel(SDKConfigModel.default)
         sdkInteractor.setPublicKey(value(for: "setPublicKey"))
