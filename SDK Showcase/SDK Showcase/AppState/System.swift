@@ -9,7 +9,7 @@ extension AppState {
         @Published var isMobileEnrolled = false
         @Published var isPushEnrolled = false
         @Published var lastErrorDescription: String? = nil
-        @Published var registationState: RegistrationState = .notRegistered
+        @Published var registrationState: RegistrationState = .notRegistered
         @Published var authenticationState: AuthenticationState = .notAuthenticated
         @Published var pinPadState: PinPadState = .hidden
         
@@ -18,8 +18,8 @@ extension AppState {
         }
                 
         var shouldShowBrowser: Bool {
-            get { registationState == .registering }
-            set { registationState = newValue ? .registering : .notRegistered }
+            get { if case .registering = registrationState { return true } else { return false } }
+            set { registrationState = newValue ? .registering : .notRegistered }
         }
         
         var shouldShowPinPad: Bool {
@@ -41,7 +41,7 @@ extension AppState {
             isMobileEnrolled = false
             isPushEnrolled = false
             
-            registationState = .notRegistered
+            registrationState = .notRegistered
             authenticationState = .notAuthenticated
             pinPadState = .hidden
             

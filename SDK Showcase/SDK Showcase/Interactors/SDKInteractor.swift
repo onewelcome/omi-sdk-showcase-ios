@@ -6,7 +6,8 @@ import OneginiSDKiOS
 //MARK: - Protocol the SDK interacts with
 protocol SDKInteractor {
     var builder: ClientBuilder { get set }
-    var registeredAuthenticators: [OneginiSDKiOS.Authenticator] { get }
+    var userAuthenticatorOptionNames: [String] { get }
+
     /// Initializes the SDK, requires setting below methods
     /// - Parameter result: The result from the SDK
     func initializeSDK(result: @escaping SDKResult)
@@ -27,7 +28,8 @@ protocol SDKInteractor {
     func changePin()
     
     func fetchUserProfiles()
-    func authenticateUser(with authenticator: Authenticator)
+    func authenticatorNamesForUser(_ userId: String) -> [String]
+    func authenticateUser(optionName: String)
 }
 
 //MARK: - Real methods
@@ -42,10 +44,19 @@ class SDKInteractorReal: SDKInteractor {
     
     var builder: ClientBuilder
     
-    var registeredAuthenticators: [OneginiSDKiOS.Authenticator] {
-        return appState.userData.userId
-            .flatMap { ShowCaseProfile(profileId: $0) }
-            .flatMap { userClient.authenticators(.registered, for: $0) } ?? []
+    // TODO: rename or handle other way (remove formatCategoryName)
+    var userAuthenticatorOptionNames: [String] {
+        var toReturn = [String]()
+        userClient.userProfiles.forEach { userProfile in
+            let authenticators = authenticatorNamesForUser(userProfile.profileId)
+            toReturn.append(contentsOf: authenticators.map { name in formatCategoryName(userId: userProfile.profileId, authenticatorName: name) })
+        }
+        return toReturn
+    }
+    
+    func authenticatorNamesForUser(_ userId: String) -> [String] {
+        // For now only registered authenticators
+        return userClient.authenticators(.registered, for: ShowCaseProfile(profileId: userId)).map { $0.name }
     }
 
     init(appState: AppState, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder) {
@@ -134,18 +145,33 @@ class SDKInteractorReal: SDKInteractor {
     
     func fetchUserProfiles() {
         // for Showcase we support only one user at the time
-        userClient.userProfiles.first.flatMap { userProfile in
-            appState.system.registationState = .registered
-            appState.userData.userId = userProfile.profileId
-        }
+//        TODO: adjust to .registered([AppState.UserData])
+//        userClient.userProfiles.first.flatMap { userProfile in
+//            appState.system.registationState = .registered
+//            appState.userData.userId = userProfile.profileId
+//        }
     }
     
-    func authenticateUser(with authenticator: Authenticator) {
-        guard let userId = appState.userData.userId else {
-            // TODO: handle failure somehow 
-            return
+    func authenticateUser(optionName: String) {
+        let unformatted = unformatCategoryName(optionName)
+        guard let userProfile = userClient.userProfiles.first(where: { user in user.profileId == unformatted.0 }) else {
+            fatalError("No user profile for option `\(optionName)`")
         }
-        userClient.authenticateUserWith(profile: ShowCaseProfile(profileId: userId), authenticator: authenticator, delegate: self)
+        guard let authenticator = userClient.authenticators(.registered, for: userProfile).first(where: { user in user.name == unformatted.1 }) else {
+            fatalError("No authenticator for option `\(optionName)`")
+        }
+        userClient.authenticateUserWith(profile: userProfile, authenticator: authenticator, delegate: self)
+    }
+}
+//MARK: - UserProfile formatting
+extension SDKInteractorReal {
+    func formatCategoryName(userId: String, authenticatorName: String) -> String {
+        return userId+"-"+authenticatorName
+    }
+    
+    func unformatCategoryName(_ formattedName: String) -> (userId: String, authenticatorName: String) {
+        let parts = formattedName.split(separator: "-")
+        return (String(parts[0]), String(parts[1]))
     }
 }
 
@@ -209,15 +235,24 @@ extension SDKInteractorReal: RegistrationDelegate {
 extension SDKInteractorReal: AuthenticationDelegate {
     func userClient(_ userClient: UserClient, didReceiveCustomAuthFinishAuthenticationChallenge challenge: CustomAuthFinishAuthenticationChallenge) {
         // TODO: handle somehow
+//        loginEntity.customAuthenticatorChallenge = challenge
+//        delegate?.loginInteractor(self, didAskForPassword: loginEntity)
     }
     
     func userClient(_ userClient: UserClient, didAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, info customAuthInfo: CustomInfo?) {
+//        delegate?.loginInteractor(self, didLoginUser: userProfile)
         appState.system.authenticationState = .authenticated
         appState.system.pinPadState = .hidden
     }
     
     func userClient(_ userClient: UserClient, didFailToAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, error: Error) {
         // TODO: handle somehow
+//        if error.code == ONGGenericError.actionCancelled.rawValue {
+//            delegate?.loginInteractor(self, didCancelLoginUser: userProfile)
+//        } else {
+//            let mappedError = ErrorMapper().mapError(error)
+//            delegate?.loginInteractor(self, didFailToLoginUser: userProfile, withError: mappedError)
+//        }
     }
 }
 
@@ -231,17 +266,57 @@ private extension SDKInteractor {
         @Injected var interactors: Interactors
         return interactors.pinPadInteractor
     }
+
     
     func mapSDKConfigModel(_ model: SDKConfigModel) -> OneginiSDKiOS.ConfigModel {
         return ConfigModel(dictionary: model.dictionary)
     }
 }
 
-private class ShowCaseProfile: UserProfile {
-    let profileId: String
-    
-    init(profileId: String) {
-        self.profileId = profileId
-    }
-}
-
+// TODO: remove if not needd
+// TODO: move to separate file
+//class AuthenticationDelegateReal: OneginiSDKiOS.AuthenticationDelegate {
+//    @ObservedObject var appState: AppState
+//    @ObservedObject private var system: AppState.System = {
+//        @Injected var appState: AppState
+//        return appState.system
+//    }()
+////    var pinPadInteractor: PinPadInteractor { // TODO: do I need to add something in Injection.swift?
+////        @Injected var interactors: Interactors
+////        return interactors.pinPadInteractor
+////    }
+//    private let pinPadInteractor: PinPadInteractor
+//    // TODO: temporary solution?
+//    init(pinInteractor: PinPadInteractor, appState: AppState) {
+//        self.pinPadInteractor = pinInteractor
+//        self.appState = appState
+//    }
+//    
+//    
+//    func userClient(_ userClient: UserClient, didReceivePinChallenge challenge: PinChallenge) {
+////        loginEntity.pinChallenge = challenge
+////        loginEntity.pinLength = 5
+////        mapErrorFromChallenge(challenge)
+////        delegate?.loginInteractor(self, didAskForPin: loginEntity)
+//        pinPadInteractor
+//    }
+//    
+//    func userClient(_ userClient: UserClient, didReceiveCustomAuthFinishAuthenticationChallenge challenge: CustomAuthFinishAuthenticationChallenge) {
+////        loginEntity.customAuthenticatorChallenge = challenge
+////        delegate?.loginInteractor(self, didAskForPassword: loginEntity)
+//    }
+//    
+//    func userClient(_ userClient: UserClient, didAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, info customAuthInfo: CustomInfo?) {
+////        delegate?.loginInteractor(self, didLoginUser: userProfile)
+//        appState.system.authenticationState = .authenticated
+//    }
+//    
+//    func userClient(_ userClient: UserClient, didFailToAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, error: Error) {
+////        if error.code == ONGGenericError.actionCancelled.rawValue {
+////            delegate?.loginInteractor(self, didCancelLoginUser: userProfile)
+////        } else {
+////            let mappedError = ErrorMapper().mapError(error)
+////            delegate?.loginInteractor(self, didFailToLoginUser: userProfile, withError: mappedError)
+////        }
+//    }
+//}

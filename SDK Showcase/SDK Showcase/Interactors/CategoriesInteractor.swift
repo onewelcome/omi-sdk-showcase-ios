@@ -53,7 +53,7 @@ struct CategoriesInteractorReal: CategoriesInteractor {
         Category(name: "User authentication",
                  description: "Here you can see all registered authenticators for the registered user.",
                  options: [],
-                 selection: interactor.registeredAuthenticators.map { Selection(name: $0.name) },
+                 selection: interactor.userAuthenticatorOptionNames.map { Selection(name: $0) },
                  requiredActions: [],
                  optionalActions: []),
         Category(name: "User deregistration",

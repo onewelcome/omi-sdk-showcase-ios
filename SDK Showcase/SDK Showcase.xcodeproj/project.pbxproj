@@ -49,6 +49,7 @@
 		57F4647B2D43831700C64156 /* Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F4647A2D43831700C64156 /* Injection.swift */; };
 		57F464822D4383C000C64156 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464812D4383C000C64156 /* AppState.swift */; };
 		9E72F91B2E1E9D1900FB4637 /* AuthenticationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F91A2E1E9D1900FB4637 /* AuthenticationState.swift */; };
+		9E72F91D2E1FD9F400FB4637 /* ShowCaseProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F91C2E1FD9F400FB4637 /* ShowCaseProfile.swift */; };
 		C74C414AFA857D101C71411F /* OneginiConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA6110C3FBFD511DB8EADE4 /* OneginiConfigModel.m */; };
 		D99FC8F8E1D6A51A6CDEEF03 /* OneginiConfigModel.h in Headers */ = {isa = PBXBuildFile; fileRef = D9B0665B0B42A61C01C8351A /* OneginiConfigModel.h */; };
 /* End PBXBuildFile section */
@@ -121,6 +122,7 @@
 		57F4647A2D43831700C64156 /* Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injection.swift; sourceTree = "<group>"; };
 		57F464812D4383C000C64156 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		9E72F91A2E1E9D1900FB4637 /* AuthenticationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationState.swift; sourceTree = "<group>"; };
+		9E72F91C2E1FD9F400FB4637 /* ShowCaseProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCaseProfile.swift; sourceTree = "<group>"; };
 		D9B0665B0B42A61C01C8351A /* OneginiConfigModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OneginiConfigModel.h; path = Configuration/OneginiConfigModel.h; sourceTree = "<group>"; };
 		FFA6110C3FBFD511DB8EADE4 /* OneginiConfigModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OneginiConfigModel.m; path = Configuration/OneginiConfigModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -224,6 +226,7 @@
 				578BC3192D4A1AD100713CF7 /* Category.swift */,
 				578BC3252D4A5A9100713CF7 /* Action.swift */,
 				578BC3272D4A5CEA00713CF7 /* Option.swift */,
+				9E72F91C2E1FD9F400FB4637 /* ShowCaseProfile.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -449,6 +452,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57E9E13A2DB2484D00168A93 /* BrowserRegistrationInteractor.swift in Sources */,
+				9E72F91D2E1FD9F400FB4637 /* ShowCaseProfile.swift in Sources */,
 				578DC4ED2D9FDC83008D2576 /* ActionView.swift in Sources */,
 				57EB55E72E03E4D10072E496 /* SheetViewForPinPad.swift in Sources */,
 				57E9E1402DB2734200168A93 /* BrowserView.swift in Sources */,

@@ -2,11 +2,9 @@
 
 import Foundation
 import SwiftUI
-import OneginiSDKiOS
 
 struct ContentView: View {
     @ObservedObject var system: AppState.System
-    @ObservedObject var userData: AppState.UserData
     @State var category: Category
     @State private var isExpanded = false
     @State private var actions = [Action]()
@@ -58,8 +56,10 @@ struct ContentView: View {
                     
                     Section(content: {
                         TextResult(result: system.isSDKInitialized ? "✅ SDK initialized" : "❌ SDK not initialized \(errorValue)")
-                        TextResult(result: system.registationState == .registered ? "👤 User registered as \(userData.userId ?? "")" : "🚫 User not registered")
-                        TextResult(result: system.authenticationState == .authenticated ? "👤 User authenticated as \(userData.userId ?? "")" : "🚫 User not authenticated")
+                        // TODO: why it doesn't want to work?
+                        let registrationResult = /*system.registrationState == .registered ? "👤 At least one user is registered" :*/ "🚫 No registered"
+                        TextResult(result: registrationResult)
+//                        TextResult(result: system.authenticationState == .authenticated ? "👤 User authenticated as \(userData.userId ?? "")" : "🚫 User not authenticated")
                     }, header: {
                         Text("Result")
                     })
@@ -120,15 +120,13 @@ extension ContentView {
     }
     
     func buttonAction(for selection: Selection) {
-        let registeredAuthenticatorsNames = sdkInteractor.registeredAuthenticators.flatMap { $0.name }
         switch selection.name {
         case "Cancel registration":
             cancelRegistration()
         case "Browser registration":
             browserRegistration()
-        case let optionName where registeredAuthenticatorsNames.contains(optionName):
-            let authenticator = sdkInteractor.registeredAuthenticators.first { $0.name == optionName }!
-            authenticateUser(with: authenticator)
+        case let optionName where sdkInteractor.userAuthenticatorOptionNames.contains(optionName):
+            sdkInteractor.authenticateUser(optionName: optionName)
         default:
             fatalError("Selection `\(selection.name)` not handled!")
         }
@@ -195,10 +193,6 @@ private extension ContentView {
     
     func changePIN() {
         sdkInteractor.changePin()
-    }
-    
-    func authenticateUser(with authenticator: Authenticator) {
-        sdkInteractor.authenticateUser(with: authenticator)
     }
     
     func binding(for action: Action) -> Binding<Action> {
