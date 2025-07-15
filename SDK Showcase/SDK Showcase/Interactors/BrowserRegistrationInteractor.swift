@@ -50,24 +50,8 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
     }
     
     func didRegisterUser(profileId: String) {
-        var registeredUsers = [AppState.UserData]()
+        appState.addRegisteredUser(.init(userId: profileId))
         
-        if case var .registered(users) = appState.system.registrationState {
-            users.removeAll { user in
-                user.userId == profileId
-            }
-            registeredUsers = users
-        }
-
-        let newUser: AppState.UserData = {
-            let newUser = AppState.UserData()
-            newUser.userId = profileId
-            return newUser
-        }()
-        registeredUsers.append(newUser)
-
-        
-        appState.system.registrationState = .registered(registeredUsers)
         appState.system.pinPadState = .hidden
         challenge = nil
     }

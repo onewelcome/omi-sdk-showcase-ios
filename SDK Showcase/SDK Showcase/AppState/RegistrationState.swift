@@ -3,5 +3,5 @@
 enum RegistrationState {
     case notRegistered
     case registering
-    case registered([AppState.UserData])
+    case registered
 }

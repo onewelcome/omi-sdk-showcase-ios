@@ -144,12 +144,9 @@ class SDKInteractorReal: SDKInteractor {
     }
     
     func fetchUserProfiles() {
-        let users = userClient.userProfiles.map { userProfile in
-            let user = AppState.UserData()
-            user.userId = userProfile.profileId
-            return user
-        }
-        appState.system.registrationState = .registered(users)
+        appState.resetRegisteredUsers()
+        let fetchedUserProfiles = userClient.userProfiles.map { AppState.UserData(userId: $0.profileId) }
+        fetchedUserProfiles.forEach { userData in appState.addRegisteredUser(userData) }
     }
     
     func authenticateUser(optionName: String) {
