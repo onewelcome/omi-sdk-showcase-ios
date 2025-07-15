@@ -56,8 +56,7 @@ struct ContentView: View {
                     
                     Section(content: {
                         TextResult(result: system.isSDKInitialized ? "✅ SDK initialized" : "❌ SDK not initialized \(errorValue)")
-                        TextResult(result: registrationStatus)
-                        TextResult(result: authenticationStatus)
+                        TextResult(result: userStatus)
                     }, header: {
                         Text("Result")
                     })
@@ -143,21 +142,14 @@ private extension ContentView {
 
 //MARK: - Private
 private extension ContentView {
-    var registrationStatus: String {
-        switch system.registrationState {
-        case .registered:
-            "👤 At least one user is registered"
+    var userStatus: String {
+        switch (system.registrationState, system.authenticationState) {
+        case (.registered, .authenticated(let userId)):
+            "👤 User authenticated as \(userId)"
+        case (.registered, _):
+            "👥 At least one user is registered"
         default:
             "🚫 No registered"
-        }
-    }
-    
-    var authenticationStatus: String {
-        switch system.authenticationState {
-        case .authenticated(let userId):
-            "👤 User authenticated as \(userId)"
-        default:
-            "🚫 User not authenticated"
         }
     }
     
