@@ -24,7 +24,6 @@ class AppState: ObservableObject {
 
 extension AppState: Equatable {
     static func == (lhs: AppState, rhs: AppState) -> Bool {
-        lhs.system == rhs.system// &&
-//        lhs.userData == rhs.userData
+        lhs.system == rhs.system
     }
 }

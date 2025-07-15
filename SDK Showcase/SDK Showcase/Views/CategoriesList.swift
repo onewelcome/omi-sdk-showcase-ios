@@ -15,7 +15,7 @@ struct CategoriesList: View {
     var body: some View {
         ForEach(interactor.loadCategories()) { category in
             NavigationLink {
-                ContentView(system: system, /*userData: user,*/ category: category)
+                ContentView(system: system, category: category)
             } label: {
                 Text(category.name)
             }

@@ -234,25 +234,19 @@ extension SDKInteractorReal: RegistrationDelegate {
 //MARK: - AuthenticationDelegate (apart from didReceivePinChallenge)
 extension SDKInteractorReal: AuthenticationDelegate {
     func userClient(_ userClient: UserClient, didReceiveCustomAuthFinishAuthenticationChallenge challenge: CustomAuthFinishAuthenticationChallenge) {
-        // TODO: handle somehow
-//        loginEntity.customAuthenticatorChallenge = challenge
-//        delegate?.loginInteractor(self, didAskForPassword: loginEntity)
+        // not needed for pin authenticator
+        appState.setSystemError(string: "didReceiveCustomAuthFinishAuthenticationChallenge not handled yet")
     }
     
     func userClient(_ userClient: UserClient, didAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, info customAuthInfo: CustomInfo?) {
-//        delegate?.loginInteractor(self, didLoginUser: userProfile)
+        appState.unsetSystemError()
         appState.system.authenticationState = .authenticated(userProfile.profileId)
         appState.system.pinPadState = .hidden
     }
     
     func userClient(_ userClient: UserClient, didFailToAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, error: Error) {
-        // TODO: handle somehow
-//        if error.code == ONGGenericError.actionCancelled.rawValue {
-//            delegate?.loginInteractor(self, didCancelLoginUser: userProfile)
-//        } else {
-//            let mappedError = ErrorMapper().mapError(error)
-//            delegate?.loginInteractor(self, didFailToLoginUser: userProfile, withError: mappedError)
-//        }
+        // TODO: don't we want to use ErrorMapper from old ExampleApp?
+        appState.setSystemError(string: "Authentication failed")
     }
 }
 
@@ -272,51 +266,3 @@ private extension SDKInteractor {
         return ConfigModel(dictionary: model.dictionary)
     }
 }
-
-// TODO: remove if not needd
-// TODO: move to separate file
-//class AuthenticationDelegateReal: OneginiSDKiOS.AuthenticationDelegate {
-//    @ObservedObject var appState: AppState
-//    @ObservedObject private var system: AppState.System = {
-//        @Injected var appState: AppState
-//        return appState.system
-//    }()
-////    var pinPadInteractor: PinPadInteractor { // TODO: do I need to add something in Injection.swift?
-////        @Injected var interactors: Interactors
-////        return interactors.pinPadInteractor
-////    }
-//    private let pinPadInteractor: PinPadInteractor
-//    // TODO: temporary solution?
-//    init(pinInteractor: PinPadInteractor, appState: AppState) {
-//        self.pinPadInteractor = pinInteractor
-//        self.appState = appState
-//    }
-//    
-//    
-//    func userClient(_ userClient: UserClient, didReceivePinChallenge challenge: PinChallenge) {
-////        loginEntity.pinChallenge = challenge
-////        loginEntity.pinLength = 5
-////        mapErrorFromChallenge(challenge)
-////        delegate?.loginInteractor(self, didAskForPin: loginEntity)
-//        pinPadInteractor
-//    }
-//    
-//    func userClient(_ userClient: UserClient, didReceiveCustomAuthFinishAuthenticationChallenge challenge: CustomAuthFinishAuthenticationChallenge) {
-////        loginEntity.customAuthenticatorChallenge = challenge
-////        delegate?.loginInteractor(self, didAskForPassword: loginEntity)
-//    }
-//    
-//    func userClient(_ userClient: UserClient, didAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, info customAuthInfo: CustomInfo?) {
-////        delegate?.loginInteractor(self, didLoginUser: userProfile)
-//        appState.system.authenticationState = .authenticated
-//    }
-//    
-//    func userClient(_ userClient: UserClient, didFailToAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, error: Error) {
-////        if error.code == ONGGenericError.actionCancelled.rawValue {
-////            delegate?.loginInteractor(self, didCancelLoginUser: userProfile)
-////        } else {
-////            let mappedError = ErrorMapper().mapError(error)
-////            delegate?.loginInteractor(self, didFailToLoginUser: userProfile, withError: mappedError)
-////        }
-//    }
-//}
