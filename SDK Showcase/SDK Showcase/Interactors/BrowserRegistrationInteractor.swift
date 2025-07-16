@@ -76,7 +76,7 @@ extension BrowserRegistrationInteractorReal {
     }
     
     func didFailToRegisterUser(with error: Error) {
-        appState.system.userState = .notRegistered
+        appState.system.restorePreviousUserState()
         appState.setSystemError(string: error.localizedDescription)
         challenge = nil
     }

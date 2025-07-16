@@ -44,7 +44,6 @@ class SDKInteractorReal: SDKInteractor {
     
     var builder: ClientBuilder
     
-    // TODO: rename or handle other way (remove formatCategoryName)
     var userAuthenticatorOptionNames: [String] {
         var toReturn = [String]()
         userClient.userProfiles.forEach { userProfile in

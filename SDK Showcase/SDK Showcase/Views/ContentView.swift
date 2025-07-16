@@ -149,7 +149,7 @@ private extension ContentView {
         case .registering:
             "⏸️ Registration in progress..."
         case .registered:
-            "👥 \(sdkInteractor.userAuthenticatorOptionNames.count) registered users"
+            "👥 Number of registered users: \(sdkInteractor.userAuthenticatorOptionNames.count)"
         case .authenticated(let userId):
             "👤 User authenticated as \(userId)"
         }
