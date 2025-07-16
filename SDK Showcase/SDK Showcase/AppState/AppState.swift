@@ -5,7 +5,7 @@ import Foundation
 class AppState: ObservableObject {
     @Published var system = System()
     @Published var deviceData = DeviceData()
-    @Published var registeredUsers = [UserData]()
+    @Published var registeredUsers = Set<UserData>()
     
     func reset() {
         system.reset()
@@ -27,10 +27,7 @@ class AppState: ObservableObject {
     
     func addRegisteredUser(_ newUser: UserData) {
         system.userState = .registered
-        registeredUsers.removeAll { user in
-            user.userId == newUser.userId
-        }
-        registeredUsers.append(newUser)
+        registeredUsers.insert(newUser)
     }
 }
 
