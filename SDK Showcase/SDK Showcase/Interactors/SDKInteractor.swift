@@ -28,7 +28,7 @@ protocol SDKInteractor {
     func changePin()
     
     func fetchUserProfiles()
-    func authenticatorNamesForUser(_ userId: String) -> [String]
+    func authenticatorNames(for userId: String) -> [String]
     func authenticateUser(optionName: String)
 }
 
@@ -48,13 +48,13 @@ class SDKInteractorReal: SDKInteractor {
     var userAuthenticatorOptionNames: [String] {
         var toReturn = [String]()
         userClient.userProfiles.forEach { userProfile in
-            let authenticators = authenticatorNamesForUser(userProfile.profileId)
+            let authenticators = authenticatorNames(for: userProfile.profileId)
             toReturn.append(contentsOf: authenticators.map { name in formatCategoryName(userId: userProfile.profileId, authenticatorName: name) })
         }
         return toReturn
     }
     
-    func authenticatorNamesForUser(_ userId: String) -> [String] {
+    func authenticatorNames(for userId: String) -> [String] {
         // For now only registered authenticators
         return userClient.authenticators(.registered, for: ShowcaseProfile(profileId: userId)).map { $0.name }
     }
