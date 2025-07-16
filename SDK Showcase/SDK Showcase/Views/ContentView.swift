@@ -19,11 +19,6 @@ struct ContentView: View {
                         .multilineTextAlignment(.leading)
                         .font(.system(size: 15))
                         .foregroundStyle(.secondary)
-                        .onAppear {
-                            if category.name == "User authentication" {
-                                sdkInteractor.fetchUserProfiles()
-                            }
-                        }
                     
                     if !category.requiredActions.isEmpty {
                         Section(header: Text("Required Actions")) {
@@ -177,6 +172,7 @@ private extension ContentView {
             case .success:
                 system.unsetError()
                 system.isSDKInitialized = true
+                sdkInteractor.fetchUserProfiles()
             case .failure(let error):
                 errorValue = error.localizedDescription
                 system.setError(errorValue)
