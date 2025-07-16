@@ -3,10 +3,6 @@
 import Foundation
 import OneginiSDKiOS
 
-class ShowCaseProfile: UserProfile {
+struct ShowCaseProfile: UserProfile {
     let profileId: String
-    
-    init(profileId: String) {
-        self.profileId = profileId
-    }
 }
