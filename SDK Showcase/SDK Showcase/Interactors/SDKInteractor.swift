@@ -56,7 +56,7 @@ class SDKInteractorReal: SDKInteractor {
     
     func authenticatorNamesForUser(_ userId: String) -> [String] {
         // For now only registered authenticators
-        return userClient.authenticators(.registered, for: ShowCaseProfile(profileId: userId)).map { $0.name }
+        return userClient.authenticators(.registered, for: ShowcaseProfile(profileId: userId)).map { $0.name }
     }
 
     init(appState: AppState, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder) {

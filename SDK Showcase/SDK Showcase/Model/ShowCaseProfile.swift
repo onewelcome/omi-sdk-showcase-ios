@@ -3,6 +3,6 @@
 import Foundation
 import OneginiSDKiOS
 
-struct ShowCaseProfile: UserProfile {
+struct ShowcaseProfile: UserProfile {
     let profileId: String
 }
