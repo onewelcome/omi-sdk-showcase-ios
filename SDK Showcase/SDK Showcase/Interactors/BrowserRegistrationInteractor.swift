@@ -72,11 +72,11 @@ extension BrowserRegistrationInteractorReal {
     
     func didReceiveBrowserRegistrationChallenge(_ challenge: any OneginiSDKiOS.BrowserRegistrationChallenge) {
         setChallenge(challenge)
-        appState.system.registrationState = .registering
+        appState.system.userState = .registering
     }
     
     func didFailToRegisterUser(with error: Error) {
-        appState.system.registrationState = .notRegistered
+        appState.system.userState = .notRegistered
         appState.setSystemError(string: error.localizedDescription)
         challenge = nil
     }

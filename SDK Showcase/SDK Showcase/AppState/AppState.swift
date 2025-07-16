@@ -26,7 +26,7 @@ class AppState: ObservableObject {
     }
     
     func addRegisteredUser(_ newUser: UserData) {
-        system.registrationState = .registered
+        system.userState = .registered
         registeredUsers.removeAll { user in
             user.userId == newUser.userId
         }

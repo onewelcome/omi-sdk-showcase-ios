@@ -148,10 +148,10 @@ private extension ContentView {
 //MARK: - Private
 private extension ContentView {
     var userStatus: String {
-        switch (system.registrationState, system.authenticationState) {
-        case (.registered, .authenticated(let userId)):
+        switch system.userState {
+        case .authenticated(let userId):
             "👤 User authenticated as \(userId)"
-        case (.registered, _):
+        case .registered:
             "👥 At least one user is registered"
         default:
             "🚫 No registered"
