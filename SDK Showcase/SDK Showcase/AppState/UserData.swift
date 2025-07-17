@@ -21,6 +21,7 @@ extension AppState {
 
 extension AppState.UserData: Hashable {
     func hash(into hasher: inout Hasher) {
-        hasher.combine(ObjectIdentifier(self))
+        hasher.combine(userId)
+        hasher.combine(isStateless)
     }
 }
