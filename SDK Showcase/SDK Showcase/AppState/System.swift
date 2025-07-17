@@ -10,9 +10,7 @@ extension AppState {
         @Published var isPushEnrolled = false
         @Published var lastErrorDescription: String? = nil
         @Published private var previousUserState: UserState?
-        @Published var userState: UserState = .notRegistered {
-            willSet { previousUserState = userState }
-        }
+        @Published private(set) var userState: UserState = .notRegistered
         @Published var pinPadState: PinPadState = .hidden
         
         var hasError: Bool {
@@ -24,8 +22,15 @@ extension AppState {
             set {
                 if newValue {
                     userState = .registering
+                } else {
+                    restorePreviousUserState()
                 }
             }
+        }
+        
+        func setUserState(_ newState: UserState) {
+            previousUserState = userState
+            userState = newState
         }
         
         func restorePreviousUserState() {

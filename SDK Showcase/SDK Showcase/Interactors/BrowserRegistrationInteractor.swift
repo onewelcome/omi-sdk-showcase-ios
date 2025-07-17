@@ -72,7 +72,7 @@ extension BrowserRegistrationInteractorReal {
     
     func didReceiveBrowserRegistrationChallenge(_ challenge: any OneginiSDKiOS.BrowserRegistrationChallenge) {
         setChallenge(challenge)
-        appState.system.userState = .registering
+        appState.system.setUserState(.registering)
     }
     
     func didFailToRegisterUser(with error: Error) {
