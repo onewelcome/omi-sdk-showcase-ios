@@ -6,6 +6,8 @@ import OneginiSDKiOS
 //MARK: - Protocol the SDK interacts with
 protocol SDKInteractor {
     var builder: ClientBuilder { get set }
+    var userAuthenticatorOptionNames: [String] { get }
+
     /// Initializes the SDK, requires setting below methods
     /// - Parameter result: The result from the SDK
     func initializeSDK(result: @escaping SDKResult)
@@ -24,6 +26,10 @@ protocol SDKInteractor {
     func register(with provider: IdentityProvider)
     func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void)
     func changePin()
+    
+    func fetchUserProfiles()
+    func authenticatorNames(for userId: String) -> [String]
+    func authenticateUser(optionName: String)
 }
 
 //MARK: - Real methods
@@ -37,6 +43,20 @@ class SDKInteractorReal: SDKInteractor {
     private let userClient = SharedUserClient.instance
     
     var builder: ClientBuilder
+    
+    var userAuthenticatorOptionNames: [String] {
+        var toReturn = [String]()
+        userClient.userProfiles.forEach { userProfile in
+            let authenticators = authenticatorNames(for: userProfile.profileId)
+            toReturn.append(contentsOf: authenticators.map { name in formatCategoryName(userId: userProfile.profileId, authenticatorName: name) })
+        }
+        return toReturn
+    }
+    
+    func authenticatorNames(for userId: String) -> [String] {
+        // For now only registered authenticators
+        return userClient.authenticators(.registered, for: ShowcaseProfile(profileId: userId)).map { $0.name }
+    }
 
     init(appState: AppState, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder) {
         self.appState = appState
@@ -121,6 +141,34 @@ class SDKInteractorReal: SDKInteractor {
             completion(error)
         }
     }
+    
+    func fetchUserProfiles() {
+        appState.resetRegisteredUsers()
+        let fetchedUserProfiles = userClient.userProfiles.map { AppState.UserData(userId: $0.profileId) }
+        fetchedUserProfiles.forEach { userData in appState.addRegisteredUser(userData) }
+    }
+    
+    func authenticateUser(optionName: String) {
+        let unformatted = unformatCategoryName(optionName)
+        guard let userProfile = userClient.userProfiles.first(where: { user in user.profileId == unformatted.0 }) else {
+            fatalError("No user profile for option `\(optionName)`")
+        }
+        guard let authenticator = userClient.authenticators(.registered, for: userProfile).first(where: { user in user.name == unformatted.1 }) else {
+            fatalError("No authenticator for option `\(optionName)`")
+        }
+        userClient.authenticateUserWith(profile: userProfile, authenticator: authenticator, delegate: self)
+    }
+}
+//MARK: - UserProfile formatting
+extension SDKInteractorReal {
+    func formatCategoryName(userId: String, authenticatorName: String) -> String {
+        return userId+"-"+authenticatorName
+    }
+    
+    func unformatCategoryName(_ formattedName: String) -> (userId: String, authenticatorName: String) {
+        let parts = formattedName.split(separator: "-")
+        return (String(parts[0]), String(parts[1]))
+    }
 }
 
 //MARK: - ChangePinDelegate
@@ -179,6 +227,25 @@ extension SDKInteractorReal: RegistrationDelegate {
     }
 }
 
+//MARK: - AuthenticationDelegate (apart from didReceivePinChallenge)
+extension SDKInteractorReal: AuthenticationDelegate {
+    func userClient(_ userClient: UserClient, didReceiveCustomAuthFinishAuthenticationChallenge challenge: CustomAuthFinishAuthenticationChallenge) {
+        // not needed for pin authenticator
+        appState.setSystemError(string: "didReceiveCustomAuthFinishAuthenticationChallenge not handled yet")
+    }
+    
+    func userClient(_ userClient: UserClient, didAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, info customAuthInfo: CustomInfo?) {
+        appState.unsetSystemError()
+        appState.system.setUserState(.authenticated(userProfile.profileId))
+        appState.system.pinPadState = .hidden
+    }
+    
+    func userClient(_ userClient: UserClient, didFailToAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, error: Error) {
+        // TODO: don't we want to use ErrorMapper from old ExampleApp?
+        appState.setSystemError(string: "Authentication failed")
+    }
+}
+
 //MARK: - Private Protocol Extension
 private extension SDKInteractor {
     var browserInteractor: BrowserRegistrationInteractor {
@@ -189,6 +256,7 @@ private extension SDKInteractor {
         @Injected var interactors: Interactors
         return interactors.pinPadInteractor
     }
+
     
     func mapSDKConfigModel(_ model: SDKConfigModel) -> OneginiSDKiOS.ConfigModel {
         return ConfigModel(dictionary: model.dictionary)

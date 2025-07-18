@@ -5,12 +5,12 @@ import Foundation
 class AppState: ObservableObject {
     @Published var system = System()
     @Published var deviceData = DeviceData()
-    @Published var userData = UserData()
+    @Published var registeredUsers = Set<UserData>()
     
     func reset() {
         system.reset()
         deviceData.reset()
-        userData.reset()
+        resetRegisteredUsers()
     }
     
     func setSystemError(string: String) {
@@ -20,6 +20,15 @@ class AppState: ObservableObject {
     func unsetSystemError() {
         system.unsetError()
     }
+    
+    func resetRegisteredUsers() {
+        registeredUsers.removeAll()
+    }
+    
+    func addRegisteredUser(_ newUser: UserData) {
+        system.setUserState(.registered)
+        registeredUsers.insert(newUser)
+    }
 }
 
 //MARK: - Equatable
@@ -27,6 +36,6 @@ class AppState: ObservableObject {
 extension AppState: Equatable {
     static func == (lhs: AppState, rhs: AppState) -> Bool {
         lhs.system == rhs.system &&
-        lhs.userData == rhs.userData
+        lhs.registeredUsers == rhs.registeredUsers
     }
 }

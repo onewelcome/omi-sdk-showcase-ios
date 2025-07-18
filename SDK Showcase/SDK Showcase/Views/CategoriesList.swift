@@ -11,15 +11,11 @@ struct CategoriesList: View {
         @Injected var appState: AppState
         return appState.system
     }()
-    @ObservedObject private var user: AppState.UserData = {
-        @Injected var appState: AppState
-        return appState.userData
-    }()
     
     var body: some View {
         ForEach(interactor.loadCategories()) { category in
             NavigationLink {
-                ContentView(system: system, userData: user, category: category)
+                ContentView(system: system, category: category)
             } label: {
                 Text(category.name)
             }

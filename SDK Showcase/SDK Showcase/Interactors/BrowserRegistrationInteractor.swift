@@ -50,9 +50,9 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
     }
     
     func didRegisterUser(profileId: String) {
-        appState.system.registationState = .registered
+        appState.addRegisteredUser(.init(userId: profileId))
+        
         appState.system.pinPadState = .hidden
-        appState.userData.userId = profileId
         challenge = nil
     }
 }
@@ -72,11 +72,11 @@ extension BrowserRegistrationInteractorReal {
     
     func didReceiveBrowserRegistrationChallenge(_ challenge: any OneginiSDKiOS.BrowserRegistrationChallenge) {
         setChallenge(challenge)
-        appState.system.registationState = .registering
+        appState.system.setUserState(.registering)
     }
     
     func didFailToRegisterUser(with error: Error) {
-        appState.system.registationState = .notRegistered
+        appState.system.restorePreviousUserState()
         appState.setSystemError(string: error.localizedDescription)
         challenge = nil
     }

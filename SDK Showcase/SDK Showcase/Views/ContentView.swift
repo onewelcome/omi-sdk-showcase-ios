@@ -5,7 +5,6 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var system: AppState.System
-    @ObservedObject var userData: AppState.UserData
     @State var category: Category
     @State private var isExpanded = false
     @State private var actions = [Action]()
@@ -57,7 +56,7 @@ struct ContentView: View {
                     
                     Section(content: {
                         TextResult(result: system.isSDKInitialized ? "✅ SDK initialized" : "❌ SDK not initialized \(errorValue)")
-                        TextResult(result: system.registationState == .registered ? "👤 User registered as \(userData.userId ?? "")" : "🚫 User not registered")
+                        TextResult(result: userStateDescription)
                     }, header: {
                         Text("Result")
                     })
@@ -123,6 +122,8 @@ extension ContentView {
             cancelRegistration()
         case "Browser registration":
             browserRegistration()
+        case let optionName where sdkInteractor.userAuthenticatorOptionNames.contains(optionName):
+            sdkInteractor.authenticateUser(optionName: optionName)
         default:
             fatalError("Selection `\(selection.name)` not handled!")
         }
@@ -141,6 +142,19 @@ private extension ContentView {
 
 //MARK: - Private
 private extension ContentView {
+    var userStateDescription: String {
+        switch system.userState {
+        case .notRegistered:
+            "🚫 Not registered"
+        case .registering:
+            "⏸️ Registration in progress..."
+        case .registered:
+            "👥 Number of registered users: \(sdkInteractor.userAuthenticatorOptionNames.count)"
+        case .authenticated(let userId):
+            "👤 User authenticated as \(userId)"
+        }
+    }
+    
     func setBuilder() {
         sdkInteractor.setConfigModel(SDKConfigModel.default)
         sdkInteractor.setPublicKey(value(for: "setPublicKey"))
@@ -160,6 +174,7 @@ private extension ContentView {
             case .success:
                 system.unsetError()
                 system.isSDKInitialized = true
+                sdkInteractor.fetchUserProfiles()
             case .failure(let error):
                 errorValue = error.localizedDescription
                 system.setError(errorValue)

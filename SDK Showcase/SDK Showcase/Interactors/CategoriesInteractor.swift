@@ -50,6 +50,12 @@ struct CategoriesInteractorReal: CategoriesInteractor {
                              Selection(name: "Cancel registration", disabled: true)],
                  requiredActions: [],
                  optionalActions: []),
+        Category(name: "User authentication",
+                 description: "Here you can see all registered authenticators for the registered user.",
+                 options: [],
+                 selection: userAuthenticationSelections,
+                 requiredActions: [],
+                 optionalActions: []),
         Category(name: "User deregistration",
                  description: "You can deregister your account here",
                  options: [],
@@ -64,4 +70,10 @@ struct CategoriesInteractorReal: CategoriesInteractor {
                  requiredActions: [],
                  optionalActions: []),
     ]}
+}
+
+private extension CategoriesInteractorReal {
+    var userAuthenticationSelections: [Selection] {
+        interactor.userAuthenticatorOptionNames.map { Selection(name: $0) }
+    }
 }
