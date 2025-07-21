@@ -124,6 +124,9 @@ extension ContentView {
             browserRegistration()
         case let optionName where sdkInteractor.userAuthenticatorOptionNames.contains(optionName):
             sdkInteractor.authenticateUser(optionName: optionName)
+        case Selection.predefinedNames.loginWithOtp.rawValue:
+            // TODO: Show QR scaner here
+            break
         default:
             fatalError("Selection `\(selection.name)` not handled!")
         }

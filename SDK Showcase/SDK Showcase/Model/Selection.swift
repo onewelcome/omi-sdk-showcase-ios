@@ -7,3 +7,9 @@ struct Selection: AppModel {
     var disabled = false
     private(set) var logo: String?
 }
+
+extension Selection {
+    enum predefinedNames: String, CaseIterable {
+        case loginWithOtp = "Login with QR Code"
+    }
+}

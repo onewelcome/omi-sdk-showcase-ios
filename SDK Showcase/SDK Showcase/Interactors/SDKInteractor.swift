@@ -7,7 +7,7 @@ import OneginiSDKiOS
 protocol SDKInteractor {
     var builder: ClientBuilder { get set }
     var userAuthenticatorOptionNames: [String] { get }
-
+    var shouldEnableUserAuthenticatorSelection: Bool { get }
     /// Initializes the SDK, requires setting below methods
     /// - Parameter result: The result from the SDK
     func initializeSDK(result: @escaping SDKResult)
@@ -51,6 +51,16 @@ class SDKInteractorReal: SDKInteractor {
             toReturn.append(contentsOf: authenticators.map { name in formatCategoryName(userId: userProfile.profileId, authenticatorName: name) })
         }
         return toReturn
+    }
+    
+    var shouldEnableUserAuthenticatorSelection: Bool {
+        guard let authenticatedUserId = userClient.authenticatedUserProfile?.profileId else { return false }
+        let isEnrolled = userClient.isMobileAuthEnrolled(for: ShowcaseProfile(profileId: authenticatedUserId))
+        guard isEnrolled else {
+            return false
+        }
+        
+        return true
     }
     
     func authenticatorNames(for userId: String) -> [String] {

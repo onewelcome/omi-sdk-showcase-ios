@@ -56,6 +56,12 @@ struct CategoriesInteractorReal: CategoriesInteractor {
                  selection: userAuthenticationSelections,
                  requiredActions: [],
                  optionalActions: []),
+        Category(name: "Mobile Authentication",
+                 description: "You need to be authenticated to perform Mobile Authentication by QR code",
+                 options: [],
+                 selection: mobileAuthenticaionSelections,
+                 requiredActions: [],
+                 optionalActions: []),
         Category(name: "User deregistration",
                  description: "You can deregister your account here",
                  options: [],
@@ -75,5 +81,10 @@ struct CategoriesInteractorReal: CategoriesInteractor {
 private extension CategoriesInteractorReal {
     var userAuthenticationSelections: [Selection] {
         interactor.userAuthenticatorOptionNames.map { Selection(name: $0) }
+    }
+    
+    var mobileAuthenticaionSelections: [Selection] {
+        [Selection(name: Selection.predefinedNames.loginWithOtp.rawValue,
+                   disabled: !interactor.shouldEnableUserAuthenticatorSelection)]
     }
 }
