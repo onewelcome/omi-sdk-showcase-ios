@@ -9,6 +9,7 @@ struct SheetViewDismiss: View {
     }()
     @Injected private var pinPadInteractor: PinPadInteractor
     @Injected private var browserInteractor: BrowserRegistrationInteractor
+    @Injected private var qrScanerInteractor: QRScannerInteractor
 
     var body: some View {
         HStack {
@@ -17,6 +18,7 @@ struct SheetViewDismiss: View {
                 pinPadInteractor.cancelCreatingPIN()
                 pinPadInteractor.cancelChangingPIN()
                 browserInteractor.cancelRegistration()
+                qrScanerInteractor.cancel()
             } label: {
                 Image(systemName: "xmark.circle")
                     .font(.largeTitle)

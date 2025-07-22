@@ -81,6 +81,9 @@ struct ContentView: View {
         .sheet(isPresented: $system.shouldShowPinPad) {
             SheetViewForPinPad()
         }
+        .sheet(isPresented: $system.shouldShowQRScanner) {
+            SheetViewForQRCodeScanner()
+        }
         HStack {
             ForEach(category.options) { option in
                 Button(action: {
@@ -125,7 +128,7 @@ extension ContentView {
         case let optionName where sdkInteractor.userAuthenticatorOptionNames.contains(optionName):
             sdkInteractor.authenticateUser(optionName: optionName)
         case Selection.predefinedNames.loginWithOtp.rawValue:
-            // TODO: Show QR scaner here
+            qrScannerInteractor.scan()
             break
         default:
             fatalError("Selection `\(selection.name)` not handled!")
@@ -266,5 +269,10 @@ private extension ContentView {
     var pinPadInteractor: PinPadInteractor {
         @Injected var interactors: Interactors
         return interactors.pinPadInteractor
+    }
+    
+    var qrScannerInteractor: QRScannerInteractor {
+        @Injected var interactors: Interactors
+        return interactors.qrScannerInteractor
     }
 }

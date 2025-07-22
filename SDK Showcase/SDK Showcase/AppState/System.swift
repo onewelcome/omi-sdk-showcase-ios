@@ -42,6 +42,8 @@ extension AppState {
             set { pinPadState = newValue ? .changing : .hidden }
         }
         
+        var shouldShowQRScanner: Bool = true
+        
         func setError(_ description: String) {
             lastErrorDescription = description
         }
