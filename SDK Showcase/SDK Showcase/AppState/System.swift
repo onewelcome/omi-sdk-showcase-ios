@@ -8,13 +8,13 @@ extension AppState {
         @Published var isEnrolled = false
         @Published var isMobileEnrolled = false
         @Published var isPushEnrolled = false
-        @Published var lastErrorDescription: String? = nil
+        @Published var lastInfoDescription: String? = nil
         @Published private var previousUserState: UserState?
         @Published private(set) var userState: UserState = .notRegistered
         @Published var pinPadState: PinPadState = .hidden
         
         var hasError: Bool {
-            lastErrorDescription != nil
+            lastInfoDescription != nil
         }
                 
         var shouldShowBrowser: Bool {
@@ -42,12 +42,12 @@ extension AppState {
             set { pinPadState = newValue ? .changing : .hidden }
         }
         
-        func setError(_ description: String) {
-            lastErrorDescription = description
+        func setInfo(_ description: String) {
+            lastInfoDescription = description
         }
         
-        func unsetError() {
-            lastErrorDescription = nil
+        func unsetInfo() {
+            lastInfoDescription = nil
         }
 
         func reset() {
@@ -59,7 +59,7 @@ extension AppState {
             userState = .notRegistered
             pinPadState = .hidden
             
-            unsetError()
+            unsetInfo()
         }
     }
 }

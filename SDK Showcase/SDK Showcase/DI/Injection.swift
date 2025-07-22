@@ -23,6 +23,9 @@ private extension Injection {
         container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorReal() }
             .inObjectScope(.container)
         
+        container.register(PushNotitificationsInteractor.self)  { _ in PushNotitificationsInteractorReal() }
+            .inObjectScope(.container)
+        
         container.register(SDKInteractor.self)  { resolver in
             SDKInteractorReal(appState: resolver.resolve(AppState.self)!)
         }.inObjectScope(.container)
@@ -39,7 +42,8 @@ private extension Injection {
             Interactors(categoriesInteractor: resolver.resolve(CategoriesInteractor.self)!,
                         sdkInteractor: resolver.resolve(SDKInteractor.self)!,
                         browserInteractor: resolver.resolve(BrowserRegistrationInteractor.self)!,
-                        pinPadInteractor: resolver.resolve(PinPadInteractor.self)!)
+                        pinPadInteractor: resolver.resolve(PinPadInteractor.self)!,
+                        pushInteractor: resolver.resolve(PushNotitificationsInteractor.self)!)
         }.inObjectScope(.container)
         
         return container

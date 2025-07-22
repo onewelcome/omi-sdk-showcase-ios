@@ -36,7 +36,7 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
     
     func register() {
         guard appState.system.isSDKInitialized else {
-            appState.setSystemError(string: "SDK not initialized")
+            appState.setSystemInfo(string: "SDK not initialized")
             return
         }
         sdkInteractor.register(with: ShowCaseIdentityProvider.default)
@@ -46,7 +46,7 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
         guard let challenge else { return }
         
         challenge.sender.cancel(challenge)
-        appState.unsetSystemError()
+        appState.unsetSystemInfo()
     }
     
     func didRegisterUser(profileId: String) {
@@ -77,7 +77,7 @@ extension BrowserRegistrationInteractorReal {
     
     func didFailToRegisterUser(with error: Error) {
         appState.system.restorePreviousUserState()
-        appState.setSystemError(string: error.localizedDescription)
+        appState.setSystemInfo(string: error.localizedDescription)
         challenge = nil
     }
 }
