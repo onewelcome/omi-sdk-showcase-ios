@@ -5,11 +5,11 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var system: AppState.System
-    @State var category: Category
-    @State var isExpanded = false
-    @State var actions = [Action]()
-    @State var errorValue = ""
-    @State var isProcessing = false
+    @State internal var category: Category
+    @State internal var isExpanded = false
+    @State internal var actions = [Action]()
+    @State internal var errorValue = ""
+    @State internal var isProcessing = false
     
     var body: some View {
         HStack {
