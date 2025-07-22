@@ -38,14 +38,14 @@ class PinPadInteractorReal: PinPadInteractor {
     }
     
     func showError(_ error: any Error) {
-        appState.setSystemError(string: error.localizedDescription)
+        appState.setSystemInfo(string: error.localizedDescription)
     }
     
     func cancelChangingPIN() {
         guard let pinChallenge else { return }
         
         pinChallenge.sender.cancel(pinChallenge)
-        appState.unsetSystemError()
+        appState.unsetSystemInfo()
         self.pinChallenge = nil
     }
     
@@ -53,7 +53,7 @@ class PinPadInteractorReal: PinPadInteractor {
         guard let createPinChallenge else { return }
         
         createPinChallenge.sender.cancel(createPinChallenge)
-        appState.unsetSystemError()
+        appState.unsetSystemInfo()
         self.createPinChallenge = nil
     }
     
@@ -64,7 +64,7 @@ class PinPadInteractorReal: PinPadInteractor {
     
     func validate(pin: String) {
         if let providedPin, providedPin != pin {
-            appState.setSystemError(string: "Provided PIN does not match the previous one")
+            appState.setSystemInfo(string: "Provided PIN does not match the previous one")
             return
         }
         
@@ -100,10 +100,10 @@ private extension PinPadInteractorReal {
             appState.system.pinPadState = .created
             providedPin = pin
         case .created:
-            appState.unsetSystemError()
+            appState.unsetSystemInfo()
             handleChallenge(for: pin)
         case .changing:
-            appState.unsetSystemError()
+            appState.unsetSystemInfo()
             handleChallenge(for: pin)
         case .hidden:
             break

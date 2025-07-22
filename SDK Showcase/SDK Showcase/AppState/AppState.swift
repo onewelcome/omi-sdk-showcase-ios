@@ -13,12 +13,12 @@ class AppState: ObservableObject {
         resetRegisteredUsers()
     }
     
-    func setSystemError(string: String) {
-        system.setError(string)
+    func setSystemInfo(string: String) {
+        system.setInfo(string)
     }
-    
-    func unsetSystemError() {
-        system.unsetError()
+
+    func unsetSystemInfo() {
+        system.unsetInfo()
     }
     
     func resetRegisteredUsers() {
