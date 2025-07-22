@@ -23,6 +23,9 @@ private extension Injection {
         container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorReal() }
             .inObjectScope(.container)
         
+        container.register(PushNotitificationsInteractor.self)  { _ in PushNotitificationsInteractorReal() }
+            .inObjectScope(.container)
+        
         container.register(SDKInteractor.self)  { resolver in
             SDKInteractorReal(appState: resolver.resolve(AppState.self)!)
         }.inObjectScope(.container)
@@ -44,7 +47,8 @@ private extension Injection {
                         sdkInteractor: resolver.resolve(SDKInteractor.self)!,
                         browserInteractor: resolver.resolve(BrowserRegistrationInteractor.self)!,
                         pinPadInteractor: resolver.resolve(PinPadInteractor.self)!,
-                        qrScannerInteractor: resolver.resolve(QRScannerInteractor.self)!)
+                        qrScannerInteractor: resolver.resolve(QRScannerInteractor.self)!,
+                        pushInteractor: resolver.resolve(PushNotitificationsInteractor.self)!)
         }.inObjectScope(.container)
         
         return container

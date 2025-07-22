@@ -32,7 +32,7 @@ struct PinPad: View {
             }
             
             Spacer()
-            if system.lastErrorDescription != nil {
+            if system.lastInfoDescription != nil {
                 Text(errorText)
                     .foregroundColor(.red)
                     .monospaced()
@@ -104,10 +104,10 @@ struct PinPad: View {
 private extension PinPad {
     func reset() {
         pin.removeAll()
-        errorText = system.lastErrorDescription ?? ""
+        errorText = system.lastInfoDescription ?? ""
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             errorText = ""
-            system.unsetError()
+            system.unsetInfo()
         }
     }
     

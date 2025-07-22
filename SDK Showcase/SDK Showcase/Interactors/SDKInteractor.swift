@@ -27,6 +27,9 @@ protocol SDKInteractor {
     func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void)
     func changePin()
     
+    func enrollForMobileAuthentication()
+    func registerForPushNotifications()
+    
     func fetchUserProfiles()
     func authenticatorNames(for userId: String) -> [String]
     func authenticateUser(optionName: String)
@@ -139,10 +142,7 @@ class SDKInteractorReal: SDKInteractor {
     }
     
     func changePin() {
-        guard userClient.authenticatedUserProfile != nil else {
-            appState.setSystemError(string: "You must be authenticated to change your PIN.")
-            return
-        }
+        precheck()
         userClient.changePin(delegate: self)
     }
     
@@ -168,6 +168,36 @@ class SDKInteractorReal: SDKInteractor {
         }
         userClient.authenticateUserWith(profile: userProfile, authenticator: authenticator, delegate: self)
     }
+    
+    
+    func enrollForMobileAuthentication() {
+        precheck()
+        userClient.enrollMobileAuth { [self] error in
+            if let error {
+                appState.setSystemInfo(string: error.localizedDescription)
+            } else {
+                appState.setSystemInfo(string: "User successfully enrolled for mobile authentication!")
+            }
+        }
+    }
+    
+    func registerForPushNotifications() {
+        precheck()
+        pushInteractor.registerForPushNotifications { [self] token in
+            guard let tokenData = token.data(using: .utf8) else {
+                appState.setSystemInfo(string: "No token data. Push registration failed!")
+                return
+            }
+            
+            userClient.enrollPushMobileAuth(with: tokenData) { [self] error in
+                if let error {
+                    appState.setSystemInfo(string: error.localizedDescription)
+                } else {
+                    appState.setSystemInfo(string: "User successfully registed for push notifications!")
+                }
+            }
+        }
+    }
 }
 //MARK: - UserProfile formatting
 extension SDKInteractorReal {
@@ -186,7 +216,7 @@ extension SDKInteractorReal: ChangePinDelegate {
     func userClient(_ userClient: any OneginiSDKiOS.UserClient, didReceivePinChallenge challenge: any OneginiSDKiOS.PinChallenge) {
         pinPadInteractor.setPinChallenge(challenge)
         if let _ = challenge.error {
-            appState.setSystemError(string: "Wrong previous PIN, please try again (\(challenge.remainingFailureCount))")
+            appState.setSystemInfo(string: "Wrong previous PIN, please try again (\(challenge.remainingFailureCount))")
             return
         }
         
@@ -198,7 +228,7 @@ extension SDKInteractorReal: ChangePinDelegate {
     }
 
     func userClient(_ userClient: any UserClient, didFailToChangePinForUser profile: any UserProfile, error: any Error) {
-        appState.setSystemError(string: error.localizedDescription)
+        appState.setSystemInfo(string: error.localizedDescription)
     }
 }
 
@@ -241,23 +271,23 @@ extension SDKInteractorReal: RegistrationDelegate {
 extension SDKInteractorReal: AuthenticationDelegate {
     func userClient(_ userClient: UserClient, didReceiveCustomAuthFinishAuthenticationChallenge challenge: CustomAuthFinishAuthenticationChallenge) {
         // not needed for pin authenticator
-        appState.setSystemError(string: "didReceiveCustomAuthFinishAuthenticationChallenge not handled yet")
+        appState.setSystemInfo(string: "didReceiveCustomAuthFinishAuthenticationChallenge not handled yet")
     }
     
     func userClient(_ userClient: UserClient, didAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, info customAuthInfo: CustomInfo?) {
-        appState.unsetSystemError()
+        appState.unsetSystemInfo()
         appState.system.setUserState(.authenticated(userProfile.profileId))
         appState.system.pinPadState = .hidden
     }
     
     func userClient(_ userClient: UserClient, didFailToAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, error: Error) {
         // TODO: don't we want to use ErrorMapper from old ExampleApp?
-        appState.setSystemError(string: "Authentication failed")
+        appState.setSystemInfo(string: "Authentication failed")
     }
 }
 
 //MARK: - Private Protocol Extension
-private extension SDKInteractor {
+private extension SDKInteractorReal {
     var browserInteractor: BrowserRegistrationInteractor {
         @Injected var interactors: Interactors
         return interactors.browserInteractor
@@ -266,7 +296,17 @@ private extension SDKInteractor {
         @Injected var interactors: Interactors
         return interactors.pinPadInteractor
     }
-
+    
+    var pushInteractor: PushNotitificationsInteractor {
+        @Injected var interactors: Interactors
+        return interactors.pushInteractor
+    }
+    
+    func precheck() {
+        if userClient.authenticatedUserProfile == nil {
+            appState.setSystemInfo(string: "You must be authenticated first.")
+        }
+    }
     
     func mapSDKConfigModel(_ model: SDKConfigModel) -> OneginiSDKiOS.ConfigModel {
         return ConfigModel(dictionary: model.dictionary)

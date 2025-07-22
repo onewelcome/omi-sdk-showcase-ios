@@ -2,7 +2,20 @@
 
 import Foundation
 
+enum Options: String {
+    case unknown
+    case initialize = "Initialize"
+    case reset = "Reset"
+    case changePin = "Change Pin"
+    case enroll = "Enroll for mobile authentication"
+    case pushes = "Register for push notifications"
+}
+
 struct Option: AppModel {
     let name: String
+    var type: Options {
+        return Options(rawValue: name) ?? .unknown
+    }
+    
     private(set) var logo: String?
 }
