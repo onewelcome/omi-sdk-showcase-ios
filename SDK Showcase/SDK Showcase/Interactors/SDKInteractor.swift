@@ -57,12 +57,10 @@ class SDKInteractorReal: SDKInteractor {
     }
     
     var shouldEnableUserAuthenticatorSelection: Bool {
-        guard let authenticatedUserId = userClient.authenticatedUserProfile?.profileId else { return false }
-        let isEnrolled = userClient.isMobileAuthEnrolled(for: ShowcaseProfile(profileId: authenticatedUserId))
-        guard isEnrolled else {
+        guard let authenticatedUserId = userClient.authenticatedUserProfile?.profileId,
+              userClient.isMobileAuthEnrolled(for: ShowcaseProfile(profileId: authenticatedUserId)) else {
             return false
         }
-        
         return true
     }
     

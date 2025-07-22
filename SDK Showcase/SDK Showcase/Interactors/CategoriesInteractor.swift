@@ -58,11 +58,9 @@ struct CategoriesInteractorReal: CategoriesInteractor {
                  optionalActions: []),
         Category(name: "Mobile authentication",
                  description: "Here you can enroll your device for mobile authentication and register for push notifications. ",
-                 options: [Option(name: Options.enroll.rawValue,
-                                  logo: "iphone"),
-                           Option(name: Options.pushes.rawValue,
-                                            logo: "app.badge")],
-                 selection: [],
+                 options: [Option(name: Options.enroll.rawValue, logo: "iphone"),
+                           Option(name: Options.pushes.rawValue, logo: "app.badge")],
+                 selection: mobileAuthenticaionSelections,
                  requiredActions: [],
                  optionalActions: []),
         Category(name: "User deregistration",
@@ -85,4 +83,10 @@ private extension CategoriesInteractorReal {
     var userAuthenticationSelections: [Selection] {
         interactor.userAuthenticatorOptionNames.map { Selection(name: $0) }
     }
+    
+    var mobileAuthenticaionSelections: [Selection] {
+        [Selection(name: Selections.loginWithOtp.rawValue,
+                   disabled: !interactor.shouldEnableUserAuthenticatorSelection)]
+    }
+
 }

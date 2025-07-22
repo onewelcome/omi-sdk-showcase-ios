@@ -12,6 +12,7 @@ extension AppState {
         @Published private var previousUserState: UserState?
         @Published private(set) var userState: UserState = .notRegistered
         @Published var pinPadState: PinPadState = .hidden
+        @Published var shouldShowQRScanner = false
         
         var hasError: Bool {
             lastInfoDescription != nil
@@ -41,8 +42,6 @@ extension AppState {
             get { pinPadState != .hidden }
             set { pinPadState = newValue ? .changing : .hidden }
         }
-        
-        var shouldShowQRScanner: Bool = true
         
         func setInfo(_ description: String) {
             lastInfoDescription = description

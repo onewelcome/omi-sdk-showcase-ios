@@ -91,6 +91,11 @@ extension ContentView {
         return interactors.pinPadInteractor
     }
     
+    var qrScannerInteractor: QRScannerInteractor {
+        @Injected var interactors: Interactors
+        return interactors.qrScannerInteractor
+    }
+
     var initializationStatus: String {
         system.isSDKInitialized ? "✅ SDK initialized" : "❌ SDK not initialized \(errorValue)"
     }

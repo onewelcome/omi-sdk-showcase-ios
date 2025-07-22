@@ -6,6 +6,7 @@ enum Selections: String {
     case unknown
     case cancelRegistration = "Cancel registration"
     case browserRegistration = "Browser registration"
+    case loginWithOtp = "Login with QR Code"
 }
 
 struct Selection: AppModel {
@@ -16,10 +17,4 @@ struct Selection: AppModel {
     }
     
     private(set) var logo: String?
-}
-
-extension Selection {
-    enum predefinedNames: String, CaseIterable {
-        case loginWithOtp = "Login with QR Code"
-    }
 }
