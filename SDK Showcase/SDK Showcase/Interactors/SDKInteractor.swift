@@ -60,12 +60,9 @@ class SDKInteractorReal: SDKInteractor {
     }
     
     var shouldEnableUserAuthenticatorSelection: Bool {
-        // TODO: take that from userState!
-        guard let authenticatedUserId = userClient.authenticatedUserProfile?.profileId,
-              userClient.isMobileAuthEnrolled(for: ShowcaseProfile(profileId: authenticatedUserId)) else {
-            return false
-        }
-        return true
+        let isAuthenticated = appState.system.userState.userId != nil
+        let isEnrolled = appState.system.enrollmentState != EnrollmentState.unenrolled
+        return isAuthenticated && isEnrolled
     }
     
     func authenticatorNames(for userId: String) -> [String] {
@@ -217,9 +214,11 @@ class SDKInteractorReal: SDKInteractor {
     }
     
     func handleOtp(_ code: String) {
-    // TODO: handle code
-        let canHandle = userClient.canHandleOTPMobileAuthRequest(otp: code)
-        print(canHandle)
+        guard userClient.canHandleOTPMobileAuthRequest(otp: code) else {
+            appState.setSystemInfo(string: "Invalid otp code or previous request in progress.")
+            return
+        }
+        userClient.handleOTPMobileAuthRequest(otp: code, delegate: self)
     }
 }
 
@@ -308,6 +307,21 @@ extension SDKInteractorReal: AuthenticationDelegate {
     func userClient(_ userClient: UserClient, didFailToAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, error: Error) {
         // TODO: don't we want to use ErrorMapper from old ExampleApp?
         appState.setSystemInfo(string: "Authentication failed")
+    }
+}
+
+//MARK: - MobileAuthRequestDelegate
+extension SDKInteractorReal: MobileAuthRequestDelegate {
+    func userClient(_ userClient: UserClient, didReceiveConfirmation confirmation: @escaping (Bool) -> Void, for request: MobileAuthRequest) {
+        // now we can ask the user to donfirm or deny the request. For Showcase App we confirm it right away (at least for otp)
+        confirmation(true)
+    }
+    func userClient(_ userClient: UserClient, didFailToHandleOTPMobileAuthRequest otp: String, error: any Error) {
+        appState.setSystemInfo(string: error.localizedDescription)
+    }
+
+    func userClient(_ userClient: UserClient, didHandleRequest request: MobileAuthRequest, authenticator: Authenticator?, info customAuthenticatorInfo: CustomInfo?) {
+        appState.setSystemInfo(string: "The transaction has been confirmed successfully.")
     }
 }
 

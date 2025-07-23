@@ -3,7 +3,7 @@
 import SwiftUI
 
 struct Alert: View {
-    private let visibilityTime = 3.0
+    private let visibilityTime = 5.0
     @Injected private var appState: AppState
     @State private(set) var text = ""
     
