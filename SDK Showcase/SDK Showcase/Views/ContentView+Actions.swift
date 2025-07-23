@@ -24,6 +24,7 @@ extension ContentView {
                 system.unsetInfo()
                 system.isSDKInitialized = true
                 sdkInteractor.fetchUserProfiles()
+                sdkInteractor.fetchEnrollment()
             case .failure(let error):
                 errorValue = error.localizedDescription
                 system.setInfo(errorValue)

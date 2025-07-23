@@ -31,6 +31,7 @@ protocol SDKInteractor {
     func registerForPushNotifications()
     
     func fetchUserProfiles()
+    func fetchEnrollment()
     func authenticatorNames(for userId: String) -> [String]
     func authenticateUser(optionName: String)
 }
@@ -146,6 +147,18 @@ class SDKInteractorReal: SDKInteractor {
         appState.resetRegisteredUsers()
         let fetchedUserProfiles = userClient.userProfiles.map { AppState.UserData(userId: $0.profileId) }
         fetchedUserProfiles.forEach { userData in appState.addRegisteredUser(userData) }
+    }
+    
+    func fetchEnrollment() {
+        guard let id = appState.system.userState.userId else { return }
+
+        let user = ShowcaseProfile(profileId: id)
+        if userClient.isMobileAuthEnrolled(for: user) {
+            appState.system.setEnrollmentState(.mobile)
+        }
+        if userClient.isPushMobileAuthEnrolled(for: user) {
+            appState.system.setEnrollmentState(.push)
+        }
     }
     
     func authenticateUser(optionName: String) {
@@ -275,6 +288,7 @@ extension SDKInteractorReal: AuthenticationDelegate {
         appState.unsetSystemInfo()
         appState.system.setUserState(.authenticated(userProfile.profileId))
         appState.system.pinPadState = .hidden
+        fetchEnrollment()
     }
     
     func userClient(_ userClient: UserClient, didFailToAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, error: Error) {
