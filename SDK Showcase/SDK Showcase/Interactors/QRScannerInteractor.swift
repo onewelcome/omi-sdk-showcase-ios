@@ -15,7 +15,6 @@ class QRScannerInteractorReal: QRScannerInteractor {
     @Injected var appState: AppState
     
     func scan() {
-        // TODO: Show QR scaner here
         appState.system.shouldShowQRScanner = true
     }
     
