@@ -24,6 +24,7 @@ extension ContentView {
                 system.unsetInfo()
                 system.isSDKInitialized = true
                 sdkInteractor.fetchUserProfiles()
+                sdkInteractor.fetchEnrollment()
             case .failure(let error):
                 errorValue = error.localizedDescription
                 system.setInfo(errorValue)
@@ -114,6 +115,17 @@ extension ContentView {
             "👥 \(sdkInteractor.userAuthenticatorOptionNames.count) registered users"
         case .authenticated(let userId):
             "👤 User authenticated as \(userId)"
+        }
+    }
+    
+    var enrollmentStateDescription: String {
+        switch system.enrollmentState {
+        case .unenrolled:
+            "⚠️ User not enrolled for mobile authentication"
+        case .mobile:
+            "📲 User enrolled for mobile authentication"
+        case .push:
+            "📳 User enrolled for push notifications"
         }
     }
     

@@ -59,7 +59,7 @@ class PinPadInteractorReal: PinPadInteractor {
     
     func showPinPad(for state: PinPadState) {
         providedPin = nil
-        appState.system.pinPadState = state
+        appState.system.setPinPadState(state)
     }
     
     func validate(pin: String) {
@@ -83,7 +83,7 @@ class PinPadInteractorReal: PinPadInteractor {
     }
     
     func didChangePinForUser() {
-        appState.system.pinPadState = .hidden
+        appState.system.setPinPadState(.hidden)
         pinChallenge = nil
     }
 }
@@ -97,7 +97,7 @@ private extension PinPadInteractorReal {
     func handleValidatedPin(_ pin: String) {
         switch appState.system.pinPadState {
         case .creating:
-            appState.system.pinPadState = .created
+            appState.system.setPinPadState(.created)
             providedPin = pin
         case .created:
             appState.unsetSystemInfo()

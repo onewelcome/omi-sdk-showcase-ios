@@ -5,4 +5,12 @@ enum UserState {
     case registering
     case registered
     case authenticated(String)
+    
+    var userId: String? {
+        if case .authenticated(let id) = self {
+            return id
+        } else {
+            return nil
+        }
+    }
 }
