@@ -85,7 +85,7 @@ struct ContentView: View {
             SheetViewForPinPad()
         }
         .sheet(isPresented: $system.shouldShowQRScanner) {
-            SheetViewForCGImageView()
+            SheetViewForQRScanner()
         }
         HStack {
             ForEach(category.options) { option in

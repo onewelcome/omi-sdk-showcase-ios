@@ -1,16 +1,15 @@
 //  Copyright © 2025 Onewelcome Mobile Identity. All rights reserved.
 import SwiftUI
-//ScannerView
-struct SheetViewForCGImageView: View {
+
+struct SheetViewForQRScanner: View {
     @ObservedObject var viewModel = QRCodeViewModel()
     
     var body: some View {
         VStack {
             SheetViewDismiss()
-            Text("Keep scanning for QR-codes")
-                                    .font(.subheadline)
-            Text(viewModel.lastCode ?? "No code found") // TODO: temporary
-            QRViewPresenter()
+            Text("Scan OTP QR code")
+                .font(.subheadline)
+            QRScannerPresenter()
                 .setQRCodeHandler(viewModel.onFoundQrCode)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)

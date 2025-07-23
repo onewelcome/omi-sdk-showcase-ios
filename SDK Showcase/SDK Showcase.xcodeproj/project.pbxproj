@@ -51,10 +51,11 @@
 		57F4646A2D3F80E200C64156 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57F464692D3F80E200C64156 /* Preview Assets.xcassets */; };
 		57F4647B2D43831700C64156 /* Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F4647A2D43831700C64156 /* Injection.swift */; };
 		57F464822D4383C000C64156 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464812D4383C000C64156 /* AppState.swift */; };
+		9E3523892E31950E00975920 /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3523882E31950E00975920 /* CameraPreview.swift */; };
 		9E72F91B2E1E9D1900FB4637 /* UserState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F91A2E1E9D1900FB4637 /* UserState.swift */; };
 		9E72F91D2E1FD9F400FB4637 /* ShowCaseProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F91C2E1FD9F400FB4637 /* ShowCaseProfile.swift */; };
 		9E72F9552E2ED11700FB4637 /* SheetViewForQRCodeScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F9542E2ED11700FB4637 /* SheetViewForQRCodeScanner.swift */; };
-		9E72F9572E2ED13800FB4637 /* QRCodeScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F9562E2ED13800FB4637 /* QRCodeScanner.swift */; };
+		9E72F9572E2ED13800FB4637 /* QRScannerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F9562E2ED13800FB4637 /* QRScannerPresenter.swift */; };
 		9E72F98A2E2FAA3E00FB4637 /* QRScannerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F9892E2FAA3E00FB4637 /* QRScannerInteractor.swift */; };
 		9E72F9992E311C4200FB4637 /* QRCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F9982E311C4200FB4637 /* QRCodeViewModel.swift */; };
 		C74C414AFA857D101C71411F /* OneginiConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA6110C3FBFD511DB8EADE4 /* OneginiConfigModel.m */; };
@@ -132,10 +133,11 @@
 		57F464692D3F80E200C64156 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		57F4647A2D43831700C64156 /* Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injection.swift; sourceTree = "<group>"; };
 		57F464812D4383C000C64156 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		9E3523882E31950E00975920 /* CameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
 		9E72F91A2E1E9D1900FB4637 /* UserState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserState.swift; sourceTree = "<group>"; };
 		9E72F91C2E1FD9F400FB4637 /* ShowCaseProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCaseProfile.swift; sourceTree = "<group>"; };
 		9E72F9542E2ED11700FB4637 /* SheetViewForQRCodeScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewForQRCodeScanner.swift; sourceTree = "<group>"; };
-		9E72F9562E2ED13800FB4637 /* QRCodeScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScanner.swift; sourceTree = "<group>"; };
+		9E72F9562E2ED13800FB4637 /* QRScannerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerPresenter.swift; sourceTree = "<group>"; };
 		9E72F9892E2FAA3E00FB4637 /* QRScannerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerInteractor.swift; sourceTree = "<group>"; };
 		9E72F9982E311C4200FB4637 /* QRCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewModel.swift; sourceTree = "<group>"; };
 		D9B0665B0B42A61C01C8351A /* OneginiConfigModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OneginiConfigModel.h; path = Configuration/OneginiConfigModel.h; sourceTree = "<group>"; };
@@ -219,7 +221,8 @@
 				578DC4EC2D9FDC83008D2576 /* ActionView.swift */,
 				578BC3152D43A6A400713CF7 /* CategoriesList.swift */,
 				57EB55E22E03E2C50072E496 /* PinPad.swift */,
-				9E72F9562E2ED13800FB4637 /* QRCodeScanner.swift */,
+				9E72F9562E2ED13800FB4637 /* QRScannerPresenter.swift */,
+				9E3523882E31950E00975920 /* CameraPreview.swift */,
 				57EB55EA2E0540F10072E496 /* SheetView */,
 				57E9E1462DB7BA1F00168A93 /* WebView */,
 			);
@@ -498,7 +501,7 @@
 				578BC30B2D4397A700713CF7 /* Interactors.swift in Sources */,
 				578BC3182D43A73500713CF7 /* UserData.swift in Sources */,
 				578DC4E72D9E6858008D2576 /* TextResult.swift in Sources */,
-				9E72F9572E2ED13800FB4637 /* QRCodeScanner.swift in Sources */,
+				9E72F9572E2ED13800FB4637 /* QRScannerPresenter.swift in Sources */,
 				57F464632D3F80DB00C64156 /* SDK_ShowcaseApp.swift in Sources */,
 				578BC3162D43A6A400713CF7 /* CategoriesList.swift in Sources */,
 				570AB2642DA90CD400BF2D7F /* Binding.swift in Sources */,
@@ -527,6 +530,7 @@
 				578BC31A2D4A1AD100713CF7 /* Category.swift in Sources */,
 				57B8FA992E17C80B007EBECE /* PinPadState.swift in Sources */,
 				57F464822D4383C000C64156 /* AppState.swift in Sources */,
+				9E3523892E31950E00975920 /* CameraPreview.swift in Sources */,
 				C74C414AFA857D101C71411F /* OneginiConfigModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
