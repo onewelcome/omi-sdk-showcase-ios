@@ -9,7 +9,7 @@ extension AppState {
         @Published private var previousUserState: UserState?
         @Published private(set) var userState: UserState = .notRegistered
         @Published private(set) var enrollmentState: EnrollmentState = .unenrolled
-        @Published var pinPadState: PinPadState = .hidden
+        @Published private(set) var pinPadState: PinPadState = .hidden
         
         var hasError: Bool {
             lastInfoDescription != nil
@@ -33,6 +33,10 @@ extension AppState {
         
         func setEnrollmentState(_ newState: EnrollmentState) {
             enrollmentState = newState
+        }
+        
+        func setPinPadState(_ newState: PinPadState) {
+            pinPadState = newState
         }
         
         func restorePreviousUserState() {

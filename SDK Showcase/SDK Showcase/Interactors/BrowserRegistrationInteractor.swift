@@ -51,8 +51,8 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
     
     func didRegisterUser(profileId: String) {
         appState.addRegisteredUser(.init(userId: profileId))
-        
-        appState.system.pinPadState = .hidden
+        appState.system.setEnrollmentState(.unenrolled)
+        appState.system.setPinPadState(.hidden)
         challenge = nil
     }
 }

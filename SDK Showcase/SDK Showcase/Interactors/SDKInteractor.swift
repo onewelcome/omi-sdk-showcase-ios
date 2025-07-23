@@ -250,7 +250,7 @@ extension SDKInteractorReal: RegistrationDelegate {
         }
         switch appState.system.pinPadState {
         case .changing:
-            appState.system.pinPadState = .hidden
+            appState.system.setPinPadState(.hidden)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 guard let self else { return }
                 self.pinPadInteractor.setCreatePinChallenge(challenge)
@@ -284,7 +284,7 @@ extension SDKInteractorReal: AuthenticationDelegate {
     func userClient(_ userClient: UserClient, didAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, info customAuthInfo: CustomInfo?) {
         appState.unsetSystemInfo()
         appState.system.setUserState(.authenticated(userProfile.profileId))
-        appState.system.pinPadState = .hidden
+        appState.system.setPinPadState(.hidden)
         fetchEnrollment()
     }
     
