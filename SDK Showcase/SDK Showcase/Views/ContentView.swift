@@ -57,6 +57,9 @@ struct ContentView: View {
                     Section(content: {
                         TextResult(result: initializationStatus)
                         TextResult(result: userStateDescription)
+                        if case .authenticated = system.userState {
+                            TextResult(result: enrollmentStateDescription)
+                        }
                     }, header: {
                         Text("Result")
                     })

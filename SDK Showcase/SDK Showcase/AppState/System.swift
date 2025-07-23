@@ -5,13 +5,11 @@ import Foundation
 extension AppState {
     class System: Equatable, ObservableObject {
         @Published var isSDKInitialized = false
-        @Published var isEnrolled = false
-        @Published var isMobileEnrolled = false
-        @Published var isPushEnrolled = false
         @Published var lastInfoDescription: String? = nil
         @Published private var previousUserState: UserState?
         @Published private(set) var userState: UserState = .notRegistered
-        @Published var pinPadState: PinPadState = .hidden
+        @Published private(set) var enrollmentState: EnrollmentState = .unenrolled
+        @Published private(set) var pinPadState: PinPadState = .hidden
         
         var hasError: Bool {
             lastInfoDescription != nil
@@ -33,6 +31,14 @@ extension AppState {
             userState = newState
         }
         
+        func setEnrollmentState(_ newState: EnrollmentState) {
+            enrollmentState = newState
+        }
+        
+        func setPinPadState(_ newState: PinPadState) {
+            pinPadState = newState
+        }
+        
         func restorePreviousUserState() {
             userState = previousUserState ?? .notRegistered
         }
@@ -51,11 +57,9 @@ extension AppState {
         }
 
         func reset() {
-            isEnrolled = false
             isSDKInitialized = false
-            isMobileEnrolled = false
-            isPushEnrolled = false
-            
+
+            enrollmentState = .unenrolled
             userState = .notRegistered
             pinPadState = .hidden
             
@@ -67,6 +71,6 @@ extension AppState {
 extension AppState.System {
     static func == (lhs: AppState.System, rhs: AppState.System) -> Bool {
         lhs.isSDKInitialized == rhs.isSDKInitialized &&
-        lhs.isEnrolled == rhs.isEnrolled
+        lhs.enrollmentState == rhs.enrollmentState
     }
 }
