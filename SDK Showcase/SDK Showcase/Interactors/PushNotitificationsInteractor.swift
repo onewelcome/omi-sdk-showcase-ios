@@ -42,6 +42,7 @@ class PushNotitificationsInteractorReal: NSObject, PushNotitificationsInteractor
 //MARK: - UNUserNotificationCenterDelegate
 extension PushNotitificationsInteractorReal: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
+        //TODO: Handle in next PR
+        completionHandler()
     }
 }
