@@ -112,7 +112,7 @@ extension ContentView {
     var enrollmentStateDescription: String {
         switch system.enrollmentState {
         case .unenrolled:
-            "User not enrolled for mobile authentication"
+            "⚠️ User not enrolled for mobile authentication"
         case .mobile:
             "📲 User enrolled for mobile authentication"
         case .push:

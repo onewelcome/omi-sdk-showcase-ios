@@ -150,13 +150,10 @@ class SDKInteractorReal: SDKInteractor {
     }
     
     func fetchEnrollment() {
-        guard let id = appState.system.userState.userId else { return }
-
-        let user = ShowcaseProfile(profileId: id)
-        if userClient.isMobileAuthEnrolled(for: user) {
+        if isMobileAuthEnrolled {
             appState.system.setEnrollmentState(.mobile)
         }
-        if userClient.isPushMobileAuthEnrolled(for: user) {
+        if isPushRegistered {
             appState.system.setEnrollmentState(.push)
         }
     }
@@ -316,6 +313,15 @@ private extension SDKInteractorReal {
     var isMobileAuthEnrolled: Bool {
         guard let profileId = appState.system.userState.userId,
               userClient.isMobileAuthEnrolled(for: ShowcaseProfile(profileId: profileId)) else {
+            return false
+        }
+        
+        return true
+    }
+    
+    var isPushRegistered: Bool {
+        guard let profileId = appState.system.userState.userId,
+              userClient.isPushMobileAuthEnrolled(for: ShowcaseProfile(profileId: profileId)) else {
             return false
         }
         
