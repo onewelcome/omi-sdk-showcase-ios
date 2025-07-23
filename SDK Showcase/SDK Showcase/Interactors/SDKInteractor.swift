@@ -166,6 +166,7 @@ class SDKInteractorReal: SDKInteractor {
             if let error {
                 appState.setSystemInfo(string: error.localizedDescription)
             } else {
+                appState.system.setEnrollmentState(.mobile)
                 appState.setSystemInfo(string: "User successfully enrolled for mobile authentication!")
             }
         }
@@ -173,22 +174,28 @@ class SDKInteractorReal: SDKInteractor {
     
     func registerForPushNotifications() {
         precheck()
-        pushInteractor.registerForPushNotifications { [self] token in
-            guard let tokenData = token.data(using: .utf8) else {
-                appState.setSystemInfo(string: "No token data. Push registration failed!")
+        guard isMobileAuthEnrolled else {
+            appState.setSystemInfo(string: "You are not enrolled for mobile authentication. Please enroll first!")
+            return
+        }
+        pushInteractor.registerForPushNotifications { [self] (token, error) in
+            guard let token else {
+                appState.setSystemInfo(string: error?.localizedDescription ?? "Failed to register for push notifications.")
                 return
             }
-            
-            userClient.enrollPushMobileAuth(with: tokenData) { [self] error in
+            userClient.enrollPushMobileAuth(with: token) { [self] error in
                 if let error {
                     appState.setSystemInfo(string: error.localizedDescription)
                 } else {
-                    appState.setSystemInfo(string: "User successfully registed for push notifications!")
+                    appState.system.setEnrollmentState(.push)
+                    let token = token.map { String(format: "%02.2hhx", $0) }.joined()
+                    appState.setSystemInfo(string: "User successfully registed for push notifications!\n\nToken: \(token)")
                 }
             }
         }
     }
 }
+
 //MARK: - UserProfile formatting
 extension SDKInteractorReal {
     func formatCategoryName(userId: String, authenticatorName: String) -> String {
@@ -290,6 +297,15 @@ private extension SDKInteractorReal {
     var pushInteractor: PushNotitificationsInteractor {
         @Injected var interactors: Interactors
         return interactors.pushInteractor
+    }
+
+    var isMobileAuthEnrolled: Bool {
+        guard let profileId = appState.system.userState.userId,
+              userClient.isMobileAuthEnrolled(for: ShowcaseProfile(profileId: profileId)) else {
+            return false
+        }
+        
+        return true
     }
     
     func precheck() {

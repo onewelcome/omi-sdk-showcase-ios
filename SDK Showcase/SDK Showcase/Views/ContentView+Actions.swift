@@ -108,6 +108,17 @@ extension ContentView {
         }
     }
     
+    var enrollmentStateDescription: String {
+        switch system.enrollmentState {
+        case .unenrolled:
+            "User not enrolled for mobile authentication"
+        case .mobile:
+            "📲 User enrolled for mobile authentication"
+        case .push:
+            "📳 User enrolled for push notifications"
+        }
+    }
+    
     func binding(for action: Action) -> Binding<Action> {
         setDefaultValueIfNeeded(for: action)
         return .init(

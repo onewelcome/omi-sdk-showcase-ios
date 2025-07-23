@@ -32,6 +32,8 @@
 		57AE06712D92986B004A3CB9 /* Swinject.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57AE066F2D92986B004A3CB9 /* Swinject.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57AE067B2D952A43004A3CB9 /* SDKResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AE067A2D952A43004A3CB9 /* SDKResult.swift */; };
 		57B8FA992E17C80B007EBECE /* PinPadState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B8FA982E17C80B007EBECE /* PinPadState.swift */; };
+		57BDC97E2E2F9AFA00534D7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BDC97D2E2F9AFA00534D7E /* AppDelegate.swift */; };
+		57BDC9A52E2FB3B600534D7E /* EnrollmentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BDC9A42E2FB3AA00534D7E /* EnrollmentState.swift */; };
 		57E9E1382DB2426C00168A93 /* Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1372DB2425F00168A93 /* Selection.swift */; };
 		57E9E13A2DB2484D00168A93 /* BrowserRegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */; };
 		57E9E13C2DB271AA00168A93 /* SheetViewForWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */; };
@@ -105,6 +107,9 @@
 		57AE066F2D92986B004A3CB9 /* Swinject.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Swinject.xcframework; path = "SDK Showcase/Supporting Files/Swinject.xcframework"; sourceTree = "<group>"; };
 		57AE067A2D952A43004A3CB9 /* SDKResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKResult.swift; sourceTree = "<group>"; };
 		57B8FA982E17C80B007EBECE /* PinPadState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinPadState.swift; sourceTree = "<group>"; };
+		57BDC97D2E2F9AFA00534D7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		57BDC9A32E2FAA7900534D7E /* SDK Showcase.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SDK Showcase.entitlements"; sourceTree = "<group>"; };
+		57BDC9A42E2FB3AA00534D7E /* EnrollmentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnrollmentState.swift; sourceTree = "<group>"; };
 		57E9E1372DB2425F00168A93 /* Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selection.swift; sourceTree = "<group>"; };
 		57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserRegistrationInteractor.swift; sourceTree = "<group>"; };
 		57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewForWebView.swift; sourceTree = "<group>"; };
@@ -182,6 +187,7 @@
 		578BC3112D43A5DC00713CF7 /* AppState */ = {
 			isa = PBXGroup;
 			children = (
+				57BDC9A42E2FB3AA00534D7E /* EnrollmentState.swift */,
 				57B8FA982E17C80B007EBECE /* PinPadState.swift */,
 				57F464812D4383C000C64156 /* AppState.swift */,
 				578BC30C2D439BED00713CF7 /* System.swift */,
@@ -237,6 +243,7 @@
 		578BC31E2D4A2D5000713CF7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				57BDC97D2E2F9AFA00534D7E /* AppDelegate.swift */,
 				57F464622D3F80DB00C64156 /* SDK_ShowcaseApp.swift */,
 				57F464662D3F80E200C64156 /* Assets.xcassets */,
 			);
@@ -302,6 +309,7 @@
 		57F464612D3F80DB00C64156 /* SDK Showcase */ = {
 			isa = PBXGroup;
 			children = (
+				57BDC9A32E2FAA7900534D7E /* SDK Showcase.entitlements */,
 				57E9E1452DB7B24300168A93 /* SDK-Showcase-Info.plist */,
 				57AE06792D952A29004A3CB9 /* Helpers */,
 				578BC31B2D4A1AD600713CF7 /* Model */,
@@ -458,6 +466,7 @@
 				9E72F91D2E1FD9F400FB4637 /* ShowCaseProfile.swift in Sources */,
 				578DC4ED2D9FDC83008D2576 /* ActionView.swift in Sources */,
 				57EB55E72E03E4D10072E496 /* SheetViewForPinPad.swift in Sources */,
+				57BDC97E2E2F9AFA00534D7E /* AppDelegate.swift in Sources */,
 				57E9E1402DB2734200168A93 /* BrowserView.swift in Sources */,
 				57005ABF2E29054800BBE63A /* ContentView+Actions.swift in Sources */,
 				57EB55E32E03E2C50072E496 /* PinPad.swift in Sources */,
@@ -476,6 +485,7 @@
 				57E9E1422DB7AE8700168A93 /* BrowserViewModel.swift in Sources */,
 				57E9E13C2DB271AA00168A93 /* SheetViewForWebView.swift in Sources */,
 				9E72F91B2E1E9D1900FB4637 /* UserState.swift in Sources */,
+				57BDC9A52E2FB3B600534D7E /* EnrollmentState.swift in Sources */,
 				578DC4EB2D9E88BE008D2576 /* SDKConfigModel.swift in Sources */,
 				578BC30D2D439BED00713CF7 /* System.swift in Sources */,
 				578BC3212D4A305C00713CF7 /* ContentView.swift in Sources */,
@@ -672,6 +682,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_ENTITLEMENTS = "SDK Showcase/SDK Showcase.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SDK Showcase/Preview Content\"";
@@ -711,6 +722,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_ENTITLEMENTS = "SDK Showcase/SDK Showcase.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SDK Showcase/Preview Content\"";
