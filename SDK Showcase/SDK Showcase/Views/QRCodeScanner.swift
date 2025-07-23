@@ -1,17 +1,21 @@
 //  Copyright © 2025 Onewelcome Mobile Identity. All rights reserved.
+
 import SwiftUI
 import AVFoundation
 
-import SwiftUI
-struct QRCodeScanner: View {
+struct CGImageView: View {
     @Binding var image: CGImage?
     
     var body: some View {
         GeometryReader { geometry in
-            if let image = image {
+            if let image {
                 Image(decorative: image, scale: 1)
                     .resizable()
                     .scaledToFit()
+                    .frame(width: geometry.size.width,
+                           height: geometry.size.height)
+            } else {
+                ContentUnavailableView("No camera feed", systemImage: "xmark.circle.fill")
                     .frame(width: geometry.size.width,
                            height: geometry.size.height)
             }
@@ -19,140 +23,27 @@ struct QRCodeScanner: View {
     }
 }
 
-import Foundation
-import AVFoundation
-
-class QrCodeCameraDelegate: NSObject, AVCaptureMetadataOutputObjectsDelegate {
-    
-    var scanInterval: Double = 1.0
-    var lastTime = Date(timeIntervalSince1970: 0)
-    
-    var onResult: (String) -> Void = { _  in }
-    var mockData: String?
-    
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        if let metadataObject = metadataObjects.first {
-            guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
-            guard let stringValue = readableObject.stringValue else { return }
-            foundBarcode(stringValue)
-        }
-    }
-    
-    @objc func onSimulateScanning(){
-        foundBarcode(mockData ?? "Simulated QR-code result.")
-    }
-    
-    func foundBarcode(_ stringValue: String) {
-        let now = Date()
-        if now.timeIntervalSince(lastTime) >= scanInterval {
-            lastTime = now
-            self.onResult(stringValue)
-        }
-    }
-}
-
-
-import UIKit
-import AVFoundation
-
-
-class CameraPreview: UIView {
-    
-    private var label:UILabel?
-    
-    var previewLayer: AVCaptureVideoPreviewLayer?
-    var session = AVCaptureSession()
-    weak var delegate: QrCodeCameraDelegate?
-    
-    init(session: AVCaptureSession) {
-        super.init(frame: .zero)
-        self.session = session
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func createSimulatorView(delegate: QrCodeCameraDelegate){
-        self.delegate = delegate
-        self.backgroundColor = UIColor.black
-        label = UILabel(frame: self.bounds)
-        label?.numberOfLines = 4
-        label?.text = "Click here to simulate scan"
-        label?.textColor = UIColor.white
-        label?.textAlignment = .center
-        if let label = label {
-            addSubview(label)
-        }
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(onClick))
-        self.addGestureRecognizer(gesture)
-    }
-    
-    @objc func onClick(){
-        delegate?.onSimulateScanning()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        #if targetEnvironment(simulator)
-            label?.frame = self.bounds
-        #else
-            previewLayer?.frame = self.bounds
-        #endif
-    }
-}
-
-
 import SwiftUI
 import UIKit
 import AVFoundation
-
-struct QrCodeScannerView: UIViewRepresentable {
+//QRSCannerePresenter
+struct QRViewPresenter: UIViewRepresentable {
     
-    var supportedBarcodeTypes: [AVMetadataObject.ObjectType] = [.qr]
+    private var supportedBarcodeTypes: [AVMetadataObject.ObjectType] = [.qr]
     typealias UIViewType = CameraPreview
     
-    private var session = AVCaptureSession()//): AVCaptureSession?
+    private var session = AVCaptureSession()
     private let delegate = QrCodeCameraDelegate()
     private let metadataOutput = AVCaptureMetadataOutput()
     
-    
-    func torchLight(isOn: Bool) -> QrCodeScannerView {
-        if let backCamera = AVCaptureDevice.default(for: .video) {
-            if backCamera.hasTorch {
-                try? backCamera.lockForConfiguration()
-                if isOn {
-                    backCamera.torchMode = .on
-                } else {
-                    backCamera.torchMode = .off
-                }
-                backCamera.unlockForConfiguration()
-            }
-        }
-        return self
-    }
-    
-    func interval(delay: Double) -> QrCodeScannerView {
-        delegate.scanInterval = delay
-        return self
-    }
-    
-    func found(r: @escaping (String) -> Void) -> QrCodeScannerView {
-        delegate.onResult = r
-        return self
-    }
-    
-    func simulator(mockBarCode: String)-> QrCodeScannerView{
-        delegate.mockData = mockBarCode
+    func setQRCodeHandler(_ handler: @escaping (String) -> Void) -> QRViewPresenter {
+        delegate.onResult = handler
         return self
     }
     
     func setupCamera(_ uiView: CameraPreview) {
         if let backCamera = AVCaptureDevice.default(for: .video) {
             if let input = try? AVCaptureDeviceInput(device: backCamera) {
-                
-                session.sessionPreset = .photo
-                
                 if session.canAddInput(input) {
                     session.addInput(input)
                 }
@@ -169,10 +60,9 @@ struct QrCodeScannerView: UIViewRepresentable {
                 uiView.layer.addSublayer(previewLayer)
                 uiView.previewLayer = previewLayer
                 
-                session.startRunning()
+                startSession()
             }
         }
-        
     }
     
     func startSession() {
@@ -189,20 +79,10 @@ struct QrCodeScannerView: UIViewRepresentable {
         session.stopRunning()
     }
     
-    func makeUIView(context: UIViewRepresentableContext<QrCodeScannerView>) -> QrCodeScannerView.UIViewType {
-        let cameraView = CameraPreview(session: session)
-        
-        #if targetEnvironment(simulator)
-        cameraView.createSimulatorView(delegate: self.delegate)
-        #else
+    func makeUIView(context: UIViewRepresentableContext<QRViewPresenter>) -> QRViewPresenter.UIViewType {
+        let cameraView = CameraPreview()
         checkCameraAuthorizationStatus(cameraView)
-        #endif
-        
         return cameraView
-    }
-    
-    static func dismantleUIView(_ uiView: CameraPreview, coordinator: ()) {
-        uiView.session.stopRunning()
     }
     
     private func checkCameraAuthorizationStatus(_ uiView: CameraPreview) {
@@ -220,9 +100,48 @@ struct QrCodeScannerView: UIViewRepresentable {
         }
     }
     
-    func updateUIView(_ uiView: CameraPreview, context: UIViewRepresentableContext<QrCodeScannerView>) {
+    func updateUIView(_ uiView: CameraPreview, context: UIViewRepresentableContext<QRViewPresenter>) {
         uiView.setContentHuggingPriority(.defaultHigh, for: .vertical)
         uiView.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
 }
 
+class CameraPreview: UIView {
+    var previewLayer: AVCaptureVideoPreviewLayer?
+    
+    init() {
+        super.init(frame: .zero)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+        
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        previewLayer?.frame = self.bounds
+    }
+}
+
+
+class QrCodeCameraDelegate: NSObject, AVCaptureMetadataOutputObjectsDelegate {
+    private let scanInterval: Double = 1.0
+    private var lastTime = Date(timeIntervalSince1970: 0)
+    var onResult: (String) -> Void = { _  in }
+    
+    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+        if let metadataObject = metadataObjects.first {
+            guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
+            guard let stringValue = readableObject.stringValue else { return }
+            handleQRCodeString(stringValue)
+        }
+    }
+    
+    func handleQRCodeString(_ stringValue: String) {
+        let now = Date()
+        if now.timeIntervalSince(lastTime) >= scanInterval {
+            lastTime = now
+            self.onResult(stringValue)
+        }
+    }
+}

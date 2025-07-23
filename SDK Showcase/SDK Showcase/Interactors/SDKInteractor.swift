@@ -33,6 +33,8 @@ protocol SDKInteractor {
     func fetchUserProfiles()
     func authenticatorNames(for userId: String) -> [String]
     func authenticateUser(optionName: String)
+    
+    func handleOtp(_ code: String)
 }
 
 //MARK: - Real methods
@@ -57,6 +59,7 @@ class SDKInteractorReal: SDKInteractor {
     }
     
     var shouldEnableUserAuthenticatorSelection: Bool {
+        // TODO: take that from userState!
         guard let authenticatedUserId = userClient.authenticatedUserProfile?.profileId,
               userClient.isMobileAuthEnrolled(for: ShowcaseProfile(profileId: authenticatedUserId)) else {
             return false
@@ -195,6 +198,12 @@ class SDKInteractorReal: SDKInteractor {
                 }
             }
         }
+    }
+    
+    func handleOtp(_ code: String) {
+    // TODO: handle code
+        let canHandle = userClient.canHandleOTPMobileAuthRequest(otp: code)
+        print(canHandle)
     }
 }
 //MARK: - UserProfile formatting

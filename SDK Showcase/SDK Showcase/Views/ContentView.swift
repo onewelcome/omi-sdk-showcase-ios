@@ -82,7 +82,7 @@ struct ContentView: View {
             SheetViewForPinPad()
         }
         .sheet(isPresented: $system.shouldShowQRScanner) {
-            SheetViewForQRCodeScanner()
+            SheetViewForCGImageView()
         }
         HStack {
             ForEach(category.options) { option in
@@ -130,7 +130,7 @@ extension ContentView {
         case .browserRegistration:
             browserRegistration()
         case .loginWithOtp:
-            qrScannerInteractor.scan()
+            showQRScanner()
         case .unknown:
             if sdkInteractor.userAuthenticatorOptionNames.contains(selection.name) {
                 sdkInteractor.authenticateUser(optionName: selection.name)

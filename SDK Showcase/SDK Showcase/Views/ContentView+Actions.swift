@@ -72,6 +72,10 @@ extension ContentView {
     func cancelRegistration() {
         browserInteractor.cancelRegistration()
     }
+    
+    func showQRScanner() {
+        qrScannerInteractor.scan()
+    }
 }
     
 //MARK: - Helpers
