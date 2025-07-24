@@ -7,7 +7,7 @@ import OneginiSDKiOS
 protocol SDKInteractor {
     var builder: ClientBuilder { get set }
     var userAuthenticatorOptionNames: [String] { get }
-    var shouldEnableUserAuthenticatorSelection: Bool { get }
+    var shouldEnableLoginWithOTPSelection: Bool { get }
     /// Initializes the SDK, requires setting below methods
     /// - Parameter result: The result from the SDK
     func initializeSDK(result: @escaping SDKResult)
@@ -59,7 +59,7 @@ class SDKInteractorReal: SDKInteractor {
         return toReturn
     }
     
-    var shouldEnableUserAuthenticatorSelection: Bool {
+    var shouldEnableLoginWithOTPSelection: Bool {
         let isAuthenticated = appState.system.userState.userId != nil
         let isEnrolled = appState.system.enrollmentState != EnrollmentState.unenrolled
         return isAuthenticated && isEnrolled

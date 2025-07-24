@@ -86,7 +86,7 @@ private extension CategoriesInteractorReal {
     
     var mobileAuthenticaionSelections: [Selection] {
         [Selection(name: Selections.loginWithOtp.rawValue,
-                   disabled: !interactor.shouldEnableUserAuthenticatorSelection)]
+                   disabled: !interactor.shouldEnableLoginWithOTPSelection)]
     }
 
 }
