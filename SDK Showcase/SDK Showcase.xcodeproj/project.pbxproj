@@ -57,7 +57,6 @@
 		9E72F9552E2ED11700FB4637 /* SheetViewForQRCodeScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F9542E2ED11700FB4637 /* SheetViewForQRCodeScanner.swift */; };
 		9E72F9572E2ED13800FB4637 /* QRScannerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F9562E2ED13800FB4637 /* QRScannerPresenter.swift */; };
 		9E72F98A2E2FAA3E00FB4637 /* QRScannerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F9892E2FAA3E00FB4637 /* QRScannerInteractor.swift */; };
-		9E72F9992E311C4200FB4637 /* QRCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F9982E311C4200FB4637 /* QRCodeViewModel.swift */; };
 		C74C414AFA857D101C71411F /* OneginiConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA6110C3FBFD511DB8EADE4 /* OneginiConfigModel.m */; };
 		D99FC8F8E1D6A51A6CDEEF03 /* OneginiConfigModel.h in Headers */ = {isa = PBXBuildFile; fileRef = D9B0665B0B42A61C01C8351A /* OneginiConfigModel.h */; };
 /* End PBXBuildFile section */
@@ -139,7 +138,6 @@
 		9E72F9542E2ED11700FB4637 /* SheetViewForQRCodeScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewForQRCodeScanner.swift; sourceTree = "<group>"; };
 		9E72F9562E2ED13800FB4637 /* QRScannerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerPresenter.swift; sourceTree = "<group>"; };
 		9E72F9892E2FAA3E00FB4637 /* QRScannerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerInteractor.swift; sourceTree = "<group>"; };
-		9E72F9982E311C4200FB4637 /* QRCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewModel.swift; sourceTree = "<group>"; };
 		D9B0665B0B42A61C01C8351A /* OneginiConfigModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OneginiConfigModel.h; path = Configuration/OneginiConfigModel.h; sourceTree = "<group>"; };
 		FFA6110C3FBFD511DB8EADE4 /* OneginiConfigModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OneginiConfigModel.m; path = Configuration/OneginiConfigModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -249,7 +247,6 @@
 				578BC3252D4A5A9100713CF7 /* Action.swift */,
 				578BC3272D4A5CEA00713CF7 /* Option.swift */,
 				9E72F91C2E1FD9F400FB4637 /* ShowCaseProfile.swift */,
-				9E72F9982E311C4200FB4637 /* QRCodeViewModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -508,7 +505,6 @@
 				578BC3282D4A5CEA00713CF7 /* Option.swift in Sources */,
 				57E9E1422DB7AE8700168A93 /* BrowserViewModel.swift in Sources */,
 				57E9E13C2DB271AA00168A93 /* SheetViewForWebView.swift in Sources */,
-				9E72F9992E311C4200FB4637 /* QRCodeViewModel.swift in Sources */,
 				9E72F91B2E1E9D1900FB4637 /* UserState.swift in Sources */,
 				57BDC9A52E2FB3B600534D7E /* EnrollmentState.swift in Sources */,
 				578DC4EB2D9E88BE008D2576 /* SDKConfigModel.swift in Sources */,

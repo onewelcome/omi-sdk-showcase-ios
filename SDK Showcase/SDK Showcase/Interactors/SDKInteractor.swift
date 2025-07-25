@@ -313,7 +313,8 @@ extension SDKInteractorReal: AuthenticationDelegate {
 //MARK: - MobileAuthRequestDelegate
 extension SDKInteractorReal: MobileAuthRequestDelegate {
     func userClient(_ userClient: UserClient, didReceiveConfirmation confirmation: @escaping (Bool) -> Void, for request: MobileAuthRequest) {
-        // now we can ask the user to donfirm or deny the request. For Showcase App we confirm it right away (at least for otp)
+        // Now we can ask the user to confirm or deny the request.
+        // For Showcase App we confirm it right away (at least for otp)
         confirmation(true)
     }
     func userClient(_ userClient: UserClient, didFailToHandleOTPMobileAuthRequest otp: String, error: any Error) {
