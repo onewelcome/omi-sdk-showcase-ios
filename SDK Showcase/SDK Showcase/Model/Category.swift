@@ -2,11 +2,24 @@
 
 import Foundation
 
+enum Categories: String {
+    case unknown
+    case initialization = "SDK Initialization"
+    case userRegistation = "User registration"
+    case userAuthentication = "User authentication"
+    case mobileAuthentication = "Mobile authentication"
+    case userDeregistation = "User deregistration"
+    case pinChange = "PIN change"
+}
+
 struct Category: AppModel {
     let name: String
+    var type: Categories {
+        return Categories(rawValue: name) ?? .unknown
+    }
     let description: String
     let options: [Option]
-    let selection: [Selection]
+    var selection: [Selection]
     let requiredActions: [Action]
     let optionalActions: [Action]
 }
