@@ -52,10 +52,12 @@ class SDKInteractorReal: SDKInteractor {
     
     var userAuthenticatorOptionNames: [String] {
         var toReturn = [String]()
-        userClient.userProfiles.forEach { userProfile in
-            let authenticators = authenticatorNames(for: userProfile.profileId)
-            toReturn.append(contentsOf: authenticators.map { name in formatCategoryName(userId: userProfile.profileId, authenticatorName: name) })
-        }
+        appState.registeredUsers
+            .forEach { userData in
+                userData.authenticatorsNames.forEach { authenticatorName in
+                    toReturn.append(formatCategoryName(userId: userData.userId, authenticatorName: authenticatorName))
+                }
+            }
         return toReturn
     }
     
@@ -153,8 +155,9 @@ class SDKInteractorReal: SDKInteractor {
     
     func fetchUserProfiles() {
         appState.resetRegisteredUsers()
-        let fetchedUserProfiles = userClient.userProfiles.map { AppState.UserData(userId: $0.profileId) }
-        fetchedUserProfiles.forEach { userData in appState.addRegisteredUser(userData) }
+        userClient.userProfiles
+            .map { AppState.UserData(userId: $0.profileId, authenticatorsNames: authenticatorNames(for: $0.profileId)) }
+            .forEach { appState.addRegisteredUser($0) }
     }
     
     func fetchEnrollment() {

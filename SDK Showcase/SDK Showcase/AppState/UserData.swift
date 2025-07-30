@@ -6,10 +6,12 @@ extension AppState {
     class UserData: Equatable, ObservableObject {
         let userId: String
         let isStateless: Bool
+        let authenticatorsNames: [String]
         
-        init(userId: String, isStateless: Bool = false) {
+        init(userId: String, isStateless: Bool = false, authenticatorsNames: [String]) {
             self.userId = userId
             self.isStateless = isStateless
+            self.authenticatorsNames = authenticatorsNames
         }
         
         static func == (lhs: AppState.UserData, rhs: AppState.UserData) -> Bool {
