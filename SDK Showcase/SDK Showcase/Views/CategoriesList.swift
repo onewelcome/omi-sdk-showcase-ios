@@ -7,6 +7,10 @@ struct CategoriesRepository {}
 
 struct CategoriesList: View {
     @State private var categories = [Category]()
+    @ObservedObject private var appstate: AppState = {
+        @Injected var appState: AppState
+        return appState
+    }()
     @ObservedObject private var system: AppState.System = {
         @Injected var appState: AppState
         return appState.system
@@ -15,7 +19,7 @@ struct CategoriesList: View {
     var body: some View {
         ForEach(interactor.loadCategories()) { category in
             NavigationLink {
-                ContentView(system: system, category: category)
+                ContentView(appstate: appstate, system: system, category: category)
             } label: {
                 Text(category.name)
             }
