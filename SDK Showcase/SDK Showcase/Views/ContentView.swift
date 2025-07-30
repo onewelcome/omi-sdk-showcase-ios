@@ -4,6 +4,7 @@ import Foundation
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var appstate: AppState
     @ObservedObject var system: AppState.System
     @State internal var category: Category
     @State internal var isExpanded = false
@@ -86,6 +87,11 @@ struct ContentView: View {
         }
         .sheet(isPresented: $system.shouldShowQRScanner) {
             SheetViewForQRScanner()
+        }
+        .onChange(of: appstate.registeredUsers) {
+            guard category.type == .userAuthentication else { return }
+            
+            category.selection = sdkInteractor.userAuthenticatorOptionNames.map { Selection(name: $0) }
         }
         HStack {
             ForEach(category.options) { option in

@@ -308,8 +308,12 @@ extension SDKInteractorReal: AuthenticationDelegate {
     }
     
     func userClient(_ userClient: UserClient, didFailToAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, error: Error) {
-        // TODO: don't we want to use ErrorMapper from old ExampleApp?
         appState.setSystemInfo(string: "Authentication failed")
+        if (error as NSError).code == 9003 {
+            // User account deregistered (too many wrong PIN attempts)
+            appState.registeredUsers.remove(AppState.UserData(userId: userProfile.profileId, authenticatorsNames: authenticatorNames(for: userProfile.profileId)))
+            pinPadInteractor.showPinPad(for: .hidden)
+        }
     }
 }
 
