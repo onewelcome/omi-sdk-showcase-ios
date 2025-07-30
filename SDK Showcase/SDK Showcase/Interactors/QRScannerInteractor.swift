@@ -5,7 +5,7 @@ import Foundation
 //MARK: - Protocol
 protocol QRScannerInteractor {
     func scan()
-    func cancel()
+    func cancelScanning()
     func handleCode(_ code: String)
 }
 
@@ -17,7 +17,7 @@ class QRScannerInteractorReal: QRScannerInteractor {
         appState.system.shouldShowQRScanner = true
     }
     
-    func cancel() {
+    func cancelScanning() {
         appState.system.shouldShowQRScanner = false
     }
     

@@ -18,7 +18,7 @@ struct SheetViewDismiss: View {
                 pinPadInteractor.cancelCreatingPIN()
                 pinPadInteractor.cancelChangingPIN()
                 browserInteractor.cancelRegistration()
-                qrScanerInteractor.cancel()
+                qrScanerInteractor.cancelScanning()
             } label: {
                 Image(systemName: "xmark.circle")
                     .font(.largeTitle)
