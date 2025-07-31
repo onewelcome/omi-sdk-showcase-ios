@@ -62,6 +62,11 @@ extension ContentView {
     func registerForPushes() {
         sdkInteractor.registerForPushNotifications()
     }
+    
+    func updateMobileAuthenticationCategorySelection() {
+        guard category.type == .mobileAuthentication, appstate.system.enrollmentState != EnrollmentState.unenrolled else { return }
+        category.selection = [Selection(name: Selections.loginWithOtp.rawValue)]
+    }
 }
 
 //MARK: - Actions for Selections

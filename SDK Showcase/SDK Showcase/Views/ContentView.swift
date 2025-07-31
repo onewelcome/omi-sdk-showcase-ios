@@ -93,6 +93,12 @@ struct ContentView: View {
             
             category.selection = sdkInteractor.userAuthenticatorOptionNames.map { Selection(name: $0) }
         }
+        .onChange(of: appstate.system.enrollmentState) {
+            updateMobileAuthenticationCategorySelection()
+        }
+        .onAppear() {
+            updateMobileAuthenticationCategorySelection()
+        }
         HStack {
             ForEach(category.options) { option in
                 Button(action: {
