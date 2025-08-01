@@ -40,7 +40,6 @@ struct ContentView: View {
                     if !category.selection.isEmpty {
                         Section(header: Text("Select")) {
                             ForEach(category.selection, id:\.self) { selection in
-                                let disabled = selection.disabled && !system.hasError
                                 Button(action: {
                                     buttonAction(for: selection)
                                 }, label: {
@@ -50,7 +49,7 @@ struct ContentView: View {
                                         }
                                         Text(selection.name)
                                     }
-                                }).disabled(disabled)
+                                }).disabled(selection.disabled)
                             }
                         }
                     }
