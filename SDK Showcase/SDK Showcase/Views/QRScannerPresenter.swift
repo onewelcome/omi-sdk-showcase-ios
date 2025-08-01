@@ -4,6 +4,9 @@ import UIKit
 import AVFoundation
 
 struct QRScannerPresenter: UIViewRepresentable {
+    enum ScannerError: Error {
+        case noCameraAccess
+    }
     
     private var supportedBarcodeTypes: [AVMetadataObject.ObjectType] = [.qr]
     typealias UIViewType = CameraPreview
@@ -12,7 +15,7 @@ struct QRScannerPresenter: UIViewRepresentable {
     private let delegate = QrCodeCameraDelegate()
     private let metadataOutput = AVCaptureMetadataOutput()
     
-    func setQRCodeHandler(_ handler: @escaping (String) -> Void) -> QRScannerPresenter {
+    func setHandler(_ handler: @escaping (Result<String, Error>) -> Void) -> QRScannerPresenter {
         delegate.onResult = handler
         return self
     }
@@ -68,9 +71,11 @@ struct QRScannerPresenter: UIViewRepresentable {
         } else {
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 DispatchQueue.main.sync {
-                    if granted {
-                        self.setupCamera(uiView)
+                    guard granted else {
+                        self.delegate.onResult(.failure(ScannerError.noCameraAccess))
+                        return
                     }
+                    self.setupCamera(uiView)
                 }
             }
         }
@@ -85,7 +90,7 @@ struct QRScannerPresenter: UIViewRepresentable {
 class QrCodeCameraDelegate: NSObject, AVCaptureMetadataOutputObjectsDelegate {
     private let scanInterval: Double = 1.0
     private var lastTime = Date(timeIntervalSince1970: 0)
-    var onResult: (String) -> Void = { _  in }
+    var onResult: (Result<String, Error>) -> Void = { _  in }
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if let metadataObject = metadataObjects.first {
@@ -99,7 +104,7 @@ class QrCodeCameraDelegate: NSObject, AVCaptureMetadataOutputObjectsDelegate {
         let now = Date()
         if now.timeIntervalSince(lastTime) >= scanInterval {
             lastTime = now
-            self.onResult(stringValue)
+            self.onResult(.success(stringValue))
         }
     }
 }
