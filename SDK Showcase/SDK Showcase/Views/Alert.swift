@@ -17,14 +17,14 @@ struct Alert: View {
     @State private(set) var text = ""
     
     var body: some View {
-        if appState.system.lastInfoDescription != nil {
+        if appState.system.hasError {
             HStack {
                 Image(systemName: "info.bubble.fill")
                 Text(text)
                     .bold()
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + visibilityTime) {
-                            appState.system.lastInfoDescription = nil
+                            appState.system.unsetInfo()
                         }
                     }
             }
