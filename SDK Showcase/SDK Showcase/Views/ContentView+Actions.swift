@@ -62,6 +62,11 @@ extension ContentView {
     func registerForPushes() {
         sdkInteractor.registerForPushNotifications()
     }
+    
+    func updateMobileAuthenticationCategorySelection() {
+        guard category.type == .mobileAuthentication, appstate.system.enrollmentState != EnrollmentState.unenrolled else { return }
+        category.selection = [Selection(name: Selections.loginWithOtp.rawValue)]
+    }
 }
 
 //MARK: - Actions for Selections
@@ -72,6 +77,10 @@ extension ContentView {
     
     func cancelRegistration() {
         browserInteractor.cancelRegistration()
+    }
+    
+    func showQRScanner() {
+        qrScannerInteractor.scan()
     }
 }
     
@@ -92,6 +101,11 @@ extension ContentView {
         return interactors.pinPadInteractor
     }
     
+    var qrScannerInteractor: QRScannerInteractor {
+        @Injected var interactors: Interactors
+        return interactors.qrScannerInteractor
+    }
+
     var initializationStatus: String {
         system.isSDKInitialized ? "✅ SDK initialized" : "❌ SDK not initialized \(errorValue)"
     }

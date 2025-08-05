@@ -40,7 +40,6 @@ struct ContentView: View {
                     if !category.selection.isEmpty {
                         Section(header: Text("Select")) {
                             ForEach(category.selection, id:\.self) { selection in
-                                let disabled = selection.disabled && !system.hasError
                                 Button(action: {
                                     buttonAction(for: selection)
                                 }, label: {
@@ -50,7 +49,7 @@ struct ContentView: View {
                                         }
                                         Text(selection.name)
                                     }
-                                }).disabled(disabled)
+                                }).disabled(selection.disabled)
                             }
                         }
                     }
@@ -85,10 +84,19 @@ struct ContentView: View {
         .sheet(isPresented: $system.shouldShowPinPad) {
             SheetViewForPinPad()
         }
+        .sheet(isPresented: $system.shouldShowQRScanner) {
+            SheetViewForQRScanner()
+        }
         .onChange(of: appstate.registeredUsers) {
             guard category.type == .userAuthentication else { return }
             
             category.selection = sdkInteractor.userAuthenticatorOptionNames.map { Selection(name: $0) }
+        }
+        .onChange(of: appstate.system.enrollmentState) {
+            updateMobileAuthenticationCategorySelection()
+        }
+        .onAppear() {
+            updateMobileAuthenticationCategorySelection()
         }
         HStack {
             ForEach(category.options) { option in
@@ -135,6 +143,8 @@ extension ContentView {
             cancelRegistration()
         case .browserRegistration:
             browserRegistration()
+        case .loginWithOtp:
+            showQRScanner()
         case .unknown:
             if sdkInteractor.userAuthenticatorOptionNames.contains(selection.name) {
                 sdkInteractor.authenticateUser(optionName: selection.name)

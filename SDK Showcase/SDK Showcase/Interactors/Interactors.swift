@@ -7,5 +7,6 @@ struct Interactors {
     var sdkInteractor: SDKInteractor
     var browserInteractor: BrowserRegistrationInteractor
     var pinPadInteractor: PinPadInteractor
+    var qrScannerInteractor: QRScannerInteractor
     var pushInteractor: PushNotitificationsInteractor
 }

@@ -7,7 +7,6 @@ import OneginiSDKiOS
 protocol SDKInteractor {
     var builder: ClientBuilder { get set }
     var userAuthenticatorOptionNames: [String] { get }
-
     /// Initializes the SDK, requires setting below methods
     /// - Parameter result: The result from the SDK
     func initializeSDK(result: @escaping SDKResult)
@@ -34,6 +33,8 @@ protocol SDKInteractor {
     func fetchEnrollment()
     func authenticatorNames(for userId: String) -> [String]
     func authenticateUser(optionName: String)
+    
+    func handleOtp(_ code: String)
 }
 
 //MARK: - Real methods
@@ -50,10 +51,12 @@ class SDKInteractorReal: SDKInteractor {
     
     var userAuthenticatorOptionNames: [String] {
         var toReturn = [String]()
-        userClient.userProfiles.forEach { userProfile in
-            let authenticators = authenticatorNames(for: userProfile.profileId)
-            toReturn.append(contentsOf: authenticators.map { name in formatCategoryName(userId: userProfile.profileId, authenticatorName: name) })
-        }
+        appState.registeredUsers
+            .forEach { userData in
+                userData.authenticatorsNames.forEach { authenticatorName in
+                    toReturn.append(formatCategoryName(userId: userData.userId, authenticatorName: authenticatorName))
+                }
+            }
         return toReturn
     }
     
@@ -145,8 +148,9 @@ class SDKInteractorReal: SDKInteractor {
     
     func fetchUserProfiles() {
         appState.resetRegisteredUsers()
-        let fetchedUserProfiles = userClient.userProfiles.map { AppState.UserData(userId: $0.profileId) }
-        fetchedUserProfiles.forEach { userData in appState.addRegisteredUser(userData) }
+        userClient.userProfiles
+            .map { AppState.UserData(userId: $0.profileId, authenticatorsNames: authenticatorNames(for: $0.profileId)) }
+            .forEach { appState.addRegisteredUser($0) }
     }
     
     func fetchEnrollment() {
@@ -203,6 +207,14 @@ class SDKInteractorReal: SDKInteractor {
                 }
             }
         }
+    }
+    
+    func handleOtp(_ code: String) {
+        guard userClient.canHandleOTPMobileAuthRequest(otp: code) else {
+            appState.setSystemInfo(string: "Invalid otp code or previous request in progress.")
+            return
+        }
+        userClient.handleOTPMobileAuthRequest(otp: code, delegate: self)
     }
 }
 
@@ -292,9 +304,25 @@ extension SDKInteractorReal: AuthenticationDelegate {
         appState.setSystemInfo(string: "Authentication failed")
         if (error as NSError).code == 9003 {
             // User account deregistered (too many wrong PIN attempts)
-            appState.registeredUsers.remove(AppState.UserData(userId: userProfile.profileId))
+            appState.registeredUsers.remove(AppState.UserData(userId: userProfile.profileId, authenticatorsNames: authenticatorNames(for: userProfile.profileId)))
             pinPadInteractor.showPinPad(for: .hidden)
         }
+    }
+}
+
+//MARK: - MobileAuthRequestDelegate
+extension SDKInteractorReal: MobileAuthRequestDelegate {
+    func userClient(_ userClient: UserClient, didReceiveConfirmation confirmation: @escaping (Bool) -> Void, for request: MobileAuthRequest) {
+        // Now we can ask the user to confirm or deny the request.
+        // For Showcase App we confirm it right away (at least for otp)
+        confirmation(true)
+    }
+    func userClient(_ userClient: UserClient, didFailToHandleOTPMobileAuthRequest otp: String, error: any Error) {
+        appState.setSystemInfo(string: error.localizedDescription)
+    }
+
+    func userClient(_ userClient: UserClient, didHandleRequest request: MobileAuthRequest, authenticator: Authenticator?, info customAuthenticatorInfo: CustomInfo?) {
+        appState.setSystemInfo(string: "The transaction has been confirmed successfully.")
     }
 }
 
