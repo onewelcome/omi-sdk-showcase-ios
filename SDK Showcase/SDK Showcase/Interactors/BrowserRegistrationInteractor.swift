@@ -39,7 +39,7 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
             appState.setSystemInfo(string: "SDK not initialized")
             return
         }
-        sdkInteractor.register(with: ShowCaseIdentityProvider.default)
+        sdkInteractor.register(with: IdentityProviderProxy.default)
     }
     
     func cancelRegistration() {

@@ -7,6 +7,7 @@ import OneginiSDKiOS
 protocol SDKInteractor {
     var builder: ClientBuilder { get set }
     var userAuthenticatorOptionNames: [String] { get }
+    var mobileAuthPendingTransactionNames: [String] { get }
 
     /// Initializes the SDK, requires setting below methods
     /// - Parameter result: The result from the SDK
@@ -34,18 +35,21 @@ protocol SDKInteractor {
     func fetchEnrollment()
     func authenticatorNames(for userId: String) -> [String]
     func authenticateUser(optionName: String)
+    
+    func handlePushMobileAuthenticationRequest(userInfo: [AnyHashable: Any], completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
 }
 
 //MARK: - Real methods
 
 class SDKInteractorReal: SDKInteractor {
     @ObservedObject var appState: AppState
-    
+    @Injected var mobileAuthQueue: MobileAuthRequestQueue
+    @Injected var mobileAuthEntity: MobileAuthRequestEntity
+
     private static let staticBuilder = ClientBuilder()
     private var device: AppState.DeviceData { appState.deviceData }
     private var client: Client?
     private let userClient = SharedUserClient.instance
-    
     var builder: ClientBuilder
     
     var userAuthenticatorOptionNames: [String] {
@@ -57,12 +61,17 @@ class SDKInteractorReal: SDKInteractor {
         return toReturn
     }
     
+    var mobileAuthPendingTransactionNames: [String] {
+        //TODO: to implement in the next PR
+        return []
+    }
+    
     func authenticatorNames(for userId: String) -> [String] {
         // For now only registered authenticators
-        return userClient.authenticators(.registered, for: ShowcaseProfile(profileId: userId)).map { $0.name }
+        return userClient.authenticators(.registered, for: ProfileProxy(profileId: userId)).map { $0.name }
     }
 
-    init(appState: AppState, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder) {
+    init(appState: AppState, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder, mobileAuthRequestQueue: MobileAuthRequestQueue, mobileAuthEntity: MobileAuthRequestEntity) {
         self.appState = appState
         self.client = client
         self.builder = builder
@@ -199,10 +208,28 @@ class SDKInteractorReal: SDKInteractor {
                 } else {
                     appState.system.setEnrollmentState(.push)
                     let token = token.map { String(format: "%02.2hhx", $0) }.joined()
+                    print("token=\(token)")
                     appState.setSystemInfo(string: "User successfully registed for push notifications!\n\nToken: \(token)")
                 }
             }
         }
+    }
+}
+
+//MARK: - Pushes
+extension SDKInteractorReal {
+    func handlePushMobileAuthenticationRequest(userInfo: [AnyHashable: Any], completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("push: \(userInfo)")
+        guard let pendingTransaction = userClient.pendingMobileAuthRequest(from: userInfo) else {
+            appState.setSystemInfo(string: "Push notification not handled: \(userInfo).")
+            completionHandler([])
+            return
+        }
+        
+        let mobileAuthRequest = PendingMobileAuthRequestEntity(pendingTransaction: pendingTransaction, delegate: self)
+        mobileAuthQueue.enqueue(mobileAuthRequest)
+        completionHandler([.sound])
+        appState.setSystemInfo(string: "Push notification handled.")
     }
 }
 
@@ -316,7 +343,7 @@ private extension SDKInteractorReal {
 
     var isMobileAuthEnrolled: Bool {
         guard let profileId = appState.system.userState.userId,
-              userClient.isMobileAuthEnrolled(for: ShowcaseProfile(profileId: profileId)) else {
+              userClient.isMobileAuthEnrolled(for: ProfileProxy(profileId: profileId)) else {
             return false
         }
         
@@ -325,7 +352,7 @@ private extension SDKInteractorReal {
     
     var isPushRegistered: Bool {
         guard let profileId = appState.system.userState.userId,
-              userClient.isPushMobileAuthEnrolled(for: ShowcaseProfile(profileId: profileId)) else {
+              userClient.isPushMobileAuthEnrolled(for: ProfileProxy(profileId: profileId)) else {
             return false
         }
         

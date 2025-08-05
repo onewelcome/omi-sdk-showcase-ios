@@ -11,7 +11,7 @@
 		57005AE52E2A2AF400BBE63A /* PushNotitificationsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57005AE42E2A2AE200BBE63A /* PushNotitificationsInteractor.swift */; };
 		570AB2642DA90CD400BF2D7F /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570AB2632DA90CD400BF2D7F /* Binding.swift */; };
 		5723966E2DB90AB400C8A3B7 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5723966D2DB90AB400C8A3B7 /* Spinner.swift */; };
-		5730A8BF2DC2045500528BC2 /* ShowCaseIdentityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5730A8BE2DC2045500528BC2 /* ShowCaseIdentityProvider.swift */; };
+		5730A8BF2DC2045500528BC2 /* IdentityProviderProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5730A8BE2DC2045500528BC2 /* IdentityProviderProxy.swift */; };
 		5730A8C12DC2448200528BC2 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5730A8C02DC2448200528BC2 /* Alert.swift */; };
 		578BC30B2D4397A700713CF7 /* Interactors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30A2D4397A700713CF7 /* Interactors.swift */; };
 		578BC30D2D439BED00713CF7 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30C2D439BED00713CF7 /* System.swift */; };
@@ -27,6 +27,10 @@
 		578DC4E72D9E6858008D2576 /* TextResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578DC4E62D9E6858008D2576 /* TextResult.swift */; };
 		578DC4EB2D9E88BE008D2576 /* SDKConfigModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578DC4EA2D9E88B7008D2576 /* SDKConfigModel.swift */; };
 		578DC4ED2D9FDC83008D2576 /* ActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578DC4EC2D9FDC83008D2576 /* ActionView.swift */; };
+		57A5BDFC2E3B949D0041015B /* MobileAuthRequestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A5BDFB2E3B949D0041015B /* MobileAuthRequestEntity.swift */; };
+		57A5BDFE2E3B96260041015B /* SDKInteractor+MobileAuthRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A5BDFD2E3B96260041015B /* SDKInteractor+MobileAuthRequestDelegate.swift */; };
+		57A5BE002E3B969B0041015B /* PendingMobileAuthRequestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A5BDFF2E3B969B0041015B /* PendingMobileAuthRequestEntity.swift */; };
+		57A5BE022E3B96D60041015B /* MobileAuthRequestQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A5BE012E3B96D60041015B /* MobileAuthRequestQueue.swift */; };
 		57AE066A2D8C20F5004A3CB9 /* SDKInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AE06692D8C20F5004A3CB9 /* SDKInteractor.swift */; };
 		57AE06702D92986B004A3CB9 /* Swinject.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57AE066F2D92986B004A3CB9 /* Swinject.xcframework */; };
 		57AE06712D92986B004A3CB9 /* Swinject.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57AE066F2D92986B004A3CB9 /* Swinject.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -52,7 +56,7 @@
 		57F4647B2D43831700C64156 /* Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F4647A2D43831700C64156 /* Injection.swift */; };
 		57F464822D4383C000C64156 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464812D4383C000C64156 /* AppState.swift */; };
 		9E72F91B2E1E9D1900FB4637 /* UserState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F91A2E1E9D1900FB4637 /* UserState.swift */; };
-		9E72F91D2E1FD9F400FB4637 /* ShowCaseProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F91C2E1FD9F400FB4637 /* ShowCaseProfile.swift */; };
+		9E72F91D2E1FD9F400FB4637 /* ProfileProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F91C2E1FD9F400FB4637 /* ProfileProxy.swift */; };
 		C74C414AFA857D101C71411F /* OneginiConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA6110C3FBFD511DB8EADE4 /* OneginiConfigModel.m */; };
 		D99FC8F8E1D6A51A6CDEEF03 /* OneginiConfigModel.h in Headers */ = {isa = PBXBuildFile; fileRef = D9B0665B0B42A61C01C8351A /* OneginiConfigModel.h */; };
 /* End PBXBuildFile section */
@@ -87,7 +91,7 @@
 		570AB2632DA90CD400BF2D7F /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		570AB2692DA9406400BF2D7F /* SDK ShowcaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SDK ShowcaseTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5723966D2DB90AB400C8A3B7 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
-		5730A8BE2DC2045500528BC2 /* ShowCaseIdentityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCaseIdentityProvider.swift; sourceTree = "<group>"; };
+		5730A8BE2DC2045500528BC2 /* IdentityProviderProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityProviderProxy.swift; sourceTree = "<group>"; };
 		5730A8C02DC2448200528BC2 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		578BC30A2D4397A700713CF7 /* Interactors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors.swift; sourceTree = "<group>"; };
 		578BC30C2D439BED00713CF7 /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
@@ -103,6 +107,10 @@
 		578DC4E62D9E6858008D2576 /* TextResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextResult.swift; sourceTree = "<group>"; };
 		578DC4EA2D9E88B7008D2576 /* SDKConfigModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKConfigModel.swift; sourceTree = "<group>"; };
 		578DC4EC2D9FDC83008D2576 /* ActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionView.swift; sourceTree = "<group>"; };
+		57A5BDFB2E3B949D0041015B /* MobileAuthRequestEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileAuthRequestEntity.swift; sourceTree = "<group>"; };
+		57A5BDFD2E3B96260041015B /* SDKInteractor+MobileAuthRequestDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SDKInteractor+MobileAuthRequestDelegate.swift"; sourceTree = "<group>"; };
+		57A5BDFF2E3B969B0041015B /* PendingMobileAuthRequestEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingMobileAuthRequestEntity.swift; sourceTree = "<group>"; };
+		57A5BE012E3B96D60041015B /* MobileAuthRequestQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileAuthRequestQueue.swift; sourceTree = "<group>"; };
 		57AE06692D8C20F5004A3CB9 /* SDKInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKInteractor.swift; sourceTree = "<group>"; };
 		57AE066F2D92986B004A3CB9 /* Swinject.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Swinject.xcframework; path = "SDK Showcase/Supporting Files/Swinject.xcframework"; sourceTree = "<group>"; };
 		57AE067A2D952A43004A3CB9 /* SDKResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKResult.swift; sourceTree = "<group>"; };
@@ -129,7 +137,7 @@
 		57F4647A2D43831700C64156 /* Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injection.swift; sourceTree = "<group>"; };
 		57F464812D4383C000C64156 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		9E72F91A2E1E9D1900FB4637 /* UserState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserState.swift; sourceTree = "<group>"; };
-		9E72F91C2E1FD9F400FB4637 /* ShowCaseProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCaseProfile.swift; sourceTree = "<group>"; };
+		9E72F91C2E1FD9F400FB4637 /* ProfileProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileProxy.swift; sourceTree = "<group>"; };
 		D9B0665B0B42A61C01C8351A /* OneginiConfigModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OneginiConfigModel.h; path = Configuration/OneginiConfigModel.h; sourceTree = "<group>"; };
 		FFA6110C3FBFD511DB8EADE4 /* OneginiConfigModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OneginiConfigModel.m; path = Configuration/OneginiConfigModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -171,12 +179,22 @@
 			name = Configuration;
 			sourceTree = "<group>";
 		};
+		5748DB902E3CB2BF00B860D3 /* Proxies */ = {
+			isa = PBXGroup;
+			children = (
+				5730A8BE2DC2045500528BC2 /* IdentityProviderProxy.swift */,
+				9E72F91C2E1FD9F400FB4637 /* ProfileProxy.swift */,
+			);
+			path = Proxies;
+			sourceTree = "<group>";
+		};
 		578BC30E2D43A59000713CF7 /* Interactors */ = {
 			isa = PBXGroup;
 			children = (
 				578BC30A2D4397A700713CF7 /* Interactors.swift */,
 				578BC30F2D43A5A700713CF7 /* CategoriesInteractor.swift */,
 				57AE06692D8C20F5004A3CB9 /* SDKInteractor.swift */,
+				57A5BDFD2E3B96260041015B /* SDKInteractor+MobileAuthRequestDelegate.swift */,
 				57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */,
 				57EB55E42E03E3420072E496 /* PinPadInteractor.swift */,
 				57005AE42E2A2AE200BBE63A /* PushNotitificationsInteractor.swift */,
@@ -227,7 +245,9 @@
 		578BC31B2D4A1AD600713CF7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5730A8BE2DC2045500528BC2 /* ShowCaseIdentityProvider.swift */,
+				57A5BE012E3B96D60041015B /* MobileAuthRequestQueue.swift */,
+				57A5BDFB2E3B949D0041015B /* MobileAuthRequestEntity.swift */,
+				57A5BDFF2E3B969B0041015B /* PendingMobileAuthRequestEntity.swift */,
 				57E9E1412DB7AE8700168A93 /* BrowserViewModel.swift */,
 				57E9E1372DB2425F00168A93 /* Selection.swift */,
 				578DC4EA2D9E88B7008D2576 /* SDKConfigModel.swift */,
@@ -235,7 +255,6 @@
 				578BC3192D4A1AD100713CF7 /* Category.swift */,
 				578BC3252D4A5A9100713CF7 /* Action.swift */,
 				578BC3272D4A5CEA00713CF7 /* Option.swift */,
-				9E72F91C2E1FD9F400FB4637 /* ShowCaseProfile.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -313,6 +332,7 @@
 				57E9E1452DB7B24300168A93 /* SDK-Showcase-Info.plist */,
 				57AE06792D952A29004A3CB9 /* Helpers */,
 				578BC31B2D4A1AD600713CF7 /* Model */,
+				5748DB902E3CB2BF00B860D3 /* Proxies */,
 				578BC3132D43A62C00713CF7 /* DI */,
 				578BC3122D43A60600713CF7 /* Views */,
 				578BC3112D43A5DC00713CF7 /* AppState */,
@@ -397,7 +417,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				CLASSPREFIX = OMI;
 				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1640;
 				ORGANIZATIONNAME = "Onewelcome Mobile Identity";
 				TargetAttributes = {
 					570AB2682DA9406400BF2D7F = {
@@ -463,7 +483,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57E9E13A2DB2484D00168A93 /* BrowserRegistrationInteractor.swift in Sources */,
-				9E72F91D2E1FD9F400FB4637 /* ShowCaseProfile.swift in Sources */,
+				9E72F91D2E1FD9F400FB4637 /* ProfileProxy.swift in Sources */,
 				578DC4ED2D9FDC83008D2576 /* ActionView.swift in Sources */,
 				57EB55E72E03E4D10072E496 /* SheetViewForPinPad.swift in Sources */,
 				57BDC97E2E2F9AFA00534D7E /* AppDelegate.swift in Sources */,
@@ -471,6 +491,7 @@
 				57005ABF2E29054800BBE63A /* ContentView+Actions.swift in Sources */,
 				57EB55E32E03E2C50072E496 /* PinPad.swift in Sources */,
 				57F4647B2D43831700C64156 /* Injection.swift in Sources */,
+				57A5BDFE2E3B96260041015B /* SDKInteractor+MobileAuthRequestDelegate.swift in Sources */,
 				57005AE52E2A2AF400BBE63A /* PushNotitificationsInteractor.swift in Sources */,
 				5723966E2DB90AB400C8A3B7 /* Spinner.swift in Sources */,
 				57F464652D3F80DB00C64156 /* RootView.swift in Sources */,
@@ -488,12 +509,14 @@
 				57BDC9A52E2FB3B600534D7E /* EnrollmentState.swift in Sources */,
 				578DC4EB2D9E88BE008D2576 /* SDKConfigModel.swift in Sources */,
 				578BC30D2D439BED00713CF7 /* System.swift in Sources */,
+				57A5BE002E3B969B0041015B /* PendingMobileAuthRequestEntity.swift in Sources */,
 				578BC3212D4A305C00713CF7 /* ContentView.swift in Sources */,
 				578BC3102D43A5A700713CF7 /* CategoriesInteractor.swift in Sources */,
-				5730A8BF2DC2045500528BC2 /* ShowCaseIdentityProvider.swift in Sources */,
+				5730A8BF2DC2045500528BC2 /* IdentityProviderProxy.swift in Sources */,
 				57AE066A2D8C20F5004A3CB9 /* SDKInteractor.swift in Sources */,
 				57EB55E52E03E3420072E496 /* PinPadInteractor.swift in Sources */,
 				57E9E13E2DB272EA00168A93 /* LoadingWebView.swift in Sources */,
+				57A5BDFC2E3B949D0041015B /* MobileAuthRequestEntity.swift in Sources */,
 				57E9E1382DB2426C00168A93 /* Selection.swift in Sources */,
 				5730A8C12DC2448200528BC2 /* Alert.swift in Sources */,
 				57AE067B2D952A43004A3CB9 /* SDKResult.swift in Sources */,
@@ -502,6 +525,7 @@
 				578BC3262D4A5A9100713CF7 /* Action.swift in Sources */,
 				578BC31A2D4A1AD100713CF7 /* Category.swift in Sources */,
 				57B8FA992E17C80B007EBECE /* PinPadState.swift in Sources */,
+				57A5BE022E3B96D60041015B /* MobileAuthRequestQueue.swift in Sources */,
 				57F464822D4383C000C64156 /* AppState.swift in Sources */,
 				C74C414AFA857D101C71411F /* OneginiConfigModel.m in Sources */,
 			);
@@ -524,7 +548,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FSS5X3XZNY;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
@@ -543,7 +566,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FSS5X3XZNY;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
@@ -591,6 +613,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = FSS5X3XZNY;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -655,6 +678,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = FSS5X3XZNY;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -686,7 +710,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SDK Showcase/Preview Content\"";
-				DEVELOPMENT_TEAM = FSS5X3XZNY;
 				ENABLE_CODE_COVERAGE = NO;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -726,7 +749,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SDK Showcase/Preview Content\"";
-				DEVELOPMENT_TEAM = FSS5X3XZNY;
 				ENABLE_CODE_COVERAGE = NO;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
