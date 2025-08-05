@@ -3,7 +3,13 @@
 import OneginiSDKiOS
 
 class PendingMobileAuthRequestEntity {
-    let pendingTransaction: PendingMobileAuthRequest? = nil
-    let otp: String? = nil
-    let delegate: MobileAuthRequestDelegate? = nil
+    var pendingTransaction: PendingMobileAuthRequest? = nil
+    var otp: String? = nil
+    var delegate: MobileAuthRequestDelegate? = nil
+    
+    init(pendingTransaction: PendingMobileAuthRequest? = nil, otp: String? = nil, delegate: MobileAuthRequestDelegate? = nil) {
+        self.pendingTransaction = pendingTransaction
+        self.otp = otp
+        self.delegate = delegate
+    }
 }
