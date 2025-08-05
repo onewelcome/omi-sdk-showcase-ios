@@ -26,21 +26,29 @@ private extension Injection {
         container.register(PushNotitificationsInteractor.self)  { _ in PushNotitificationsInteractorReal() }
             .inObjectScope(.container)
         
+        container.register(MobileAuthRequestQueue.self) { _ in MobileAuthRequestQueue() }
+            .inObjectScope(.container)
+        
+        container.register(MobileAuthRequestEntity.self) { _ in MobileAuthRequestEntity() }
+            .inObjectScope(.container)
+        
         container.register(SDKInteractor.self)  { resolver in
-            SDKInteractorReal(appState: resolver.resolve(AppState.self)!)
-        }.inObjectScope(.container)
+            SDKInteractorReal(appState: resolver.resolve(AppState.self)!,
+                              mobileAuthRequestQueue: resolver.resolve(MobileAuthRequestQueue.self)!,
+                              mobileAuthEntity: resolver.resolve(MobileAuthRequestEntity.self)!)}
+            .inObjectScope(.container)
         
         container.register(BrowserRegistrationInteractor.self)  { resolver in
-            BrowserRegistrationInteractorReal(appState: resolver.resolve(AppState.self)!)
-        }.inObjectScope(.container)
+            BrowserRegistrationInteractorReal(appState: resolver.resolve(AppState.self)!)}
+            .inObjectScope(.container)
         
         container.register(PinPadInteractor.self)  { resolver in
-            PinPadInteractorReal()
-        }.inObjectScope(.container)
+            PinPadInteractorReal() }
+            .inObjectScope(.container)
         
         container.register(QRScannerInteractor.self)  { resolver in
-            QRScannerInteractorReal()
-        }.inObjectScope(.container)
+            QRScannerInteractorReal() }
+            .inObjectScope(.container)
         
         container.register(Interactors.self) { resolver in
             Interactors(categoriesInteractor: resolver.resolve(CategoriesInteractor.self)!,
@@ -48,8 +56,8 @@ private extension Injection {
                         browserInteractor: resolver.resolve(BrowserRegistrationInteractor.self)!,
                         pinPadInteractor: resolver.resolve(PinPadInteractor.self)!,
                         qrScannerInteractor: resolver.resolve(QRScannerInteractor.self)!,
-                        pushInteractor: resolver.resolve(PushNotitificationsInteractor.self)!)
-        }.inObjectScope(.container)
+                        pushInteractor: resolver.resolve(PushNotitificationsInteractor.self)!)}
+            .inObjectScope(.container)
         
         return container
     }

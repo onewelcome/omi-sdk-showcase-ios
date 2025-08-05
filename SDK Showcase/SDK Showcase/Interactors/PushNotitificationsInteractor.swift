@@ -41,8 +41,19 @@ class PushNotitificationsInteractorReal: NSObject, PushNotitificationsInteractor
 
 //MARK: - UNUserNotificationCenterDelegate
 extension PushNotitificationsInteractorReal: UNUserNotificationCenterDelegate {
+    private var sdkInteractor: SDKInteractor {
+        @Injected var interactors: Interactors
+        return interactors.sdkInteractor
+    }
+    
+    // Called when the app is in the background or was killed and woken up by a push
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        //TODO: Handle in next PR
-        completionHandler()
+        let mappedCompletionHandler: (UNNotificationPresentationOptions) -> Void = { _ in completionHandler() }
+        sdkInteractor.handlePushMobileAuthenticationRequest(userInfo: response.notification.request.content.userInfo, completionHandler: mappedCompletionHandler)
+    }
+    
+    // Called when the app is in the foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        sdkInteractor.handlePushMobileAuthenticationRequest(userInfo: notification.request.content.userInfo, completionHandler: completionHandler)
     }
 }

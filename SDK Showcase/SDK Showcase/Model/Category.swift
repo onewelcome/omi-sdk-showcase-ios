@@ -8,6 +8,7 @@ enum Categories: String {
     case userRegistation = "User registration"
     case userAuthentication = "User authentication"
     case mobileAuthentication = "Mobile authentication"
+    case pendingTransactions = "Pending transactions"
     case userDeregistation = "User deregistration"
     case pinChange = "PIN change"
 }
