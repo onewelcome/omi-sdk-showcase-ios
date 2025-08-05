@@ -3,7 +3,16 @@
 import SwiftUI
 
 struct Alert: View {
-    private let visibilityTime = 3.0
+    private var visibilityTime: Double {
+        let minVisibilityTime = 3.0
+        let maxVisibilityTime = 10.0
+        if text.count < 50 {
+            return minVisibilityTime
+        } else {
+            return min(Double(text.count/15), maxVisibilityTime)
+        }
+    }
+
     @Injected private var appState: AppState
     @State private(set) var text = ""
     

@@ -32,7 +32,7 @@ struct PinPad: View {
             }
             
             Spacer()
-            if system.lastInfoDescription != nil {
+            if system.hasError {
                 Text(errorText)
                     .foregroundColor(.red)
                     .monospaced()

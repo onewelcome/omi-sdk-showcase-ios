@@ -46,11 +46,16 @@ private extension Injection {
             PinPadInteractorReal() }
             .inObjectScope(.container)
         
+        container.register(QRScannerInteractor.self)  { resolver in
+            QRScannerInteractorReal() }
+            .inObjectScope(.container)
+        
         container.register(Interactors.self) { resolver in
             Interactors(categoriesInteractor: resolver.resolve(CategoriesInteractor.self)!,
                         sdkInteractor: resolver.resolve(SDKInteractor.self)!,
                         browserInteractor: resolver.resolve(BrowserRegistrationInteractor.self)!,
                         pinPadInteractor: resolver.resolve(PinPadInteractor.self)!,
+                        qrScannerInteractor: resolver.resolve(QRScannerInteractor.self)!,
                         pushInteractor: resolver.resolve(PushNotitificationsInteractor.self)!)}
             .inObjectScope(.container)
         

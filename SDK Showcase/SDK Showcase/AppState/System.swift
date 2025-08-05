@@ -5,9 +5,10 @@ import Foundation
 extension AppState {
     class System: Equatable, ObservableObject {
         @Published var isSDKInitialized = false
-        @Published var lastInfoDescription: String? = nil
+        @Published private(set) var lastInfoDescription: String? = nil
         @Published private var previousUserState: UserState?
         @Published private(set) var userState: UserState = .notRegistered
+        @Published var shouldShowQRScanner = false
         @Published private(set) var enrollmentState: EnrollmentState = .unenrolled
         @Published private(set) var pinPadState: PinPadState = .hidden
         
