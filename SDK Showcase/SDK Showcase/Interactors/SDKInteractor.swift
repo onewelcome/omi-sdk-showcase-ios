@@ -255,15 +255,15 @@ class SDKInteractorReal: SDKInteractor {
     }
     
     func handlePendingTransaction(id: String) {
-        guard let request = appState.pendingTransactions.filter({ $0.pendingTransaction?.transactionId == id }).first else {
+        guard let request = pendingTransaction(id: id) else {
             return
         }
         userClient.handlePendingMobileAuthRequest(request.pendingTransaction!, delegate: self)
     }
-    
+
     func confirmTransaction(for entity: MobileAuthRequestEntity, automatically: Bool) {
         if automatically {
-            if let transaction = appState.pendingTransactions.filter({ $0.pendingTransaction?.transactionId == entity.transactionId }).first {
+            if let transaction = pendingTransaction(id: entity.transactionId!) {
                 entity.confirmation?(true)
                 appState.pendingTransactions.remove(transaction)
                 appState.setSystemInfo(string: "Transaction with message \(entity.message ?? "") confirmed")
@@ -323,5 +323,9 @@ private extension SDKInteractorReal {
     
     func mapSDKConfigModel(_ model: SDKConfigModel) -> OneginiSDKiOS.ConfigModel {
         return ConfigModel(dictionary: model.dictionary)
+    }
+    
+    func pendingTransaction(id: String) -> PendingMobileAuthRequestEntity? {
+         appState.pendingTransactions.first { $0.pendingTransaction?.transactionId == id }
     }
 }
