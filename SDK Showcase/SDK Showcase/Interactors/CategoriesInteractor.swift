@@ -53,7 +53,7 @@ struct CategoriesInteractorReal: CategoriesInteractor {
         Category(name: Categories.userAuthentication.rawValue,
                  description: "Here you can see all registered authenticators for the registered user.",
                  options: [],
-                 selection: userAuthenticationSelections,
+                 selection: [],
                  requiredActions: [],
                  optionalActions: []),
         Category(name: Categories.mobileAuthentication.rawValue,
@@ -66,7 +66,7 @@ struct CategoriesInteractorReal: CategoriesInteractor {
         Category(name: Categories.pendingTransactions.rawValue,
                  description: "The list of transactions waiting to be confirmed.",
                  options: [],
-                 selection: mobileAuthPendingTransactionsSelections,
+                 selection: [],
                  requiredActions: [],
                  optionalActions: []),
         Category(name: Categories.userDeregistation.rawValue,
@@ -83,14 +83,4 @@ struct CategoriesInteractorReal: CategoriesInteractor {
                  requiredActions: [],
                  optionalActions: []),
     ]}
-}
-
-private extension CategoriesInteractorReal {
-    var userAuthenticationSelections: [Selection] {
-        interactor.userAuthenticatorOptionNames.map { Selection(name: $0) }
-    }
-    
-    var mobileAuthPendingTransactionsSelections: [Selection] {
-        interactor.mobileAuthPendingTransactionNames.map { Selection(name: $0) }
-    }
 }

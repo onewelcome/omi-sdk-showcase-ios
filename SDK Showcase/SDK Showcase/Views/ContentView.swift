@@ -88,16 +88,20 @@ struct ContentView: View {
             SheetViewForQRScanner()
         }
         .onChange(of: appstate.registeredUsers) {
-            guard category.type == .userAuthentication else { return }
-            
-            category.selection = sdkInteractor.userAuthenticatorOptionNames.map { Selection(name: $0) }
+            updateUsersSelection()
         }
         .onChange(of: appstate.system.enrollmentState) {
             updateMobileAuthenticationCategorySelection()
         }
-        .onAppear() {
-            updateMobileAuthenticationCategorySelection()
+        .onChange(of: appstate.pendingTransactions) {
+            pendingTransactionsTask()
         }
+        .task {
+            updateUsersSelection()
+            updateMobileAuthenticationCategorySelection()
+            pendingTransactionsTask()
+        }
+        
         HStack {
             ForEach(category.options) { option in
                 Button(action: {
@@ -118,6 +122,14 @@ struct ContentView: View {
 
 //MARK: - Actions
 extension ContentView {
+    func pendingTransactionsTask() {
+        guard category.type == .pendingTransactions else { return }
+        Task {
+            let pendingTransactions = await sdkInteractor.fetchMobileAuthPendingTransactionNames()
+            category.selection = pendingTransactions.map { Selection(name: $0, type: .pending) }
+        }
+    }
+    
     func buttonAction(for option: Option) {
         switch option.type {
         case .initialize:
@@ -138,19 +150,21 @@ extension ContentView {
     }
     
     func buttonAction(for selection: Selection) {
-        switch selection.type {
+        let switcher = selection.type == .unknown ? selection.namedType : selection.type
+        
+        switch switcher {
         case .cancelRegistration:
             cancelRegistration()
         case .browserRegistration:
             browserRegistration()
         case .loginWithOtp:
             showQRScanner()
+        case .pending:
+            handlePending(transacationId: selection.name)
+        case .authenticate:
+            sdkInteractor.authenticateUser(optionName: selection.name)
         case .unknown:
-            if sdkInteractor.userAuthenticatorOptionNames.contains(selection.name) {
-                sdkInteractor.authenticateUser(optionName: selection.name)
-            } else {
-                fatalError("Selection `\(selection.name)` not handled!")
-            }
+            fatalError("Selection `\(selection.name)` not handled!")
         }
     }
 }

@@ -13,3 +13,14 @@ class PendingMobileAuthRequestEntity {
         self.delegate = delegate
     }
 }
+
+//MARK: - Equitable, Hashable
+extension PendingMobileAuthRequestEntity: Hashable {
+    static func == (lhs: PendingMobileAuthRequestEntity, rhs: PendingMobileAuthRequestEntity) -> Bool {
+        lhs.pendingTransaction?.transactionId == rhs.pendingTransaction?.transactionId
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(pendingTransaction?.transactionId)
+    }
+}
