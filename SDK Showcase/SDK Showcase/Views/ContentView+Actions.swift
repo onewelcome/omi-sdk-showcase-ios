@@ -67,6 +67,11 @@ extension ContentView {
         guard category.type == .mobileAuthentication, appstate.system.enrollmentState != EnrollmentState.unenrolled else { return }
         category.selection = [Selection(name: Selections.loginWithOtp.rawValue)]
     }
+    
+    func updateUsersSelection() {
+        guard category.type == .userAuthentication else { return }
+        category.selection = sdkInteractor.userAuthenticatorOptionNames.map { Selection(name: $0, type: .authenticate, logo: "person.crop.circle") }
+    }
 }
 
 //MARK: - Actions for Selections
@@ -81,6 +86,10 @@ extension ContentView {
     
     func showQRScanner() {
         qrScannerInteractor.scan()
+    }
+    
+    func handlePending(transacationId: String) {
+        sdkInteractor.handlePendingTransaction(id: transacationId)
     }
 }
     

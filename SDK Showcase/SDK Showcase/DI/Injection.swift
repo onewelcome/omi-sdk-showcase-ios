@@ -33,9 +33,7 @@ private extension Injection {
             .inObjectScope(.container)
         
         container.register(SDKInteractor.self)  { resolver in
-            SDKInteractorReal(appState: resolver.resolve(AppState.self)!,
-                              mobileAuthRequestQueue: resolver.resolve(MobileAuthRequestQueue.self)!,
-                              mobileAuthEntity: resolver.resolve(MobileAuthRequestEntity.self)!)}
+            SDKInteractorReal(appState: resolver.resolve(AppState.self)!)}
             .inObjectScope(.container)
         
         container.register(BrowserRegistrationInteractor.self)  { resolver in

@@ -6,11 +6,13 @@ class AppState: ObservableObject {
     @Published var system = System()
     @Published var deviceData = DeviceData()
     @Published var registeredUsers = Set<UserData>()
+    @Published var pendingTransactions = Set<PendingMobileAuthRequestEntity>()
     
     func reset() {
         system.reset()
         deviceData.reset()
         resetRegisteredUsers()
+        pendingTransactions.removeAll()
     }
     
     func setSystemInfo(string: String) {

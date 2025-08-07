@@ -14,6 +14,7 @@ class MobileAuthRequestEntity {
     var pinChallenge: PinChallenge?
     var biometricChallenge: BiometricChallenge?
     var userProfile: UserProfile?
+    var transactionId: String?
     var message: String?
     var authenticatorType: MobileAuthAuthenticatorType?
     var customAuthChallenge: CustomAuthFinishAuthenticationChallenge?

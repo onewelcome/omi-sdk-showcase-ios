@@ -13,6 +13,9 @@
 		5723966E2DB90AB400C8A3B7 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5723966D2DB90AB400C8A3B7 /* Spinner.swift */; };
 		5730A8BF2DC2045500528BC2 /* IdentityProviderProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5730A8BE2DC2045500528BC2 /* IdentityProviderProxy.swift */; };
 		5730A8C12DC2448200528BC2 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5730A8C02DC2448200528BC2 /* Alert.swift */; };
+		5748DC1B2E42365B00B860D3 /* SDKInteractor+RegistrationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5748DC1A2E42365B00B860D3 /* SDKInteractor+RegistrationDelegate.swift */; };
+		5748DC1D2E4236C500B860D3 /* SDKInteractor+ChangePinDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5748DC1C2E4236C500B860D3 /* SDKInteractor+ChangePinDelegate.swift */; };
+		5748DC1F2E4237D000B860D3 /* SDKInteractor+AuthenticationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5748DC1E2E4237D000B860D3 /* SDKInteractor+AuthenticationDelegate.swift */; };
 		578BC30B2D4397A700713CF7 /* Interactors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30A2D4397A700713CF7 /* Interactors.swift */; };
 		578BC30D2D439BED00713CF7 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30C2D439BED00713CF7 /* System.swift */; };
 		578BC3102D43A5A700713CF7 /* CategoriesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578BC30F2D43A5A700713CF7 /* CategoriesInteractor.swift */; };
@@ -97,6 +100,9 @@
 		5723966D2DB90AB400C8A3B7 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		5730A8BE2DC2045500528BC2 /* IdentityProviderProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityProviderProxy.swift; sourceTree = "<group>"; };
 		5730A8C02DC2448200528BC2 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		5748DC1A2E42365B00B860D3 /* SDKInteractor+RegistrationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SDKInteractor+RegistrationDelegate.swift"; sourceTree = "<group>"; };
+		5748DC1C2E4236C500B860D3 /* SDKInteractor+ChangePinDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SDKInteractor+ChangePinDelegate.swift"; sourceTree = "<group>"; };
+		5748DC1E2E4237D000B860D3 /* SDKInteractor+AuthenticationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SDKInteractor+AuthenticationDelegate.swift"; sourceTree = "<group>"; };
 		578BC30A2D4397A700713CF7 /* Interactors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors.swift; sourceTree = "<group>"; };
 		578BC30C2D439BED00713CF7 /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		578BC30F2D43A5A700713CF7 /* CategoriesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesInteractor.swift; sourceTree = "<group>"; };
@@ -202,6 +208,9 @@
 				578BC30A2D4397A700713CF7 /* Interactors.swift */,
 				578BC30F2D43A5A700713CF7 /* CategoriesInteractor.swift */,
 				57AE06692D8C20F5004A3CB9 /* SDKInteractor.swift */,
+				5748DC1E2E4237D000B860D3 /* SDKInteractor+AuthenticationDelegate.swift */,
+				5748DC1C2E4236C500B860D3 /* SDKInteractor+ChangePinDelegate.swift */,
+				5748DC1A2E42365B00B860D3 /* SDKInteractor+RegistrationDelegate.swift */,
 				57A5BDFD2E3B96260041015B /* SDKInteractor+MobileAuthRequestDelegate.swift */,
 				57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */,
 				57EB55E42E03E3420072E496 /* PinPadInteractor.swift */,
@@ -530,6 +539,7 @@
 				57BDC9A52E2FB3B600534D7E /* EnrollmentState.swift in Sources */,
 				578DC4EB2D9E88BE008D2576 /* SDKConfigModel.swift in Sources */,
 				9E72F98A2E2FAA3E00FB4637 /* QRScannerInteractor.swift in Sources */,
+				5748DC1B2E42365B00B860D3 /* SDKInteractor+RegistrationDelegate.swift in Sources */,
 				578BC30D2D439BED00713CF7 /* System.swift in Sources */,
 				57A5BE002E3B969B0041015B /* PendingMobileAuthRequestEntity.swift in Sources */,
 				578BC3212D4A305C00713CF7 /* ContentView.swift in Sources */,
@@ -550,6 +560,8 @@
 				57B8FA992E17C80B007EBECE /* PinPadState.swift in Sources */,
 				57A5BE022E3B96D60041015B /* MobileAuthRequestQueue.swift in Sources */,
 				57F464822D4383C000C64156 /* AppState.swift in Sources */,
+				5748DC1D2E4236C500B860D3 /* SDKInteractor+ChangePinDelegate.swift in Sources */,
+				5748DC1F2E4237D000B860D3 /* SDKInteractor+AuthenticationDelegate.swift in Sources */,
 				9E3523892E31950E00975920 /* CameraPreview.swift in Sources */,
 				C74C414AFA857D101C71411F /* OneginiConfigModel.m in Sources */,
 			);
