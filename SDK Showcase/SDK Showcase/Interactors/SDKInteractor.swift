@@ -271,6 +271,7 @@ class SDKInteractorReal: SDKInteractor {
                 appState.pendingTransactions.remove(transaction)
                 appState.setSystemInfo(string: "Transaction with message \(entity.message ?? "") confirmed")
                 pushInteractor.updateBadge(nil)
+
             }
         } else {
             //TODO: For now transaction is confirmed automatically. This would change in next PR's.
