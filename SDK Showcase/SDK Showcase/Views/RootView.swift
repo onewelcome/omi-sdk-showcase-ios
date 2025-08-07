@@ -3,6 +3,8 @@
 import SwiftUI
 
 struct RootView: View {
+    @State private var showAlert = false
+    @State private var isProcessing = false
     @ObservedObject private var appstate: AppState = {
         @Injected var appState: AppState
         return appState
@@ -11,10 +13,6 @@ struct RootView: View {
         @Injected var appState: AppState
         return appState.system
     }()
-    
-    @State private var showAlert = false
-    @State private var isProcessing = false
-    
     private var interactor: CategoriesInteractor {
         @Injected var interactors: Interactors
         return interactors.categoriesInteractor
@@ -32,23 +30,15 @@ struct RootView: View {
                 .navigationDestination(for: Category.self) { category in
                     ContentView(category: category)
                 }
-                
-                
             }
             
-            if showAlert {
+            if system.hasError {
                 Alert(text: appstate.system.lastInfoDescription ?? "")
             }
             
-            if isProcessing {
+            if system.isProcessing {
                 Spinner()
             }
-        }
-        .onChange(of: system.hasError) {
-            showAlert = appstate.system.hasError
-        }
-        .onChange(of: system.isProcessing) {
-            isProcessing = appstate.system.isProcessing
         }
     }
 }

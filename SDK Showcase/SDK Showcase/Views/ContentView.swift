@@ -4,11 +4,11 @@ import Foundation
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject  var appstate: AppState = {
+    @ObservedObject var appstate: AppState = {
         @Injected var appState: AppState
         return appState
     }()
-    @ObservedObject  var system: AppState.System = {
+    @ObservedObject var system: AppState.System = {
         @Injected var appState: AppState
         return appState.system
     }()

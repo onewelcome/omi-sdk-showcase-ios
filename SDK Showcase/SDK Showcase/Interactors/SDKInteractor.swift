@@ -170,6 +170,7 @@ class SDKInteractorReal: SDKInteractor {
         guard let authenticator = userClient.authenticators(.registered, for: userProfile).first(where: { $0.name == "PIN" }) else {
             fatalError("No authenticator for option `\(optionName)`")
         }
+        appState.system.isProcessing = true
         userClient.authenticateUserWith(profile: userProfile, authenticator: authenticator, delegate: self)
     }
     
@@ -192,9 +193,11 @@ class SDKInteractorReal: SDKInteractor {
             appState.setSystemInfo(string: "You are not enrolled for mobile authentication. Please enroll first!")
             return []
         }
-        
+        appState.system.isProcessing = true
+
         return await withCheckedContinuation { continuation in
             userClient.pendingPushMobileAuthRequests { [self] requests, error in
+                appState.system.isProcessing = false
                 guard let requests else {
                     pushInteractor.updateBadge(0)
                     continuation.resume(returning: [])
@@ -261,10 +264,13 @@ class SDKInteractorReal: SDKInteractor {
               let pendingRequestProxy = transaction.pendingTransaction else {
             return
         }
+        
+        appState.system.isProcessing = true
         userClient.handlePendingMobileAuthRequest(pendingRequestProxy, delegate: self)
     }
 
     func confirmTransaction(for entity: MobileAuthRequestEntity, automatically: Bool) {
+        appState.system.isProcessing = false
         if automatically {
             if let transaction = pendingTransaction(id: entity.transactionId!) {
                 entity.confirmation?(true)

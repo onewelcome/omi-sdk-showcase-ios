@@ -11,10 +11,12 @@ extension SDKInteractorReal: MobileAuthRequestDelegate {
         mobileAuthEntity.confirmation = confirmation
         
         confirmTransaction(for: mobileAuthEntity, automatically: true)
+        appState.system.isProcessing = false
     }
     
     func userClient(_ userClient: any UserClient, didFailToHandleRequest request: any MobileAuthRequest, authenticator: (any Authenticator)?, error: any Error) {
         appState.setSystemInfo(string: error.localizedDescription)
         pushInteractor.updateBadge(nil)
+        appState.system.isProcessing = false
     }
 }
