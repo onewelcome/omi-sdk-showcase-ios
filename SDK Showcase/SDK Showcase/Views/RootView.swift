@@ -3,47 +3,42 @@
 import SwiftUI
 
 struct RootView: View {
+    @State private var showAlert = false
+    @State private var isProcessing = false
+    @ObservedObject private var appstate: AppState = {
+        @Injected var appState: AppState
+        return appState
+    }()
+    @ObservedObject  var system: AppState.System = {
+        @Injected var appState: AppState
+        return appState.system
+    }()
+    private var interactor: CategoriesInteractor {
+        @Injected var interactors: Interactors
+        return interactors.categoriesInteractor
+    }
+
     var body: some View {
-        NavigationStack {
-            List {
-                VStack {
-                    Image("thales-logo")
-                        .resizable()
-                        .scaledToFit()
-                        .padding(-20)
-                    Text("Welcome to the ShowCase app")
-                        .bold()
-                        .padding(.bottom, 15)
-                    Text("An example of the usage of the SDK, a part of the Mobile Security")
-                        .multilineTextAlignment(.center)
-                        .font(.system(size: 15))
-                        .foregroundStyle(.secondary)
-                }
-                
-                Section(header: Text("Public API")) {
-                    CategoriesList()
-                }
-                
-                Section(header: Text("Other")) {
-                    NavigationLink {
-                        
-                    } label: {
-                        Image(systemName: "stethoscope.circle.fill")
-                            .foregroundStyle(.green)
-                        Text("SDK current status")
+        ZStack {
+            NavigationStack(path: $appstate.routing.navPath) {
+                HeaderView()
+                List(interactor.loadCategories()) { category in
+                    NavigationLink(value: category) {
+                        Text(category.name)
                     }
-                    NavigationLink {
-                        
-                    } label: {
-                        Image(systemName: "magnifyingglass.circle.fill")
-                            .foregroundStyle(.yellow)
-                        Text("Search Public API")
-                    }
-                    
                 }
-                .hidden()
+                .navigationDestination(for: Category.self) { category in
+                    ContentView(category: category)
+                }
             }
-            .listStyle(.insetGrouped)
+            
+            if system.hasError {
+                Alert(text: appstate.system.lastInfoDescription ?? "")
+            }
+            
+            if system.isProcessing {
+                Spinner()
+            }
         }
     }
 }

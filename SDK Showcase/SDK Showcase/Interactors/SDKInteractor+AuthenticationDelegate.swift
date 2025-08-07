@@ -5,6 +5,7 @@ extension SDKInteractorReal: AuthenticationDelegate {
     func userClient(_ userClient: UserClient, didReceiveCustomAuthFinishAuthenticationChallenge challenge: CustomAuthFinishAuthenticationChallenge) {
         // not needed for pin authenticator
         appState.setSystemInfo(string: "didReceiveCustomAuthFinishAuthenticationChallenge not handled yet")
+        appState.system.isProcessing = false
     }
     
     func userClient(_ userClient: UserClient, didAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, info customAuthInfo: CustomInfo?) {
@@ -12,6 +13,7 @@ extension SDKInteractorReal: AuthenticationDelegate {
         appState.system.setUserState(.authenticated(userProfile.profileId))
         appState.system.setPinPadState(.hidden)
         fetchEnrollment()
+        appState.system.isProcessing = false
     }
     
     func userClient(_ userClient: UserClient, didFailToAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, error: Error) {
@@ -21,5 +23,6 @@ extension SDKInteractorReal: AuthenticationDelegate {
             appState.registeredUsers.remove(AppState.UserData(userId: userProfile.profileId, authenticatorsNames: authenticatorNames(for: userProfile.profileId)))
             pinPadInteractor.showPinPad(for: .hidden)
         }
+        appState.system.isProcessing = false
     }
 }

@@ -30,7 +30,7 @@ extension ContentView {
                 system.setInfo(errorValue)
                 system.isSDKInitialized = false
             }
-            isProcessing = false
+            system.isProcessing = false
         }
     }
     
@@ -47,7 +47,7 @@ extension ContentView {
                 system.setInfo(errorValue)
                 system.isSDKInitialized = false
             }
-            isProcessing = false
+            system.isProcessing = false
         }
     }
     

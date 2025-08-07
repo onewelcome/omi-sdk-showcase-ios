@@ -4,6 +4,7 @@ import Foundation
 
 class AppState: ObservableObject {
     @Published var system = System()
+    @Published var routing = ViewRouting()
     @Published var deviceData = DeviceData()
     @Published var registeredUsers = Set<UserData>()
     @Published var pendingTransactions = Set<PendingMobileAuthRequestEntity>()

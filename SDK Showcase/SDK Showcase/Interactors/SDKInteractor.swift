@@ -31,7 +31,7 @@ protocol SDKInteractor {
     func authenticatorNames(for userId: String) -> [String]
     func authenticateUser(optionName: String)
     
-    func handlePushMobileAuthenticationRequest(userInfo: [AnyHashable: Any], completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    func handlePushMobileAuthenticationRequest(userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void)
     func handleOtp(_ code: String)
     func handlePendingTransaction(id: String)
     func fetchMobileAuthPendingTransactionNames() async -> [String]
@@ -170,6 +170,7 @@ class SDKInteractorReal: SDKInteractor {
         guard let authenticator = userClient.authenticators(.registered, for: userProfile).first(where: { $0.name == "PIN" }) else {
             fatalError("No authenticator for option `\(optionName)`")
         }
+        appState.system.isProcessing = true
         userClient.authenticateUserWith(profile: userProfile, authenticator: authenticator, delegate: self)
     }
     
@@ -189,13 +190,16 @@ class SDKInteractorReal: SDKInteractor {
     func fetchMobileAuthPendingTransactionNames() async -> [String] {
         precheck()
         guard isMobileAuthEnrolled else {
-            appState.setSystemInfo(string: "You are not authenticated. Please authenticate first!")
+            appState.setSystemInfo(string: "You are not enrolled for mobile authentication. Please enroll first!")
             return []
         }
-        
+        appState.system.isProcessing = true
+
         return await withCheckedContinuation { continuation in
             userClient.pendingPushMobileAuthRequests { [self] requests, error in
+                appState.system.isProcessing = false
                 guard let requests else {
+                    pushInteractor.updateBadge(0)
                     continuation.resume(returning: [])
                     return
                 }
@@ -204,6 +208,7 @@ class SDKInteractorReal: SDKInteractor {
                 }
                 let requestsToReturn = requests.compactMap(\.transactionId)
                 continuation.resume(returning: requestsToReturn)
+                pushInteractor.updateBadge(requestsToReturn.count)
             }
         }
     }
@@ -240,33 +245,39 @@ class SDKInteractorReal: SDKInteractor {
         userClient.handleOTPMobileAuthRequest(otp: code, delegate: self)
     }
     
-    func handlePushMobileAuthenticationRequest(userInfo: [AnyHashable: Any], completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    func handlePushMobileAuthenticationRequest(userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void) {
         print("push: \(userInfo)")
         guard let pendingTransaction = userClient.pendingMobileAuthRequest(from: userInfo) else {
-            appState.setSystemInfo(string: "Push notification not handled: \(userInfo).")
-            completionHandler([])
+            appState.setSystemInfo(string: "Push notification not handled. User is not authenticated most likely.")
+            completionHandler()
             return
         }
         
         let mobileAuthRequest = PendingMobileAuthRequestEntity(pendingTransaction: pendingTransaction, delegate: self)
         appState.pendingTransactions.insert(mobileAuthRequest)
-        appState.setSystemInfo(string: "Push notification handled.")
-        completionHandler([.sound])
+        appState.routing.navigate(to: .pendingTransactions)
+        completionHandler()
     }
     
     func handlePendingTransaction(id: String) {
-        guard let request = pendingTransaction(id: id) else {
+        guard let transaction = pendingTransaction(id: id),
+              let pendingRequestProxy = transaction.pendingTransaction else {
             return
         }
-        userClient.handlePendingMobileAuthRequest(request.pendingTransaction!, delegate: self)
+        
+        appState.system.isProcessing = true
+        userClient.handlePendingMobileAuthRequest(pendingRequestProxy, delegate: self)
     }
 
     func confirmTransaction(for entity: MobileAuthRequestEntity, automatically: Bool) {
+        appState.system.isProcessing = false
         if automatically {
             if let transaction = pendingTransaction(id: entity.transactionId!) {
                 entity.confirmation?(true)
                 appState.pendingTransactions.remove(transaction)
                 appState.setSystemInfo(string: "Transaction with message \(entity.message ?? "") confirmed")
+                pushInteractor.updateBadge(nil)
+
             }
         } else {
             //TODO: For now transaction is confirmed automatically. This would change in next PR's.

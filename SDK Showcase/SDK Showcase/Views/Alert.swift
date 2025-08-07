@@ -32,5 +32,8 @@ struct Alert: View {
         .tint(.white)
         .background(Color.gray.opacity(0.8))
         .cornerRadius(15)
+        .onTapGesture {
+            appState.unsetSystemInfo()
+        }
     }
 }

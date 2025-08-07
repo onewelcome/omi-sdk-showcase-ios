@@ -4,78 +4,75 @@ import Foundation
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var appstate: AppState
-    @ObservedObject var system: AppState.System
+    @ObservedObject var appstate: AppState = {
+        @Injected var appState: AppState
+        return appState
+    }()
+    @ObservedObject var system: AppState.System = {
+        @Injected var appState: AppState
+        return appState.system
+    }()
+
     @State internal var category: Category
     @State internal var isExpanded = false
     @State internal var actions = [Action]()
     @State internal var errorValue = ""
-    @State internal var isProcessing = false
+
     
     var body: some View {
         HStack {
-            ZStack {
-                List {
-                    Text(category.description)
-                        .multilineTextAlignment(.leading)
-                        .font(.system(size: 15))
-                        .foregroundStyle(.secondary)
-                    
-                    if !category.requiredActions.isEmpty {
-                        Section(header: Text("Required Actions")) {
-                            ForEach(category.requiredActions, id:\.self) { action in
-                                ActionView(action: binding(for: action))
-                            }
+            List {
+                Text(category.description)
+                    .multilineTextAlignment(.leading)
+                    .font(.system(size: 15))
+                    .foregroundStyle(.secondary)
+                
+                if !category.requiredActions.isEmpty {
+                    Section(header: Text("Required Actions")) {
+                        ForEach(category.requiredActions, id:\.self) { action in
+                            ActionView(action: binding(for: action))
                         }
                     }
-                    
-                    if !category.optionalActions.isEmpty {
-                        Section(header: Text("Optional Actions")) {
-                            ForEach(category.optionalActions, id:\.self) { action in
-                                ActionView(action: binding(for: action))
-                            }
+                }
+                
+                if !category.optionalActions.isEmpty {
+                    Section(header: Text("Optional Actions")) {
+                        ForEach(category.optionalActions, id:\.self) { action in
+                            ActionView(action: binding(for: action))
                         }
                     }
-                    
-                    if !category.selection.isEmpty {
-                        Section(header: Text("Select")) {
-                            ForEach(category.selection, id:\.self) { selection in
-                                Button(action: {
-                                    buttonAction(for: selection)
-                                }, label: {
-                                    HStack {
-                                        if let logo = selection.logo {
-                                            Image(systemName: logo)
-                                        }
-                                        Text(selection.name)
+                }
+                
+                if !category.selection.isEmpty {
+                    Section(header: Text("Select")) {
+                        ForEach(category.selection, id:\.self) { selection in
+                            Button(action: {
+                                buttonAction(for: selection)
+                            }, label: {
+                                HStack {
+                                    if let logo = selection.logo {
+                                        Image(systemName: logo)
                                     }
-                                }).disabled(selection.disabled)
-                            }
+                                    Text(selection.name)
+                                }
+                            }).disabled(selection.disabled)
                         }
                     }
-                    
-                    Section(content: {
-                        TextResult(result: initializationStatus)
-                        TextResult(result: userStateDescription)
-                        if case .authenticated = system.userState {
-                            TextResult(result: enrollmentStateDescription)
-                        }
-                    }, header: {
-                        Text("Result")
-                    })
-                }
-                .listStyle(.insetGrouped)
-                .shadow(radius: 5, x: 0, y: 5)
-                
-                if isProcessing {
-                    Spinner()
                 }
                 
-                if let info = system.lastInfoDescription {
-                    Alert(text: info)
-                }
-            } // ZStack
-        } // HStack
+                Section(content: {
+                    TextResult(result: initializationStatus)
+                    TextResult(result: userStateDescription)
+                    if case .authenticated = system.userState {
+                        TextResult(result: enrollmentStateDescription)
+                    }
+                }, header: {
+                    Text("Result")
+                })
+            }
+            .listStyle(.insetGrouped)
+            .shadow(radius: 5, x: 0, y: 5)
+        }
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $system.shouldShowBrowser) {
@@ -126,17 +123,17 @@ extension ContentView {
         guard category.type == .pendingTransactions else { return }
         Task {
             let pendingTransactions = await sdkInteractor.fetchMobileAuthPendingTransactionNames()
-            category.selection = pendingTransactions.map { Selection(name: $0, type: .pending) }
+            category.selection = pendingTransactions.map { Selection(name: $0, type: .pending, logo: "doc.badge.clock") }
         }
     }
     
     func buttonAction(for option: Option) {
         switch option.type {
         case .initialize:
-            isProcessing = true
+            system.isProcessing = true
             initializeSDK()
         case .reset:
-            isProcessing = true
+            system.isProcessing = true
             resetSDK()
         case .changePin:
             changePIN()
