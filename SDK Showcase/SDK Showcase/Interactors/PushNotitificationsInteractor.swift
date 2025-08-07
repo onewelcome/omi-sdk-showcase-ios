@@ -7,6 +7,7 @@ protocol PushNotitificationsInteractor {
     func registerForPushNotifications(completion: @escaping (_ token: Data?, _ error: Error?) -> Void)
     func didRegisterForRemoteNotificationsWithDeviceToken(_ deviceToken: Data)
     func didFailToRegisterForRemoteNotificationsWithError(_ error: any Error)
+    func updateBadge(_ value: Int?)
 }
 
 //MARK: - Real methods
@@ -16,7 +17,6 @@ class PushNotitificationsInteractorReal: NSObject, PushNotitificationsInteractor
     
     func registerForPushNotifications(completion: @escaping (_ token: Data?, _ error: Error?) -> Void) {
         self.completion = completion
-        
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { [self] (granted, error) in
             if granted {
                 DispatchQueue.main.async {
@@ -37,6 +37,10 @@ class PushNotitificationsInteractorReal: NSObject, PushNotitificationsInteractor
         completion?(nil, error)
         self.completion = nil
     }
+    
+    func updateBadge(_ value: Int?) {
+        UNUserNotificationCenter.current().setBadgeCount(value ?? appState.pendingTransactions.count)
+    }
 }
 
 //MARK: - UNUserNotificationCenterDelegate
@@ -46,14 +50,14 @@ extension PushNotitificationsInteractorReal: UNUserNotificationCenterDelegate {
         return interactors.sdkInteractor
     }
     
-    // Called when the app is in the background or was killed and woken up by a push
+    // Called when the app is in the background or was killed and woken up by a push or an interaction with the banner
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let mappedCompletionHandler: (UNNotificationPresentationOptions) -> Void = { _ in completionHandler() }
-        sdkInteractor.handlePushMobileAuthenticationRequest(userInfo: response.notification.request.content.userInfo, completionHandler: mappedCompletionHandler)
+        let userInfo = response.notification.request.content.userInfo
+        sdkInteractor.handlePushMobileAuthenticationRequest(userInfo: userInfo, completionHandler: completionHandler)
     }
     
-    // Called when the app is in the foreground
+    // Called when the app is in the foreground, just shows the banner and play sound. The interaction with the banner is performed above
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        sdkInteractor.handlePushMobileAuthenticationRequest(userInfo: notification.request.content.userInfo, completionHandler: completionHandler)
+        completionHandler([.sound, .banner])
     }
 }

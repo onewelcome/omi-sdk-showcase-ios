@@ -15,5 +15,6 @@ extension SDKInteractorReal: MobileAuthRequestDelegate {
     
     func userClient(_ userClient: any UserClient, didFailToHandleRequest request: any MobileAuthRequest, authenticator: (any Authenticator)?, error: any Error) {
         appState.setSystemInfo(string: error.localizedDescription)
+        pushInteractor.updateBadge(nil)
     }
 }
