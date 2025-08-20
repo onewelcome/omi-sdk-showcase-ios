@@ -3,6 +3,7 @@ import OneginiSDKiOS
 
 extension SDKInteractorReal: RegistrationDelegate {
     func userClient(_ userClient: any OneginiSDKiOS.UserClient, didReceiveCreatePinChallenge challenge: any OneginiSDKiOS.CreatePinChallenge) {
+        appState.system.isProcessing = false
         if let error = challenge.error {
             pinPadInteractor.setCreatePinChallenge(challenge)
             pinPadInteractor.showError(error)
@@ -22,14 +23,17 @@ extension SDKInteractorReal: RegistrationDelegate {
     }
 
     func userClient(_ userClient: any UserClient, didRegisterUser profile: any UserProfile, with identityProvider: any IdentityProvider, info: (any CustomInfo)?) {
+        appState.system.isProcessing = false
         browserInteractor.didRegisterUser(profileId: profile.profileId)
     }
     
     func userClient(_ userClient: any UserClient, didReceiveBrowserRegistrationChallenge challenge: any BrowserRegistrationChallenge) {
+        appState.system.isProcessing = false
         browserInteractor.didReceiveBrowserRegistrationChallenge(challenge)
     }
     
     func userClient(_ userClient: any UserClient, didFailToRegisterUserWith identityProvider: any IdentityProvider, error: any Error) {
+        appState.system.isProcessing = false
         browserInteractor.didFailToRegisterUser(with: error)
     }
 }

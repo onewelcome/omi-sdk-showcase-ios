@@ -131,6 +131,7 @@ class SDKInteractorReal: SDKInteractor {
     }
 
     func register(with provider: IdentityProvider) {
+        appState.system.isProcessing = true
         userClient.registerUserWith(identityProvider: provider, scopes: ["read", "openid", "email"], delegate: self)
     }
     
@@ -178,6 +179,7 @@ class SDKInteractorReal: SDKInteractor {
     func enrollForMobileAuthentication() {
         precheck()
         userClient.enrollMobileAuth { [self] error in
+            appState.system.isProcessing = false
             if let error {
                 appState.setSystemInfo(string: error.localizedDescription)
             } else {
@@ -225,6 +227,7 @@ class SDKInteractorReal: SDKInteractor {
                 return
             }
             userClient.enrollPushMobileAuth(with: token) { [self] error in
+                appState.system.isProcessing = false
                 if let error {
                     appState.setSystemInfo(string: error.localizedDescription)
                 } else {

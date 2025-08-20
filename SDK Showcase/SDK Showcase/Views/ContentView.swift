@@ -128,12 +128,12 @@ extension ContentView {
     }
     
     func buttonAction(for option: Option) {
+        system.isProcessing = true
+        
         switch option.type {
         case .initialize:
-            system.isProcessing = true
             initializeSDK()
         case .reset:
-            system.isProcessing = true
             resetSDK()
         case .changePin:
             changePIN()
