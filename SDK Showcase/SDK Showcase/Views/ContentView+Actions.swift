@@ -8,7 +8,7 @@ extension ContentView {
         sdkInteractor.setConfigModel(SDKConfigModel.default)
         sdkInteractor.setPublicKey(value(for: "setPublicKey"))
         sdkInteractor.setCertificates([value(for: "setX509PEMCertificates")])
-        sdkInteractor.setAdditionalResourceUrls(value(for: "setAdditionalResourceURL"))
+        sdkInteractor.setAdditionalResourceUrls([value(for: "setAdditionalResourceURL")])
         sdkInteractor.setStoreCookies(value(for: "setStoreCookies"))
         sdkInteractor.setHttpRequestTimeout(value(for: "setHttpRequestTimeout"))
         sdkInteractor.setDeviceConfigCacheDuration(value(for: "setDeviceConfigCacheDuration"))
