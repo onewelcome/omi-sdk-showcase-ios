@@ -31,6 +31,12 @@ struct RootView: View {
                     ContentView(category: category)
                 }
             }
+            .onAppear {
+                if UserDefaults.standard.bool(forKey: "autoinitialize") {
+                    appstate.system.isProcessing = true
+                    appstate.routing.navigate(to: .initialization)
+                }
+            }
             
             if system.hasError {
                 Alert(text: appstate.system.lastInfoDescription ?? "")

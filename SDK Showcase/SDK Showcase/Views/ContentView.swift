@@ -97,6 +97,8 @@ struct ContentView: View {
             updateUsersSelection()
             updateMobileAuthenticationCategorySelection()
             pendingTransactionsTask()
+            guard category.type == .initialization else { return }
+            initializeSDK(automatically: true)
         }
         
         HStack {
@@ -132,7 +134,9 @@ extension ContentView {
         
         switch option.type {
         case .initialize:
-            initializeSDK()
+            initializeSDK(automatically: false)
+        case .auto:
+            initializeSDK(automatically: true)
         case .reset:
             resetSDK()
         case .changePin:
