@@ -9,6 +9,7 @@ enum Selections: String {
     case loginWithOtp = "Login with QR Code"
     case pending
     case logout
+    case deregister
     case authenticate
 }
 

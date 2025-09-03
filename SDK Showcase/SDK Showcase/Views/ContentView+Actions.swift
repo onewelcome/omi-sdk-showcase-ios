@@ -79,6 +79,11 @@ extension ContentView {
         let userId = appstate.system.userState.userId
         category.selection = sdkInteractor.userAuthenticatorOptionNames.filter { $0 == userId }.map { Selection(name: $0, type: .logout, logo: "person.crop.circle") }
     }
+    
+    func updateDeregister() {
+        guard category.type == .userDeregistation else { return }
+        category.selection = sdkInteractor.userAuthenticatorOptionNames.map { Selection(name: $0, type: .deregister, logo: "person.crop.circle") }
+    }
 }
 
 //MARK: - Actions for Selections

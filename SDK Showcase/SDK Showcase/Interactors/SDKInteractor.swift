@@ -23,6 +23,7 @@ protocol SDKInteractor {
     func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void)
     func changePin()
     func logout(optionName: String)
+    func deregister(optionName: String)
     
     func enrollForMobileAuthentication()
     func registerForPushNotifications()
@@ -143,11 +144,26 @@ class SDKInteractorReal: SDKInteractor {
     
     func logout(optionName: String) {
         userClient.logoutUser { [self] profile, error in
-            if let profile {
+            if profile != nil {
                 appState.system.setUserState(.registered)
                 appState.setSystemInfo(string: "Profile \(optionName) has been logged out.")
             } else {
                 appState.setSystemInfo(string: "Logout failed. The profile is not authenticated most likely.")
+            }
+        }
+    }
+    
+    func deregister(optionName: String) {
+        guard let userProfile = userClient.userProfiles.first(where: { user in user.profileId == optionName }) else {
+            appState.setSystemInfo(string: "Deregistration failed. The profile has been already unregistered.")
+            return
+        }
+        userClient.deregister(user: userProfile) { [self] error in
+            if error != nil {
+                appState.setSystemInfo(string: "Deregistration failed. The profile has not been found.")
+            } else {
+                appState.registeredUsers.remove(AppState.UserData(userId: userProfile.profileId, authenticatorsNames: authenticatorNames(for: userProfile.profileId)))
+                appState.setSystemInfo(string: "Profile \(optionName) has been deregister.")
             }
         }
     }
