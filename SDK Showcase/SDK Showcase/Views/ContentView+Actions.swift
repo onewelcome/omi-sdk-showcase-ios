@@ -14,7 +14,8 @@ extension ContentView {
         sdkInteractor.setDeviceConfigCacheDuration(value(for: "setDeviceConfigCacheDuration"))
     }
     
-    func initializeSDK() {
+    func initializeSDK(automatically: Bool) {
+        UserDefaults.standard.set(automatically, forKey: "autoinitialize")
         errorValue.removeAll()
         /// You can comment the below line if the app is configured with the configurator and do have OneginiConfigModel set.
         setBuilder()
