@@ -135,7 +135,7 @@ extension ContentView {
         switch option.type {
         case .initialize:
             initializeSDK(automatically: false)
-        case .auto:
+        case .autoinitialize:
             initializeSDK(automatically: true)
         case .reset:
             resetSDK()

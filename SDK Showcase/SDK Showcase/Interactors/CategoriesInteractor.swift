@@ -27,7 +27,7 @@ class CategoriesInteractorReal: CategoriesInteractor {
                      description: "The SDK has to be initialized before any other operation",
                      options: [Option(name: Options.initialize.rawValue,
                                       logo: "figure.run"),
-                               Option(name: Options.auto.rawValue,
+                               Option(name: Options.autoinitialize.rawValue,
                                                 logo: "autostartstop"),
                                Option(name: Options.reset.rawValue)],
                      selection: [],
