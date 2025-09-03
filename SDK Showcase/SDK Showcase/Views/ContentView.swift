@@ -86,6 +86,7 @@ struct ContentView: View {
         }
         .onChange(of: appstate.registeredUsers) {
             updateUsersSelection()
+            updateDeregister()
         }
         .onChange(of: appstate.system.enrollmentState) {
             updateMobileAuthenticationCategorySelection()
@@ -99,6 +100,7 @@ struct ContentView: View {
         .task {
             updateUsersSelection()
             updateLogout()
+            updateDeregister()
             updateMobileAuthenticationCategorySelection()
             pendingTransactionsTask()
         }
@@ -166,6 +168,8 @@ extension ContentView {
             sdkInteractor.authenticateUser(optionName: selection.name)
         case .logout:
             sdkInteractor.logout(optionName: selection.name)
+        case .deregister:
+            sdkInteractor.deregister(optionName: selection.name)
         case .unknown:
             fatalError("Selection `\(selection.name)` not handled!")
         }
