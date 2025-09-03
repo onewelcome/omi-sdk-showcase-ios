@@ -22,6 +22,7 @@ protocol SDKInteractor {
     func register(with provider: IdentityProvider)
     func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void)
     func changePin()
+    func logout(optionName: String)
     
     func enrollForMobileAuthentication()
     func registerForPushNotifications()
@@ -136,8 +137,19 @@ class SDKInteractorReal: SDKInteractor {
     }
     
     func changePin() {
-        precheck()
+        guard precheck() else { return }
         userClient.changePin(delegate: self)
+    }
+    
+    func logout(optionName: String) {
+        userClient.logoutUser { [self] profile, error in
+            if let profile {
+                appState.system.setUserState(.registered)
+                appState.setSystemInfo(string: "Profile \(optionName) has been logged out.")
+            } else {
+                appState.setSystemInfo(string: "Logout failed. The profile is not authenticated most likely.")
+            }
+        }
     }
     
     func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void) {
@@ -177,7 +189,7 @@ class SDKInteractorReal: SDKInteractor {
     
     
     func enrollForMobileAuthentication() {
-        precheck()
+        guard precheck() else { return }
         userClient.enrollMobileAuth { [self] error in
             appState.system.isProcessing = false
             if let error {
@@ -190,7 +202,7 @@ class SDKInteractorReal: SDKInteractor {
     }
 
     func fetchMobileAuthPendingTransactionNames() async -> [String] {
-        precheck()
+        guard precheck() else { return [] }
         guard isMobileAuthEnrolled else {
             appState.setSystemInfo(string: "You are not enrolled for mobile authentication. Please enroll first!")
             return []
@@ -216,7 +228,7 @@ class SDKInteractorReal: SDKInteractor {
     }
 
     func registerForPushNotifications() {
-        precheck()
+        guard precheck() else { return }
         guard isMobileAuthEnrolled else {
             appState.setSystemInfo(string: "You are not enrolled for mobile authentication. Please enroll first!")
             return
@@ -329,10 +341,14 @@ private extension SDKInteractorReal {
         return true
     }
     
-    func precheck() {
-        if userClient.authenticatedUserProfile == nil {
+    func precheck() -> Bool {
+        let check = userClient.authenticatedUserProfile != nil
+        if !check {
             appState.setSystemInfo(string: "You must be authenticated first.")
+            appState.system.isProcessing = false
         }
+        
+        return check
     }
     
     func mapSDKConfigModel(_ model: SDKConfigModel) -> OneginiSDKiOS.ConfigModel {

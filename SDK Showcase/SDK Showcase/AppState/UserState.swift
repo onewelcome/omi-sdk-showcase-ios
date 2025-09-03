@@ -1,6 +1,6 @@
 //  Copyright © 2025 Onewelcome Mobile Identity. All rights reserved.
 
-enum UserState {
+enum UserState: Equatable {
     case notRegistered
     case registering
     case registered

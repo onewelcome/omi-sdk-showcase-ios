@@ -8,6 +8,7 @@ enum Selections: String {
     case browserRegistration = "Browser registration"
     case loginWithOtp = "Login with QR Code"
     case pending
+    case logout
     case authenticate
 }
 

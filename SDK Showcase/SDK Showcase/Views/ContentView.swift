@@ -93,8 +93,12 @@ struct ContentView: View {
         .onChange(of: appstate.pendingTransactions) {
             pendingTransactionsTask()
         }
+        .onChange(of: appstate.system.userState) {
+            updateLogout()
+        }
         .task {
             updateUsersSelection()
+            updateLogout()
             updateMobileAuthenticationCategorySelection()
             pendingTransactionsTask()
             guard category.type == .initialization else { return }
@@ -164,6 +168,8 @@ extension ContentView {
             handlePending(transacationId: selection.name)
         case .authenticate:
             sdkInteractor.authenticateUser(optionName: selection.name)
+        case .logout:
+            sdkInteractor.logout(optionName: selection.name)
         case .unknown:
             fatalError("Selection `\(selection.name)` not handled!")
         }
