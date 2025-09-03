@@ -5,6 +5,7 @@ import Foundation
 enum Options: String {
     case unknown
     case initialize = "Initialize"
+    case autoinitialize = "Autoinitialize"
     case reset = "Reset"
     case changePin = "Change Pin"
     case enroll = "Enroll for mobile authentication"
