@@ -9,7 +9,6 @@ extension AppState {
         @Published var isProcessing = false
 
         @Published private(set) var lastInfoDescription: String? = nil
-        @Published private(set) var previousUserState: UserState?
         @Published private(set) var userState: UserState = .notRegistered
         @Published private(set) var enrollmentState: EnrollmentState = .unenrolled
         @Published private(set) var pinPadState: PinPadState = .hidden
@@ -19,18 +18,22 @@ extension AppState {
         }
                 
         var shouldShowBrowser: Bool {
-            get { if case .registering = userState { return true } else { return false } }
+            get {
+                if case .registering = userState {
+                    return true
+                }
+                else {
+                    return false
+                }
+            }
             set {
                 if newValue {
                     userState = .registering
-                } else {
-                    restorePreviousUserState()
                 }
             }
         }
         
         func setUserState(_ newState: UserState) {
-            previousUserState = userState
             userState = newState
         }
         
@@ -41,11 +44,7 @@ extension AppState {
         func setPinPadState(_ newState: PinPadState) {
             pinPadState = newState
         }
-        
-        func restorePreviousUserState() {
-            userState = previousUserState ?? .notRegistered
-        }
-        
+   
         var shouldShowPinPad: Bool {
             get { pinPadState != .hidden }
             set { pinPadState = newValue ? .changing : .hidden }

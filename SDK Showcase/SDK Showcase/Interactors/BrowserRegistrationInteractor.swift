@@ -9,6 +9,8 @@ protocol BrowserRegistrationInteractor {
     var registerUrl: String { get set }
     
     func setChallenge(_ challenge: BrowserRegistrationChallenge)
+    func setStateless(_ stateless: Bool)
+    
     func register()
     func cancelRegistration()
     func didReceiveBrowserRegistrationChallenge(_ challenge: any BrowserRegistrationChallenge)
@@ -23,6 +25,7 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
     @ObservedObject var appState: AppState
     private var challenge: BrowserRegistrationChallenge?
     var registerUrl: String
+    var stateless = false
 
     init(registerUrl: String = "", appState: AppState) {
         self.registerUrl = registerUrl
@@ -34,23 +37,31 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
         self.challenge = challenge
     }
     
+    func setStateless(_ stateless: Bool) {
+        self.stateless = stateless
+    }
+    
     func register() {
         guard appState.system.isSDKInitialized else {
             appState.setSystemInfo(string: "SDK not initialized")
             return
         }
-        sdkInteractor.register(with: IdentityProviderProxy.default)
+        sdkInteractor.register(with: IdentityProviderProxy.default, stateless: stateless)
     }
     
     func cancelRegistration() {
         guard let challenge else { return }
         
         challenge.sender.cancel(challenge)
+        appState.system.setUserState(.registered)
         appState.unsetSystemInfo()
     }
     
     func didRegisterUser(profileId: String) {
-        appState.addRegisteredUser(AppState.UserData(userId: profileId, authenticatorsNames: sdkInteractor.authenticatorNames(for: profileId)))
+        let userData = AppState.UserData(userId: profileId,
+                                         isStateless: stateless,
+                                         authenticatorsNames: sdkInteractor.authenticatorNames(for: profileId))
+        appState.addRegisteredUser(userData)
         appState.system.setEnrollmentState(.unenrolled)
         appState.system.setPinPadState(.hidden)
         challenge = nil
@@ -62,6 +73,7 @@ extension BrowserRegistrationInteractorReal {
     
     func didReceiveCreatePinChallenge(_ challenge: any OneginiSDKiOS.CreatePinChallenge) {
         pinPadInteractor.setCreatePinChallenge(challenge)
+        appState.system.setUserState(.registered)
         pinPadInteractor.showPinPad(for: .creating)
     }
     
@@ -76,8 +88,11 @@ extension BrowserRegistrationInteractorReal {
     }
     
     func didFailToRegisterUser(with error: Error) {
-        appState.system.restorePreviousUserState()
-        appState.setSystemInfo(string: error.localizedDescription)
+        if (error as NSError).code == 9034 {
+            appState.setSystemInfo(string: "Stateless registration is not supported or not configured by the server.")
+        } else {
+            appState.setSystemInfo(string: error.localizedDescription)
+        }
         challenge = nil
     }
 }

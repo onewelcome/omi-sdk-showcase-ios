@@ -29,7 +29,7 @@ class AppState: ObservableObject {
     }
     
     func addRegisteredUser(_ newUser: UserData) {
-        system.setUserState(.registered)
+        system.setUserState(newUser.isStateless ? .stateless : .registered)
         registeredUsers.insert(newUser)
     }
 }

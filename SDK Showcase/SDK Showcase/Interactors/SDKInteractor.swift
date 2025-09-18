@@ -7,6 +7,7 @@ import OneginiSDKiOS
 protocol SDKInteractor {
     var builder: ClientBuilder { get set }
     var userAuthenticatorOptionNames: [String] { get }
+    var numberOfRegisteredUsers: Int { get }
 
     func initializeSDK(result: @escaping SDKResult)
     func resetSDK(result: @escaping SDKResult)
@@ -18,8 +19,8 @@ protocol SDKInteractor {
     func setDeviceConfigCacheDuration(_ cacheDuration: TimeInterval)
     func setHttpRequestTimeout(_ requestTimeout: TimeInterval)
     func setStoreCookies(_ storeCookies: Bool)
-    
-    func register(with provider: IdentityProvider)
+ 
+    func register(with provider: IdentityProvider, stateless: Bool)
     func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void)
     func changePin()
     func logout(optionName: String)
@@ -51,19 +52,19 @@ class SDKInteractorReal: SDKInteractor {
     var builder: ClientBuilder
     
     var userAuthenticatorOptionNames: [String] {
-        var toReturn = [String]()
-        appState.registeredUsers
-            .forEach { userData in
-                userData.authenticatorsNames.forEach { authenticatorName in
-                    toReturn.append(userData.userId)
-                }
-            }
-        return toReturn
+        return appState.registeredUsers.map { $0.userId }
+    }
+    
+    var numberOfRegisteredUsers: Int {
+        return appState.registeredUsers.filter { $0.isStateless == false }.map { $0.userId }.count
     }
 
     func authenticatorNames(for userId: String) -> [String] {
-        // For now only registered authenticators
-        return userClient.authenticators(.registered, for: ProfileProxy(profileId: userId)).map { $0.name }
+        if userId == UserState.stateless.rawValue {
+            return [UserState.stateless.rawValue]
+        } else {
+            return userClient.authenticators(.registered, for: ProfileProxy(profileId: userId)).map { $0.name }
+        }
     }
 
     init(appState: AppState, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder) {
@@ -127,14 +128,19 @@ class SDKInteractorReal: SDKInteractor {
     func setStoreCookies(_ storeCookies: Bool) {
         _ = builder.setStoreCookies(storeCookies)
     }
-    
+
     func clearDeviceData() {
         appState.reset()
     }
 
-    func register(with provider: IdentityProvider) {
+    func register(with provider: IdentityProvider, stateless: Bool) {
         appState.system.isProcessing = true
-        userClient.registerUserWith(identityProvider: provider, scopes: ["read", "openid", "email"], delegate: self)
+        let scopes = ["read", "openid", "email"]
+        if stateless {
+            userClient.registerStatelessUserWith(identityProvider: provider, scopes: scopes, delegate: self)
+        } else {
+            userClient.registerUserWith(identityProvider: provider, scopes: scopes, delegate: self)
+        }
     }
     
     func changePin() {
@@ -155,7 +161,11 @@ class SDKInteractorReal: SDKInteractor {
     
     func deregister(optionName: String) {
         guard let userProfile = userClient.userProfiles.first(where: { user in user.profileId == optionName }) else {
-            appState.setSystemInfo(string: "Deregistration failed. The profile has been already unregistered.")
+            if optionName == UserState.stateless.rawValue {
+                appState.setSystemInfo(string: "Deregistration cannot be performed for the stateless user.")
+            } else {
+                appState.setSystemInfo(string: "Deregistration failed. The profile has been already unregistered.")
+            }
             return
         }
         userClient.deregister(user: userProfile) { [self] error in
@@ -191,6 +201,10 @@ class SDKInteractorReal: SDKInteractor {
     }
     
     func authenticateUser(optionName: String) {
+        guard optionName != UserState.stateless.rawValue else {
+            appState.setSystemInfo(string: "Stateless user is authenticated automatically.")
+            return
+        }
         guard let userProfile = userClient.userProfiles.first(where: { user in user.profileId == optionName }) else {
             fatalError("No user profile for option `\(optionName)`")
         }
@@ -358,7 +372,15 @@ private extension SDKInteractorReal {
     }
     
     func precheck() -> Bool {
+        let stateless = userClient.isStateless && userClient.accessToken != nil
         let check = userClient.authenticatedUserProfile != nil
+        
+        guard !stateless else {
+            appState.setSystemInfo(string: "Stateless user cannot proceed.")
+            appState.system.isProcessing = false
+            return false
+        }
+        
         if !check {
             appState.setSystemInfo(string: "You must be authenticated first.")
             appState.system.isProcessing = false

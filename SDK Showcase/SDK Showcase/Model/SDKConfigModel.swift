@@ -17,6 +17,7 @@ struct SDKConfigModel {
     static let defaultDictionary = ["ONGAppIdentifier": "showcase",
                                     "ONGAppPlatform": "ios",
                                     "ONGAppVersion": "1.0.1",
+                                    "ONGServerType": "access",
                                     "ONGAppBaseURL": "https://mobile-security-proxy.in.prod.onewelcome.net",
                                     "ONGResourceBaseURL": "https://mobile-security-proxy.in.prod.onewelcome.net/resources/",
                                     "ONGRedirectURL": "showcase://loginsucess"]

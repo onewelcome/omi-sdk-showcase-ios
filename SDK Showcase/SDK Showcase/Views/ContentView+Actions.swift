@@ -89,6 +89,7 @@ extension ContentView {
 //MARK: - Actions for Selections
 extension ContentView {
     func browserRegistration() {
+        browserInteractor.setStateless(value(for: "Stateless"))
         browserInteractor.register()
     }
     
@@ -138,9 +139,11 @@ extension ContentView {
         case .registering:
             "⏳ Registration in progress..."
         case .registered:
-            "👥 \(sdkInteractor.userAuthenticatorOptionNames.count) registered users"
+            "👥 \(sdkInteractor.numberOfRegisteredUsers) registered users"
         case .authenticated(let userId):
             "👤 User authenticated as \(userId)"
+        case .stateless:
+            "🤖 Stateless user authenticated"
         }
     }
     
