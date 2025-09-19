@@ -24,8 +24,8 @@ protocol BrowserRegistrationInteractor {
 class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
     @ObservedObject var appState: AppState
     private var challenge: BrowserRegistrationChallenge?
+    private var stateless = false
     var registerUrl: String
-    var stateless = false
 
     init(registerUrl: String = "", appState: AppState) {
         self.registerUrl = registerUrl
