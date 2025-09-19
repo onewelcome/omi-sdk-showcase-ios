@@ -4,6 +4,7 @@ enum UserState: Equatable {
     case notRegistered
     case registering
     case registered
+    case unauthenticated
     case authenticated(String)
     case stateless
     
@@ -28,6 +29,8 @@ enum UserState: Equatable {
             return "registered"
         case .authenticated(let id):
             return "authenticated(\(id))"
+        case .unauthenticated:
+            return "unauthenticated"
         case .stateless:
             return "stateless"
         }

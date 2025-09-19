@@ -138,7 +138,7 @@ extension ContentView {
             "🚫 No user registered"
         case .registering:
             "⏳ Registration in progress..."
-        case .registered:
+        case .registered, .unauthenticated:
             "👥 \(sdkInteractor.numberOfRegisteredUsers) registered users"
         case .authenticated(let userId):
             "👤 User authenticated as \(userId)"

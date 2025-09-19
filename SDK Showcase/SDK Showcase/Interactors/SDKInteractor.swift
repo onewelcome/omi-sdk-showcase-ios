@@ -151,7 +151,7 @@ class SDKInteractorReal: SDKInteractor {
     func logout(optionName: String) {
         userClient.logoutUser { [self] profile, error in
             if profile != nil {
-                appState.system.setUserState(.registered)
+                appState.system.setUserState(.unauthenticated)
                 appState.setSystemInfo(string: "Profile \(optionName) has been logged out.")
             } else {
                 appState.setSystemInfo(string: "Logout failed. The profile is not authenticated most likely.")

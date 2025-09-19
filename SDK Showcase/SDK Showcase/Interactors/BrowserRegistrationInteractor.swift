@@ -53,7 +53,7 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
         guard let challenge else { return }
         
         challenge.sender.cancel(challenge)
-        appState.system.setUserState(.registered)
+        appState.system.setUserState(stateless ? .stateless : .unauthenticated)
         appState.unsetSystemInfo()
     }
     
@@ -73,7 +73,7 @@ extension BrowserRegistrationInteractorReal {
     
     func didReceiveCreatePinChallenge(_ challenge: any OneginiSDKiOS.CreatePinChallenge) {
         pinPadInteractor.setCreatePinChallenge(challenge)
-        appState.system.setUserState(.registered)
+        appState.system.setUserState(.unauthenticated)
         pinPadInteractor.showPinPad(for: .creating)
     }
     
