@@ -42,6 +42,8 @@
 		57B8FA992E17C80B007EBECE /* PinPadState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B8FA982E17C80B007EBECE /* PinPadState.swift */; };
 		57BDC97E2E2F9AFA00534D7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BDC97D2E2F9AFA00534D7E /* AppDelegate.swift */; };
 		57BDC9A52E2FB3B600534D7E /* EnrollmentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BDC9A42E2FB3AA00534D7E /* EnrollmentState.swift */; };
+		57CC76172E82ABA800E7D7B2 /* AuthenticatorsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC76162E82ABA800E7D7B2 /* AuthenticatorsSheet.swift */; };
+		57CC761D2E83E13000E7D7B2 /* AuthenticatorRegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC761C2E83E11200E7D7B2 /* AuthenticatorRegistrationInteractor.swift */; };
 		57E9E1382DB2426C00168A93 /* Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1372DB2425F00168A93 /* Selection.swift */; };
 		57E9E13A2DB2484D00168A93 /* BrowserRegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */; };
 		57E9E13C2DB271AA00168A93 /* SheetViewForWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */; };
@@ -130,6 +132,8 @@
 		57BDC97D2E2F9AFA00534D7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		57BDC9A32E2FAA7900534D7E /* SDK Showcase.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SDK Showcase.entitlements"; sourceTree = "<group>"; };
 		57BDC9A42E2FB3AA00534D7E /* EnrollmentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnrollmentState.swift; sourceTree = "<group>"; };
+		57CC76162E82ABA800E7D7B2 /* AuthenticatorsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatorsSheet.swift; sourceTree = "<group>"; };
+		57CC761C2E83E11200E7D7B2 /* AuthenticatorRegistrationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatorRegistrationInteractor.swift; sourceTree = "<group>"; };
 		57E9E1372DB2425F00168A93 /* Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selection.swift; sourceTree = "<group>"; };
 		57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserRegistrationInteractor.swift; sourceTree = "<group>"; };
 		57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewForWebView.swift; sourceTree = "<group>"; };
@@ -214,6 +218,7 @@
 				5748DC1C2E4236C500B860D3 /* SDKInteractor+ChangePinDelegate.swift */,
 				5748DC1A2E42365B00B860D3 /* SDKInteractor+RegistrationDelegate.swift */,
 				57A5BDFD2E3B96260041015B /* SDKInteractor+MobileAuthRequestDelegate.swift */,
+				57CC761C2E83E11200E7D7B2 /* AuthenticatorRegistrationInteractor.swift */,
 				57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */,
 				57EB55E42E03E3420072E496 /* PinPadInteractor.swift */,
 				9E72F9892E2FAA3E00FB4637 /* QRScannerInteractor.swift */,
@@ -240,6 +245,7 @@
 		578BC3122D43A60600713CF7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				57CC76162E82ABA800E7D7B2 /* AuthenticatorsSheet.swift */,
 				57F464642D3F80DB00C64156 /* RootView.swift */,
 				5748DC512E449CA100B860D3 /* HeaderView.swift */,
 				578BC3202D4A305C00713CF7 /* ContentView.swift */,
@@ -531,9 +537,11 @@
 				578BC31D2D4A2A2300713CF7 /* AppModel.swift in Sources */,
 				578BC30B2D4397A700713CF7 /* Interactors.swift in Sources */,
 				578BC3182D43A73500713CF7 /* UserData.swift in Sources */,
+				57CC761D2E83E13000E7D7B2 /* AuthenticatorRegistrationInteractor.swift in Sources */,
 				578DC4E72D9E6858008D2576 /* TextResult.swift in Sources */,
 				9E72F9572E2ED13800FB4637 /* QRScannerPresenter.swift in Sources */,
 				57F464632D3F80DB00C64156 /* SDK_ShowcaseApp.swift in Sources */,
+				57CC76172E82ABA800E7D7B2 /* AuthenticatorsSheet.swift in Sources */,
 				570AB2642DA90CD400BF2D7F /* Binding.swift in Sources */,
 				578BC3282D4A5CEA00713CF7 /* Option.swift in Sources */,
 				57E9E1422DB7AE8700168A93 /* BrowserViewModel.swift in Sources */,

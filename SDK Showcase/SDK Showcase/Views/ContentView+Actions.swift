@@ -64,6 +64,16 @@ extension ContentView {
         sdkInteractor.registerForPushNotifications()
     }
     
+    func registerAuthenticator() {
+        if case .authenticated = system.userState {
+            selectedOption = nil
+            showConfirmationDialog = true
+        } else {
+            appstate.setSystemInfo(string: "You must be authenticated to perform this action.")
+        }
+        system.isProcessing = false
+    }
+    
     func updateMobileAuthenticationCategorySelection() {
         guard category.type == .mobileAuthentication, appstate.system.enrollmentState != EnrollmentState.unenrolled else { return }
         category.selection = [Selection(name: Selections.loginWithOtp.rawValue)]
@@ -111,6 +121,11 @@ extension ContentView {
     var sdkInteractor: SDKInteractor {
         @Injected var interactors: Interactors
         return interactors.sdkInteractor
+    }
+    
+    var authenticatorRegistrationInteractor: AuthenticatorRegistrationInteractor {
+        @Injected var interactors: Interactors
+        return interactors.authenticatorRegistrationInteractor
     }
     
     var browserInteractor: BrowserRegistrationInteractor {

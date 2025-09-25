@@ -31,8 +31,7 @@ protocol SDKInteractor {
     
     func fetchUserProfiles()
     func fetchEnrollment()
-    func authenticatorNames(for userId: String) -> [String]
-    func authenticateUser(optionName: String)
+    func authenticateUser(profileName: String, optionName: String)
     
     func handlePushMobileAuthenticationRequest(userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void)
     func handleOtp(_ code: String)
@@ -57,14 +56,6 @@ class SDKInteractorReal: SDKInteractor {
     
     var numberOfRegisteredUsers: Int {
         return appState.registeredUsers.filter { $0.isStateless == false }.map { $0.userId }.count
-    }
-
-    func authenticatorNames(for userId: String) -> [String] {
-        if userId == UserState.stateless.rawValue {
-            return [UserState.stateless.rawValue]
-        } else {
-            return userClient.authenticators(.registered, for: ProfileProxy(profileId: userId)).map { $0.name }
-        }
     }
 
     init(appState: AppState, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder) {
@@ -172,7 +163,8 @@ class SDKInteractorReal: SDKInteractor {
             if error != nil {
                 appState.setSystemInfo(string: "Deregistration failed. The profile has not been found.")
             } else {
-                appState.registeredUsers.remove(AppState.UserData(userId: userProfile.profileId, authenticatorsNames: authenticatorNames(for: userProfile.profileId)))
+                appState.registeredUsers.remove(AppState.UserData(userId: userProfile.profileId,
+                                                                  authenticatorsNames: authenticatorRegistrationInteractor.authenticatorNames(for: userProfile.profileId)))
                 appState.setSystemInfo(string: "Profile \(optionName) has been deregister.")
             }
         }
@@ -187,7 +179,7 @@ class SDKInteractorReal: SDKInteractor {
     func fetchUserProfiles() {
         appState.resetRegisteredUsers()
         userClient.userProfiles
-            .map { AppState.UserData(userId: $0.profileId, authenticatorsNames: authenticatorNames(for: $0.profileId)) }
+            .map { AppState.UserData(userId: $0.profileId, authenticatorsNames: authenticatorRegistrationInteractor.authenticatorNames(for: $0.profileId)) }
             .forEach { appState.addRegisteredUser($0) }
     }
     
@@ -199,25 +191,7 @@ class SDKInteractorReal: SDKInteractor {
             appState.system.setEnrollmentState(.push)
         }
     }
-    
-    func authenticateUser(optionName: String) {
-        guard optionName != UserState.stateless.rawValue else {
-            appState.setSystemInfo(string: "Stateless user is authenticated automatically.")
-            return
-        }
-        guard let userProfile = userClient.userProfiles.first(where: { user in user.profileId == optionName }) else {
-            fatalError("No user profile for option `\(optionName)`")
-        }
-        
-        //TODO: When more authenticators added in next PRs, change the logic to choose from the list
-        guard let authenticator = userClient.authenticators(.registered, for: userProfile).first(where: { $0.name == "PIN" }) else {
-            fatalError("No authenticator for option `\(optionName)`")
-        }
-        appState.system.isProcessing = true
-        userClient.authenticateUserWith(profile: userProfile, authenticator: authenticator, delegate: self)
-    }
-    
-    
+
     func enrollForMobileAuthentication() {
         guard precheck() else { return }
         userClient.enrollMobileAuth { [self] error in
@@ -255,6 +229,23 @@ class SDKInteractorReal: SDKInteractor {
                 pushInteractor.updateBadge(requestsToReturn.count)
             }
         }
+    }
+
+    func authenticateUser(profileName: String, optionName: String) {
+        guard optionName != UserState.stateless.rawValue else {
+            appState.setSystemInfo(string: "Stateless user is authenticated automatically.")
+            return
+        }
+        guard let userProfile = userClient.userProfiles.first(where: { user in user.profileId == profileName }) else {
+            fatalError("No user profile for profile `\(profileName)`")
+        }
+
+        guard let authenticator = userClient.authenticators(.registered, for: userProfile).first(where: { $0.name == optionName }) else {
+            appState.setSystemInfo(string: "No authenticator named `\(optionName)` registered for user `\(profileName)`")
+            return
+        }
+        appState.system.isProcessing = true
+        userClient.authenticateUserWith(profile: userProfile, authenticator: authenticator, delegate: self)
     }
 
     func registerForPushNotifications() {
@@ -348,6 +339,12 @@ extension SDKInteractorReal {
         @Injected var interactors: Interactors
         return interactors.pushInteractor
     }
+    
+    var authenticatorRegistrationInteractor: AuthenticatorRegistrationInteractor {
+        @Injected var interactors: Interactors
+        return interactors.authenticatorRegistrationInteractor
+    }
+    
 }
 
 //MARK: - Private Protocol Extension
