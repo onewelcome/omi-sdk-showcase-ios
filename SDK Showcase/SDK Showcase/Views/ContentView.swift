@@ -17,7 +17,8 @@ struct ContentView: View {
     @State internal var isExpanded = false
     @State internal var actions = [Action]()
     @State internal var errorValue = ""
-
+    @State internal var showConfirmationDialog = false
+    @State internal var selectedOption: Selection?
     
     var body: some View {
         HStack {
@@ -58,6 +59,7 @@ struct ContentView: View {
                             }).disabled(selection.disabled)
                         }
                     }
+                    AuthenticatorsSheet(showConfirmationDialog: $showConfirmationDialog, selectedOption: selectedOption)
                 }
                 
                 Section(content: {
@@ -151,6 +153,8 @@ extension ContentView {
             enrollForMobileAuthentication()
         case .pushes:
             registerForPushes()
+        case .registerAuthenticator:
+            registerAuthenticator()
         default:
             fatalError("Option `\(option.name)` not handled!")
         }
@@ -169,7 +173,8 @@ extension ContentView {
         case .pending:
             handlePending(transacationId: selection.name)
         case .authenticate:
-            sdkInteractor.authenticateUser(optionName: selection.name)
+            selectedOption = selection
+            showConfirmationDialog = true
         case .logout:
             sdkInteractor.logout(optionName: selection.name)
         case .deregister:

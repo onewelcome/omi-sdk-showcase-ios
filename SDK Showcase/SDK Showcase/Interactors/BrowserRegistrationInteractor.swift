@@ -60,7 +60,7 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
     func didRegisterUser(profileId: String) {
         let userData = AppState.UserData(userId: profileId,
                                          isStateless: stateless,
-                                         authenticatorsNames: sdkInteractor.authenticatorNames(for: profileId))
+                                         authenticatorsNames: authenticatorRegistrationInteractor.authenticatorNames(for: profileId))
         appState.addRegisteredUser(userData)
         appState.system.setEnrollmentState(.unenrolled)
         appState.system.setPinPadState(.hidden)
@@ -101,6 +101,11 @@ private extension BrowserRegistrationInteractorReal {
     var sdkInteractor: SDKInteractor {
         @Injected var interactors: Interactors
         return interactors.sdkInteractor
+    }
+    
+    var authenticatorRegistrationInteractor: AuthenticatorRegistrationInteractor {
+        @Injected var interactors: Interactors
+        return interactors.authenticatorRegistrationInteractor
     }
     
     var pinPadInteractor: PinPadInteractor {

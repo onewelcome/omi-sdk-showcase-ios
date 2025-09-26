@@ -8,6 +8,7 @@ enum Options: String {
     case autoinitialize = "Autoinitialize"
     case reset = "Reset"
     case changePin = "Change Pin"
+    case registerAuthenticator = "Register an authenticator"
     case enroll = "Enroll for mobile authentication"
     case pushes = "Register for push notifications"
 }
