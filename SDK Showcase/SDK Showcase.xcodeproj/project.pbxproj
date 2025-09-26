@@ -44,8 +44,11 @@
 		57BDC9A52E2FB3B600534D7E /* EnrollmentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BDC9A42E2FB3AA00534D7E /* EnrollmentState.swift */; };
 		57CC76172E82ABA800E7D7B2 /* AuthenticatorsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC76162E82ABA800E7D7B2 /* AuthenticatorsSheet.swift */; };
 		57CC761D2E83E13000E7D7B2 /* AuthenticatorRegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC761C2E83E11200E7D7B2 /* AuthenticatorRegistrationInteractor.swift */; };
+		57CC76282E86773E00E7D7B2 /* IdentityProviderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC76272E86773E00E7D7B2 /* IdentityProviderType.swift */; };
+		57CC76332E868D6C00E7D7B2 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC76322E868D6000E7D7B2 /* DummyData.swift */; };
+		57CC76352E86AD7900E7D7B2 /* SDKError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC76342E86AD7900E7D7B2 /* SDKError.swift */; };
 		57E9E1382DB2426C00168A93 /* Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1372DB2425F00168A93 /* Selection.swift */; };
-		57E9E13A2DB2484D00168A93 /* BrowserRegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */; };
+		57E9E13A2DB2484D00168A93 /* RegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1392DB2484600168A93 /* RegistrationInteractor.swift */; };
 		57E9E13C2DB271AA00168A93 /* SheetViewForWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */; };
 		57E9E13E2DB272EA00168A93 /* LoadingWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E13D2DB272EA00168A93 /* LoadingWebView.swift */; };
 		57E9E1402DB2734200168A93 /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E13F2DB2734200168A93 /* BrowserView.swift */; };
@@ -134,8 +137,11 @@
 		57BDC9A42E2FB3AA00534D7E /* EnrollmentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnrollmentState.swift; sourceTree = "<group>"; };
 		57CC76162E82ABA800E7D7B2 /* AuthenticatorsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatorsSheet.swift; sourceTree = "<group>"; };
 		57CC761C2E83E11200E7D7B2 /* AuthenticatorRegistrationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatorRegistrationInteractor.swift; sourceTree = "<group>"; };
+		57CC76272E86773E00E7D7B2 /* IdentityProviderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityProviderType.swift; sourceTree = "<group>"; };
+		57CC76322E868D6000E7D7B2 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
+		57CC76342E86AD7900E7D7B2 /* SDKError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKError.swift; sourceTree = "<group>"; };
 		57E9E1372DB2425F00168A93 /* Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selection.swift; sourceTree = "<group>"; };
-		57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserRegistrationInteractor.swift; sourceTree = "<group>"; };
+		57E9E1392DB2484600168A93 /* RegistrationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationInteractor.swift; sourceTree = "<group>"; };
 		57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewForWebView.swift; sourceTree = "<group>"; };
 		57E9E13D2DB272EA00168A93 /* LoadingWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingWebView.swift; sourceTree = "<group>"; };
 		57E9E13F2DB2734200168A93 /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
@@ -219,7 +225,7 @@
 				5748DC1A2E42365B00B860D3 /* SDKInteractor+RegistrationDelegate.swift */,
 				57A5BDFD2E3B96260041015B /* SDKInteractor+MobileAuthRequestDelegate.swift */,
 				57CC761C2E83E11200E7D7B2 /* AuthenticatorRegistrationInteractor.swift */,
-				57E9E1392DB2484600168A93 /* BrowserRegistrationInteractor.swift */,
+				57E9E1392DB2484600168A93 /* RegistrationInteractor.swift */,
 				57EB55E42E03E3420072E496 /* PinPadInteractor.swift */,
 				9E72F9892E2FAA3E00FB4637 /* QRScannerInteractor.swift */,
 				57005AE42E2A2AE200BBE63A /* PushNotitificationsInteractor.swift */,
@@ -238,6 +244,7 @@
 				578BC3172D43A73500713CF7 /* UserData.swift */,
 				578BC3232D4A582600713CF7 /* DeviceData.swift */,
 				9E72F91A2E1E9D1900FB4637 /* UserState.swift */,
+				57CC76272E86773E00E7D7B2 /* IdentityProviderType.swift */,
 			);
 			path = AppState;
 			sourceTree = "<group>";
@@ -274,6 +281,7 @@
 		578BC31B2D4A1AD600713CF7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				57CC76322E868D6000E7D7B2 /* DummyData.swift */,
 				57A5BE012E3B96D60041015B /* MobileAuthRequestQueue.swift */,
 				57A5BDFB2E3B949D0041015B /* MobileAuthRequestEntity.swift */,
 				57A5BDFF2E3B969B0041015B /* PendingMobileAuthRequestEntity.swift */,
@@ -309,6 +317,7 @@
 		57AE06792D952A29004A3CB9 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				57CC76342E86AD7900E7D7B2 /* SDKError.swift */,
 				570AB2632DA90CD400BF2D7F /* Binding.swift */,
 				57AE067A2D952A43004A3CB9 /* SDKResult.swift */,
 			);
@@ -520,7 +529,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57E9E13A2DB2484D00168A93 /* BrowserRegistrationInteractor.swift in Sources */,
+				57E9E13A2DB2484D00168A93 /* RegistrationInteractor.swift in Sources */,
 				9E72F91D2E1FD9F400FB4637 /* ProfileProxy.swift in Sources */,
 				578DC4ED2D9FDC83008D2576 /* ActionView.swift in Sources */,
 				57EB55E72E03E4D10072E496 /* SheetViewForPinPad.swift in Sources */,
@@ -548,6 +557,7 @@
 				57E9E13C2DB271AA00168A93 /* SheetViewForWebView.swift in Sources */,
 				9E72F91B2E1E9D1900FB4637 /* UserState.swift in Sources */,
 				57BDC9A52E2FB3B600534D7E /* EnrollmentState.swift in Sources */,
+				57CC76332E868D6C00E7D7B2 /* DummyData.swift in Sources */,
 				578DC4EB2D9E88BE008D2576 /* SDKConfigModel.swift in Sources */,
 				9E72F98A2E2FAA3E00FB4637 /* QRScannerInteractor.swift in Sources */,
 				5748DC1B2E42365B00B860D3 /* SDKInteractor+RegistrationDelegate.swift in Sources */,
@@ -574,8 +584,10 @@
 				57F464822D4383C000C64156 /* AppState.swift in Sources */,
 				5748DC1D2E4236C500B860D3 /* SDKInteractor+ChangePinDelegate.swift in Sources */,
 				5748DC1F2E4237D000B860D3 /* SDKInteractor+AuthenticationDelegate.swift in Sources */,
+				57CC76282E86773E00E7D7B2 /* IdentityProviderType.swift in Sources */,
 				9E3523892E31950E00975920 /* CameraPreview.swift in Sources */,
 				C74C414AFA857D101C71411F /* OneginiConfigModel.m in Sources */,
+				57CC76352E86AD7900E7D7B2 /* SDKError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

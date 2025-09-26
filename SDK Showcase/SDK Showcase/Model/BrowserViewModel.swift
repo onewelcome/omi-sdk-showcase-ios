@@ -4,9 +4,9 @@ import SwiftUI
 import WebKit
 
 class BrowserViewModel: NSObject, ObservableObject {
-    private var browserInteractor: BrowserRegistrationInteractor {
+    private var browserInteractor: RegistrationInteractor {
         @Injected var interactors: Interactors
-        return interactors.browserInteractor
+        return interactors.registrationInteractor
     }
     
     weak var webView: WKWebView? {

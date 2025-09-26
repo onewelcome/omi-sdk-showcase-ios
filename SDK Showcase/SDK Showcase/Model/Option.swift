@@ -11,6 +11,7 @@ enum Options: String {
     case registerAuthenticator = "Register an authenticator"
     case enroll = "Enroll for mobile authentication"
     case pushes = "Register for push notifications"
+    case cancel = "Cancel registration"
 }
 
 struct Option: AppModel {

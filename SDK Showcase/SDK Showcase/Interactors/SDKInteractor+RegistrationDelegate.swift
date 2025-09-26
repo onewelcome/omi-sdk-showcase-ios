@@ -18,22 +18,28 @@ extension SDKInteractorReal: RegistrationDelegate {
                 self.pinPadInteractor.showPinPad(for: .creating)
             }
         default:
-            browserInteractor.didReceiveCreatePinChallenge(challenge)
+            registrationInteractor.didReceiveCreatePinChallenge(challenge)
         }
     }
 
     func userClient(_ userClient: any UserClient, didRegisterUser profile: any UserProfile, with identityProvider: any IdentityProvider, info: (any CustomInfo)?) {
         appState.system.isProcessing = false
-        browserInteractor.didRegisterUser(profileId: profile.profileId)
+        registrationInteractor.didRegisterUser(profileId: profile.profileId)
     }
     
     func userClient(_ userClient: any UserClient, didReceiveBrowserRegistrationChallenge challenge: any BrowserRegistrationChallenge) {
         appState.system.isProcessing = false
-        browserInteractor.didReceiveBrowserRegistrationChallenge(challenge)
+        registrationInteractor.didReceiveBrowserRegistrationChallenge(challenge)
     }
     
     func userClient(_ userClient: any UserClient, didFailToRegisterUserWith identityProvider: any IdentityProvider, error: any Error) {
         appState.system.isProcessing = false
-        browserInteractor.didFailToRegisterUser(with: error)
+        registrationInteractor.didFailToRegisterUser(with: error)
     }
+
+    func userClient(_ userClient: any UserClient, didReceiveCustomRegistrationFinishChallenge challenge: any CustomRegistrationChallenge) {
+        appState.system.isProcessing = false
+        registrationInteractor.didReceiveCustomRegistrationFinishChallenge(challenge)
+    }
+
 }

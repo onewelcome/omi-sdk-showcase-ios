@@ -4,13 +4,12 @@ import Foundation
 
 enum Selections: String {
     case unknown
-    case cancelRegistration = "Cancel registration"
-    case browserRegistration = "Browser registration"
     case loginWithOtp = "Login with QR Code"
     case pending
     case logout
     case deregister
     case authenticate
+    case register
 }
 
 struct Selection: AppModel {

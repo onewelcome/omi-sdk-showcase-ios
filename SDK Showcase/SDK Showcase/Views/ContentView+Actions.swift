@@ -79,6 +79,11 @@ extension ContentView {
         category.selection = [Selection(name: Selections.loginWithOtp.rawValue)]
     }
     
+    func updateIdentityProviders() {
+        guard category.type == .userRegistation else { return }
+        category.selection = sdkInteractor.fetchIdentityProviders().map { Selection(name: $0.name, type: .register) }
+    }
+    
     func updateUsersSelection() {
         guard category.type == .userAuthentication else { return }
         category.selection = sdkInteractor.userAuthenticatorOptionNames.map { Selection(name: $0, type: .authenticate, logo: "person.crop.circle") }
@@ -94,17 +99,27 @@ extension ContentView {
         guard category.type == .userDeregistation else { return }
         category.selection = sdkInteractor.userAuthenticatorOptionNames.map { Selection(name: $0, type: .deregister, logo: "person.crop.circle") }
     }
+    
+    func pendingTransactionsTask() {
+        guard category.type == .pendingTransactions else { return }
+        Task {
+            let pendingTransactions = await sdkInteractor.fetchMobileAuthPendingTransactionNames()
+            category.selection = pendingTransactions.map { Selection(name: $0, type: .pending, logo: "doc.badge.clock") }
+        }
+    }
 }
 
 //MARK: - Actions for Selections
 extension ContentView {
-    func browserRegistration() {
-        browserInteractor.setStateless(value(for: "Stateless"))
-        browserInteractor.register()
-    }
     
+    func startRegistration(authenticatorName: String? = nil) {
+        registrationInteractor.setStateless(value(for: "Stateless"))
+        registrationInteractor.register(with: authenticatorName)
+    }
+
     func cancelRegistration() {
-        browserInteractor.cancelRegistration()
+        registrationInteractor.cancelRegistration()
+        system.isProcessing = false
     }
     
     func showQRScanner() {
@@ -128,9 +143,9 @@ extension ContentView {
         return interactors.authenticatorRegistrationInteractor
     }
     
-    var browserInteractor: BrowserRegistrationInteractor {
+    var registrationInteractor: RegistrationInteractor {
         @Injected var interactors: Interactors
-        return interactors.browserInteractor
+        return interactors.registrationInteractor
     }
     
     var pinPadInteractor: PinPadInteractor {
