@@ -6,7 +6,7 @@ struct Interactors {
     var categoriesInteractor: CategoriesInteractor
     var sdkInteractor: SDKInteractor
     var authenticatorRegistrationInteractor: AuthenticatorRegistrationInteractor
-    var browserInteractor: BrowserRegistrationInteractor
+    var registrationInteractor: RegistrationInteractor
     var pinPadInteractor: PinPadInteractor
     var qrScannerInteractor: QRScannerInteractor
     var pushInteractor: PushNotitificationsInteractor

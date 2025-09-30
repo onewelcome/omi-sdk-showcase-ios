@@ -15,7 +15,6 @@ class AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationInteract
         @Injected var interactors: Interactors
         return interactors.pinPadInteractor
     }
-    static let dummyRespondData = "dummyRespondData"
     private let userClient = SharedUserClient.instance
 
     init(appState: AppState) {
@@ -78,7 +77,7 @@ class AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationInteract
 extension AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationDelegate {
 
     func userClient(_ userClient: any OneginiSDKiOS.UserClient, didReceiveCustomAuthFinishRegistrationChallenge challenge: any OneginiSDKiOS.CustomAuthFinishRegistrationChallenge) {
-        challenge.sender.respond(with: AuthenticatorRegistrationInteractorReal.dummyRespondData, to: challenge)
+        challenge.sender.respond(with: DummyData.customAuthFinishRegistrationChallenge, to: challenge)
     }
 
     func userClient(_ userClient: any OneginiSDKiOS.UserClient, didFailToRegister authenticator: any OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, error: any Error) {

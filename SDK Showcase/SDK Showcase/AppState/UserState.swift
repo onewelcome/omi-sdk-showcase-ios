@@ -2,7 +2,7 @@
 
 enum UserState: Equatable {
     case notRegistered
-    case registering
+    case registering(IdentityProviderType)
     case registered
     case unauthenticated
     case authenticated(String)

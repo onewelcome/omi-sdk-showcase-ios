@@ -78,7 +78,7 @@ struct ContentView: View {
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $system.shouldShowBrowser) {
-            SheetViewForWebView(urlString: browserInteractor.registerUrl)
+            SheetViewForWebView(urlString: registrationInteractor.registerUrl)
         }
         .sheet(isPresented: $system.shouldShowPinPad) {
             SheetViewForPinPad()
@@ -101,6 +101,7 @@ struct ContentView: View {
         }
         .task {
             updateUsersSelection()
+            updateIdentityProviders()
             updateLogout()
             updateDeregister()
             updateMobileAuthenticationCategorySelection()
@@ -129,14 +130,7 @@ struct ContentView: View {
 
 //MARK: - Actions
 extension ContentView {
-    func pendingTransactionsTask() {
-        guard category.type == .pendingTransactions else { return }
-        Task {
-            let pendingTransactions = await sdkInteractor.fetchMobileAuthPendingTransactionNames()
-            category.selection = pendingTransactions.map { Selection(name: $0, type: .pending, logo: "doc.badge.clock") }
-        }
-    }
-    
+
     func buttonAction(for option: Option) {
         system.isProcessing = true
         
@@ -155,6 +149,8 @@ extension ContentView {
             registerForPushes()
         case .registerAuthenticator:
             registerAuthenticator()
+        case .cancel:
+            cancelRegistration()
         default:
             fatalError("Option `\(option.name)` not handled!")
         }
@@ -164,10 +160,8 @@ extension ContentView {
         let switcher = selection.type == .unknown ? selection.namedType : selection.type
         
         switch switcher {
-        case .cancelRegistration:
-            cancelRegistration()
-        case .browserRegistration:
-            browserRegistration()
+        case .register:
+            startRegistration(authenticatorName: selection.name)
         case .loginWithOtp:
             showQRScanner()
         case .pending:

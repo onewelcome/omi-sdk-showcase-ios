@@ -20,11 +20,13 @@ protocol SDKInteractor {
     func setHttpRequestTimeout(_ requestTimeout: TimeInterval)
     func setStoreCookies(_ storeCookies: Bool)
  
-    func register(with provider: IdentityProvider, stateless: Bool)
+    func register(with provider: String, stateless: Bool)
     func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void)
     func changePin()
     func logout(optionName: String)
     func deregister(optionName: String)
+    
+    func fetchIdentityProviders() -> [IdentityProvider]
     
     func enrollForMobileAuthentication()
     func registerForPushNotifications()
@@ -123,10 +125,16 @@ class SDKInteractorReal: SDKInteractor {
     func clearDeviceData() {
         appState.reset()
     }
+    
+    func fetchIdentityProviders() -> [any IdentityProvider] {
+        let providers = userClient.identityProviders
+        return providers
+    }
 
-    func register(with provider: IdentityProvider, stateless: Bool) {
+    func register(with provider: String, stateless: Bool) {
         appState.system.isProcessing = true
         let scopes = ["read", "openid", "email"]
+        let provider = userClient.identityProviders.first(where: { $0.name == provider })
         if stateless {
             userClient.registerStatelessUserWith(identityProvider: provider, scopes: scopes, delegate: self)
         } else {
@@ -163,8 +171,7 @@ class SDKInteractorReal: SDKInteractor {
             if error != nil {
                 appState.setSystemInfo(string: "Deregistration failed. The profile has not been found.")
             } else {
-                appState.registeredUsers.remove(AppState.UserData(userId: userProfile.profileId,
-                                                                  authenticatorsNames: authenticatorRegistrationInteractor.authenticatorNames(for: userProfile.profileId)))
+                appState.remove(profileId: userProfile.profileId)
                 appState.setSystemInfo(string: "Profile \(optionName) has been deregister.")
             }
         }
@@ -326,9 +333,9 @@ class SDKInteractorReal: SDKInteractor {
 //MARK: -  Protocol Extension
 extension SDKInteractorReal {
     
-    var browserInteractor: BrowserRegistrationInteractor {
+    var registrationInteractor: RegistrationInteractor {
         @Injected var interactors: Interactors
-        return interactors.browserInteractor
+        return interactors.registrationInteractor
     }
     var pinPadInteractor: PinPadInteractor {
         @Injected var interactors: Interactors

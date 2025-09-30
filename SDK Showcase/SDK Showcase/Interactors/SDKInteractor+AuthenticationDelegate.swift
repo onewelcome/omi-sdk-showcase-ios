@@ -3,7 +3,7 @@ import OneginiSDKiOS
 
 extension SDKInteractorReal: AuthenticationDelegate {
     func userClient(_ userClient: UserClient, didReceiveCustomAuthFinishAuthenticationChallenge challenge: CustomAuthFinishAuthenticationChallenge) {
-        challenge.sender.respond(with: AuthenticatorRegistrationInteractorReal.dummyRespondData, to: challenge)
+        challenge.sender.respond(with: DummyData.customAuthFinishRegistrationChallenge, to: challenge)
         appState.system.isProcessing = false
     }
     
@@ -17,9 +17,8 @@ extension SDKInteractorReal: AuthenticationDelegate {
     
     func userClient(_ userClient: UserClient, didFailToAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, error: Error) {
         appState.setSystemInfo(string: "Authentication failed")
-        if (error as NSError).code == 9003 {
-            // User account deregistered (too many wrong PIN attempts)
-            appState.registeredUsers.remove(AppState.UserData(userId: userProfile.profileId, authenticatorsNames: authenticatorRegistrationInteractor.authenticatorNames(for: userProfile.profileId)))
+        if SDKError(error) == .accountDeregistered {
+            appState.remove(profileId: userProfile.profileId)
             pinPadInteractor.showPinPad(for: .hidden)
         }
         appState.system.isProcessing = false

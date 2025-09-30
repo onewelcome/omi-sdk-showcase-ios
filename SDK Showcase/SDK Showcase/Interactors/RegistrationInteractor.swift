@@ -5,15 +5,17 @@ import UIKit
 import OneginiSDKiOS
 
 //MARK: - Protocol the SDK interacts with
-protocol BrowserRegistrationInteractor {
+protocol RegistrationInteractor {
     var registerUrl: String { get set }
     
-    func setChallenge(_ challenge: BrowserRegistrationChallenge)
+    func setBrowserChallenge(_ challenge: BrowserRegistrationChallenge)
+    func setCustomChallenge(_ challenge: CustomRegistrationChallenge)
     func setStateless(_ stateless: Bool)
     
-    func register()
+    func register(with idp: String?)
     func cancelRegistration()
     func didReceiveBrowserRegistrationChallenge(_ challenge: any BrowserRegistrationChallenge)
+    func didReceiveCustomRegistrationFinishChallenge(_ challenge: any CustomRegistrationChallenge)
     func didReceiveBrowserRegistrationRedirect(_ url: URL)
     func didReceiveCreatePinChallenge(_ challenge: any CreatePinChallenge)
     func didFailToRegisterUser(with error: Error)
@@ -21,9 +23,11 @@ protocol BrowserRegistrationInteractor {
 }
 
 //MARK: - Real methods
-class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
+class RegistrationInteractorReal: RegistrationInteractor {
+
     @ObservedObject var appState: AppState
-    private var challenge: BrowserRegistrationChallenge?
+    private var browserChallenge: BrowserRegistrationChallenge?
+    private var customChallenge: CustomRegistrationChallenge?
     private var stateless = false
     var registerUrl: String
 
@@ -32,29 +36,34 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
         self.appState = appState
     }
 
-    func setChallenge(_ challenge: any BrowserRegistrationChallenge) {
+    func setBrowserChallenge(_ challenge: any BrowserRegistrationChallenge) {
         self.registerUrl = challenge.url.absoluteString
-        self.challenge = challenge
+        self.browserChallenge = challenge
+    }
+    
+    func setCustomChallenge(_ challenge: any CustomRegistrationChallenge) {
+        self.customChallenge = challenge
     }
     
     func setStateless(_ stateless: Bool) {
         self.stateless = stateless
     }
     
-    func register() {
+    func register(with idp: String?) {
         guard appState.system.isSDKInitialized else {
             appState.setSystemInfo(string: "SDK not initialized")
             return
         }
-        sdkInteractor.register(with: IdentityProviderProxy.default, stateless: stateless)
+        sdkInteractor.register(with: idp ?? IdentityProviderProxy.default.name, stateless: stateless)
     }
     
     func cancelRegistration() {
-        guard let challenge else { return }
-        
-        challenge.sender.cancel(challenge)
+        if let browserChallenge {
+            browserChallenge.sender.cancel(browserChallenge)
+        } else if let customChallenge {
+            customChallenge.sender.cancel(customChallenge, withUnderlyingError: nil)
+        }
         appState.system.setUserState(stateless ? .stateless : .unauthenticated)
-        appState.unsetSystemInfo()
     }
     
     func didRegisterUser(profileId: String) {
@@ -64,12 +73,14 @@ class BrowserRegistrationInteractorReal: BrowserRegistrationInteractor {
         appState.addRegisteredUser(userData)
         appState.system.setEnrollmentState(.unenrolled)
         appState.system.setPinPadState(.hidden)
-        challenge = nil
+        browserChallenge = nil
+        customChallenge = nil
+        appState.setSystemInfo(string: "Profile \(profileId) has been registered successfully.")
     }
 }
 
 //MARK: - SDK Delegates
-extension BrowserRegistrationInteractorReal {
+extension RegistrationInteractorReal {
     
     func didReceiveCreatePinChallenge(_ challenge: any OneginiSDKiOS.CreatePinChallenge) {
         pinPadInteractor.setCreatePinChallenge(challenge)
@@ -78,26 +89,42 @@ extension BrowserRegistrationInteractorReal {
     }
     
     func didReceiveBrowserRegistrationRedirect(_ url: URL) {
-        guard let challenge else { return }
-        challenge.sender.respond(with: url, to: challenge)
+        guard let browserChallenge else { return }
+        browserChallenge.sender.respond(with: url, to: browserChallenge)
     }
     
     func didReceiveBrowserRegistrationChallenge(_ challenge: any OneginiSDKiOS.BrowserRegistrationChallenge) {
-        setChallenge(challenge)
-        appState.system.setUserState(.registering)
+        setBrowserChallenge(challenge)
+        appState.system.setUserState(.registering(.browser))
+    }
+    
+    func didReceiveCustomRegistrationFinishChallenge(_ challenge: any OneginiSDKiOS.CustomRegistrationChallenge) {
+        setCustomChallenge(challenge)
+        appState.system.setUserState(.registering(.api))
+        if stateless {
+            challenge.sender.respond(with: nil, to: challenge)
+        } else {
+            //You can ask the user about the response in different ways (e.g. by scanning the QR code, asking for a password, etc.)
+            //TODO: add some mapping for different IDPs in the next PR
+            challenge.sender.respond(with: DummyData.customRegistrationChallenge, to: challenge)
+        }
     }
     
     func didFailToRegisterUser(with error: Error) {
-        if (error as NSError).code == 9034 {
+        switch SDKError(error) {
+        case .statelessDisabled:
             appState.setSystemInfo(string: "Stateless registration is not supported or not configured by the server.")
-        } else {
+        case .registrationCancelled:
+            appState.setSystemInfo(string: "Registration has been canceled.")
+        default:
             appState.setSystemInfo(string: error.localizedDescription)
         }
-        challenge = nil
+        browserChallenge = nil
+        customChallenge = nil
     }
 }
 
-private extension BrowserRegistrationInteractorReal {
+private extension RegistrationInteractorReal {
     var sdkInteractor: SDKInteractor {
         @Injected var interactors: Interactors
         return interactors.sdkInteractor

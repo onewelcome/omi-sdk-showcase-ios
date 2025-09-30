@@ -8,7 +8,7 @@ struct SheetViewDismiss: View {
         return appState.system
     }()
     @Injected private var pinPadInteractor: PinPadInteractor
-    @Injected private var browserInteractor: BrowserRegistrationInteractor
+    @Injected private var browserInteractor: RegistrationInteractor
     @Injected private var qrScanerInteractor: QRScannerInteractor
 
     var body: some View {

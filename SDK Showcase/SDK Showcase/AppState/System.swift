@@ -19,8 +19,8 @@ extension AppState {
                 
         var shouldShowBrowser: Bool {
             get {
-                if case .registering = userState {
-                    return true
+                if case .registering(let type) = userState {
+                    return type == .browser
                 }
                 else {
                     return false
@@ -28,7 +28,7 @@ extension AppState {
             }
             set {
                 if newValue {
-                    userState = .registering
+                    userState = .registering(.browser)
                 }
             }
         }

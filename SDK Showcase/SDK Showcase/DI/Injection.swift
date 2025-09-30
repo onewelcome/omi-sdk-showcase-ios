@@ -40,8 +40,8 @@ private extension Injection {
             AuthenticatorRegistrationInteractorReal(appState: resolver.resolve(AppState.self)!)}
             .inObjectScope(.container)
         
-        container.register(BrowserRegistrationInteractor.self)  { resolver in
-            BrowserRegistrationInteractorReal(appState: resolver.resolve(AppState.self)!)}
+        container.register(RegistrationInteractor.self)  { resolver in
+            RegistrationInteractorReal(appState: resolver.resolve(AppState.self)!)}
             .inObjectScope(.container)
         
         container.register(PinPadInteractor.self)  { resolver in
@@ -56,7 +56,7 @@ private extension Injection {
             Interactors(categoriesInteractor: resolver.resolve(CategoriesInteractor.self)!,
                         sdkInteractor: resolver.resolve(SDKInteractor.self)!,
                         authenticatorRegistrationInteractor: resolver.resolve(AuthenticatorRegistrationInteractor.self)!,
-                        browserInteractor: resolver.resolve(BrowserRegistrationInteractor.self)!,
+                        registrationInteractor: resolver.resolve(RegistrationInteractor.self)!,
                         pinPadInteractor: resolver.resolve(PinPadInteractor.self)!,
                         qrScannerInteractor: resolver.resolve(QRScannerInteractor.self)!,
                         pushInteractor: resolver.resolve(PushNotitificationsInteractor.self)!)}

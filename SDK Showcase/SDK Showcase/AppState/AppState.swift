@@ -3,6 +3,10 @@
 import Foundation
 
 class AppState: ObservableObject {
+    var authenticatorRegistrationInteractor: AuthenticatorRegistrationInteractor {
+        @Injected var interactors: Interactors
+        return interactors.authenticatorRegistrationInteractor
+    }
     @Published var system = System()
     @Published var routing = ViewRouting()
     @Published var deviceData = DeviceData()
@@ -14,6 +18,12 @@ class AppState: ObservableObject {
         deviceData.reset()
         resetRegisteredUsers()
         pendingTransactions.removeAll()
+    }
+    
+    func remove(profileId: String) {
+        let authenticators = authenticatorRegistrationInteractor.authenticatorNames(for: profileId)
+        let userData = AppState.UserData(userId: profileId, authenticatorsNames: authenticators)
+        registeredUsers.remove(userData)
     }
     
     func setSystemInfo(string: String) {
