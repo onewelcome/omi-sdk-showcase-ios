@@ -3,11 +3,26 @@ import SwiftUI
 
 struct SheetViewForQRScanner: View {
     @State private var errorMessage: String?
+    @ObservedObject private var system: AppState.System = {
+        @Injected var appState: AppState
+        return appState.system
+    }()
+    
+    var title: String {
+        switch system.scannerState {
+        case .showForOTP:
+            "Scan OTP QR code to authenticate"
+        case .showForRegistration:
+            "Scan QR code to register"
+        default:
+            errorMessage ?? ""
+        }
+    }
     
     var body: some View {
         VStack {
             SheetViewDismiss()
-            Text(errorMessage ?? "Scan OTP QR code")
+            Text(title)
                 .multilineTextAlignment(.leading)
                 .font(.system(size: 15))
                 .foregroundStyle(.secondary)
@@ -20,7 +35,7 @@ struct SheetViewForQRScanner: View {
                     }
                     errorMessage = "Camera access denied. Please go to System Settings and grand an access."
                 case .success(let qrCode):
-                    qrScannerInteractor.handleCode(qrCode)
+                    qrScannerInteractor.scanned(code: qrCode)
                 }
             }
         }

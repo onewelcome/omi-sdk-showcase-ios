@@ -5,14 +5,14 @@ import Foundation
 extension AppState {
     class System: Equatable, ObservableObject {
         @Published var isSDKInitialized = false
-        @Published var shouldShowQRScanner = false
         @Published var isProcessing = false
 
         @Published private(set) var lastInfoDescription: String? = nil
         @Published private(set) var userState: UserState = .notRegistered
         @Published private(set) var enrollmentState: EnrollmentState = .unenrolled
         @Published private(set) var pinPadState: PinPadState = .hidden
-        
+        @Published private(set) var scannerState: ScannerState = .hidden
+
         var hasError: Bool {
             lastInfoDescription != nil
         }
@@ -33,6 +33,10 @@ extension AppState {
             }
         }
         
+        func setScannerState(_ newState: ScannerState) {
+            scannerState = newState
+        }
+        
         func setUserState(_ newState: UserState) {
             userState = newState
         }
@@ -48,6 +52,11 @@ extension AppState {
         var shouldShowPinPad: Bool {
             get { pinPadState != .hidden }
             set { pinPadState = newValue ? .changing : .hidden }
+        }
+        
+        var shouldShowScanner: Bool {
+            get { scannerState != .hidden }
+            set { scannerState = newValue ? .showForOTP : .hidden }
         }
         
         func setInfo(_ description: String) {

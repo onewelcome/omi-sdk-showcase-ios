@@ -36,10 +36,14 @@ private extension Injection {
             SDKInteractorReal(appState: resolver.resolve(AppState.self)!)}
             .inObjectScope(.container)
         
+        container.register(AuthenticatorInteractor.self) { resolver in
+            AuthenticatorInteractorReal(appState: resolver.resolve(AppState.self)!)}
+            .inObjectScope(.container)
+
         container.register(AuthenticatorRegistrationInteractor.self) { resolver in
             AuthenticatorRegistrationInteractorReal(appState: resolver.resolve(AppState.self)!)}
             .inObjectScope(.container)
-        
+
         container.register(RegistrationInteractor.self)  { resolver in
             RegistrationInteractorReal(appState: resolver.resolve(AppState.self)!)}
             .inObjectScope(.container)
@@ -55,6 +59,7 @@ private extension Injection {
         container.register(Interactors.self) { resolver in
             Interactors(categoriesInteractor: resolver.resolve(CategoriesInteractor.self)!,
                         sdkInteractor: resolver.resolve(SDKInteractor.self)!,
+                        authenticatorInteractor: resolver.resolve(AuthenticatorInteractor.self)!,
                         authenticatorRegistrationInteractor: resolver.resolve(AuthenticatorRegistrationInteractor.self)!,
                         registrationInteractor: resolver.resolve(RegistrationInteractor.self)!,
                         pinPadInteractor: resolver.resolve(PinPadInteractor.self)!,
