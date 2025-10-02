@@ -45,15 +45,15 @@ class PushNotitificationsInteractorReal: NSObject, PushNotitificationsInteractor
 
 //MARK: - UNUserNotificationCenterDelegate
 extension PushNotitificationsInteractorReal: UNUserNotificationCenterDelegate {
-    private var sdkInteractor: SDKInteractor {
+    private var mobileAuthRequestInteractor: MobileAuthRequestInteractor {
         @Injected var interactors: Interactors
-        return interactors.sdkInteractor
+        return interactors.mobileAuthRequestInteractor
     }
     
     // Called when the app is in the background or was killed and woken up by a push or an interaction with the banner
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        sdkInteractor.handlePushMobileAuthenticationRequest(userInfo: userInfo, completionHandler: completionHandler)
+        mobileAuthRequestInteractor.handlePushMobileAuthenticationRequest(userInfo: userInfo, completionHandler: completionHandler)
     }
     
     // Called when the app is in the foreground, just shows the banner and play sound. The interaction with the banner is performed above

@@ -36,6 +36,10 @@ private extension Injection {
             SDKInteractorReal(appState: resolver.resolve(AppState.self)!)}
             .inObjectScope(.container)
         
+        container.register(MobileAuthRequestInteractor.self) { resolver in
+            MobileAuthRequestInteractorReal(appState: resolver.resolve(AppState.self)!)}
+            .inObjectScope(.container)
+        
         container.register(AuthenticatorInteractor.self) { resolver in
             AuthenticatorInteractorReal(appState: resolver.resolve(AppState.self)!)}
             .inObjectScope(.container)
@@ -61,6 +65,7 @@ private extension Injection {
                         sdkInteractor: resolver.resolve(SDKInteractor.self)!,
                         authenticatorInteractor: resolver.resolve(AuthenticatorInteractor.self)!,
                         authenticatorRegistrationInteractor: resolver.resolve(AuthenticatorRegistrationInteractor.self)!,
+                        mobileAuthRequestInteractor: resolver.resolve(MobileAuthRequestInteractor.self)!,
                         registrationInteractor: resolver.resolve(RegistrationInteractor.self)!,
                         pinPadInteractor: resolver.resolve(PinPadInteractor.self)!,
                         qrScannerInteractor: resolver.resolve(QRScannerInteractor.self)!,

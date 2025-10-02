@@ -106,7 +106,7 @@ struct ContentView: View {
             updateDeregister()
             updateMobileAuthenticationCategorySelection()
             pendingTransactionsTask()
-            guard category.type == .initialization else { return }
+            guard category.type == .initialization, UserDefaults.standard.bool(forKey: "autoinitialize") else { return }
             initializeSDK(automatically: true)
         }
         

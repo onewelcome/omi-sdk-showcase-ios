@@ -53,7 +53,7 @@ extension ContentView {
     }
     
     func changePIN() {
-        sdkInteractor.changePin()
+        pinPadInteractor.changePin()
     }
     
     func enrollForMobileAuthentication() {
@@ -81,7 +81,7 @@ extension ContentView {
     
     func updateIdentityProviders() {
         guard category.type == .userRegistation else { return }
-        category.selection = sdkInteractor.fetchIdentityProviders().map { Selection(name: $0.name, type: .register) }
+        category.selection = authenticatorInteractor.fetchIdentityProviders().map { Selection(name: $0.name, type: .register) }
     }
     
     func updateUsersSelection() {
@@ -103,7 +103,7 @@ extension ContentView {
     func pendingTransactionsTask() {
         guard category.type == .pendingTransactions else { return }
         Task {
-            let pendingTransactions = await sdkInteractor.fetchMobileAuthPendingTransactionNames()
+            let pendingTransactions = await mobileAuthRequestInteractor.fetchPendingTransactionNames()
             category.selection = pendingTransactions.map { Selection(name: $0, type: .pending, logo: "doc.badge.clock") }
         }
     }
@@ -123,7 +123,7 @@ extension ContentView {
     }
 
     func handlePending(transacationId: String) {
-        sdkInteractor.handlePendingTransaction(id: transacationId)
+        mobileAuthRequestInteractor.handlePendingTransaction(id: transacationId)
     }
 }
     
@@ -132,6 +132,11 @@ extension ContentView {
     var sdkInteractor: SDKInteractor {
         @Injected var interactors: Interactors
         return interactors.sdkInteractor
+    }
+    
+    var mobileAuthRequestInteractor: MobileAuthRequestInteractor {
+        @Injected var interactors: Interactors
+        return interactors.mobileAuthRequestInteractor
     }
     
     var authenticatorInteractor: AuthenticatorInteractor {

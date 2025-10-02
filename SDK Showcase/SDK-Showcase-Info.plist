@@ -4,5 +4,7 @@
 <dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera is required to use QR code registration</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>FaceID is used for an optional biometric authentication</string>
 </dict>
 </plist>

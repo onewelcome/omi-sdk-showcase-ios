@@ -20,25 +20,15 @@ protocol SDKInteractor {
     func setHttpRequestTimeout(_ requestTimeout: TimeInterval)
     func setStoreCookies(_ storeCookies: Bool)
  
-    func register(with provider: String, stateless: Bool)
     func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void)
-    func changePin()
     func logout(optionName: String)
     func deregister(optionName: String)
-    
-    func fetchIdentityProviders() -> [IdentityProvider]
-    
+        
     func enrollForMobileAuthentication()
     func registerForPushNotifications()
     
     func fetchUserProfiles()
     func fetchEnrollment()
-    func authenticateUser(profileName: String, optionName: String)
-    
-    func handlePushMobileAuthenticationRequest(userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void)
-    func handleOtp(_ code: String)
-    func handlePendingTransaction(id: String)
-    func fetchMobileAuthPendingTransactionNames() async -> [String]
 }
 
 //MARK: - Real methods
@@ -68,10 +58,11 @@ class SDKInteractorReal: SDKInteractor {
     
     func initializeSDK(result: @escaping SDKResult) {
         builder.buildAndWaitForProtectedData { client in
-            client.start { error in
+            client.start { [self] error in
                 if let error {
                     return result(.failure(error))
                 } else {
+                    appState.routing.backHome()
                     return result(.success)
                 }
             }
@@ -125,28 +116,7 @@ class SDKInteractorReal: SDKInteractor {
     func clearDeviceData() {
         appState.reset()
     }
-    
-    func fetchIdentityProviders() -> [any IdentityProvider] {
-        let providers = userClient.identityProviders
-        return providers
-    }
 
-    func register(with provider: String, stateless: Bool) {
-        appState.system.isProcessing = true
-        let scopes = ["read", "openid", "email"]
-        let provider = userClient.identityProviders.first(where: { $0.name == provider })
-        if stateless {
-            userClient.registerStatelessUserWith(identityProvider: provider, scopes: scopes, delegate: self)
-        } else {
-            userClient.registerUserWith(identityProvider: provider, scopes: scopes, delegate: self)
-        }
-    }
-    
-    func changePin() {
-        guard precheck() else { return }
-        userClient.changePin(delegate: self)
-    }
-    
     func logout(optionName: String) {
         userClient.logoutUser { [self] profile, error in
             if profile != nil {
@@ -212,49 +182,6 @@ class SDKInteractorReal: SDKInteractor {
         }
     }
 
-    func fetchMobileAuthPendingTransactionNames() async -> [String] {
-        guard precheck() else { return [] }
-        guard isMobileAuthEnrolled else {
-            appState.setSystemInfo(string: "You are not enrolled for mobile authentication. Please enroll first!")
-            return []
-        }
-        appState.system.isProcessing = true
-
-        return await withCheckedContinuation { continuation in
-            userClient.pendingPushMobileAuthRequests { [self] requests, error in
-                appState.system.isProcessing = false
-                guard let requests else {
-                    pushInteractor.updateBadge(0)
-                    continuation.resume(returning: [])
-                    return
-                }
-                for request in requests {
-                    appState.pendingTransactions.insert(PendingMobileAuthRequestEntity(pendingTransaction: request))
-                }
-                let requestsToReturn = requests.compactMap(\.transactionId)
-                continuation.resume(returning: requestsToReturn)
-                pushInteractor.updateBadge(requestsToReturn.count)
-            }
-        }
-    }
-
-    func authenticateUser(profileName: String, optionName: String) {
-        guard optionName != UserState.stateless.rawValue else {
-            appState.setSystemInfo(string: "Stateless user is authenticated automatically.")
-            return
-        }
-        guard let userProfile = userClient.userProfiles.first(where: { user in user.profileId == profileName }) else {
-            fatalError("No user profile for profile `\(profileName)`")
-        }
-
-        guard let authenticator = userClient.authenticators(.registered, for: userProfile).first(where: { $0.name == optionName }) else {
-            appState.setSystemInfo(string: "No authenticator named `\(optionName)` registered for user `\(profileName)`")
-            return
-        }
-        appState.system.isProcessing = true
-        userClient.authenticateUserWith(profile: userProfile, authenticator: authenticator, delegate: self)
-    }
-
     func registerForPushNotifications() {
         guard precheck() else { return }
         guard isMobileAuthEnrolled else {
@@ -277,54 +204,6 @@ class SDKInteractorReal: SDKInteractor {
                     appState.setSystemInfo(string: "User successfully registed for push notifications!\n\nToken: \(token)")
                 }
             }
-        }
-    }
-    
-    func handleOtp(_ code: String) {
-        guard userClient.canHandleOTPMobileAuthRequest(otp: code) else {
-            appState.setSystemInfo(string: "Invalid otp code or previous request in progress.")
-            return
-        }
-        userClient.handleOTPMobileAuthRequest(otp: code, delegate: self)
-    }
-    
-    func handlePushMobileAuthenticationRequest(userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void) {
-        print("push: \(userInfo)")
-        guard let pendingTransaction = userClient.pendingMobileAuthRequest(from: userInfo) else {
-            appState.setSystemInfo(string: "Push notification not handled. User is not authenticated most likely.")
-            completionHandler()
-            return
-        }
-        
-        let mobileAuthRequest = PendingMobileAuthRequestEntity(pendingTransaction: pendingTransaction, delegate: self)
-        appState.pendingTransactions.insert(mobileAuthRequest)
-        appState.routing.navigate(to: .pendingTransactions)
-        completionHandler()
-    }
-    
-    func handlePendingTransaction(id: String) {
-        guard let transaction = pendingTransaction(id: id),
-              let pendingRequestProxy = transaction.pendingTransaction else {
-            return
-        }
-        
-        appState.system.isProcessing = true
-        userClient.handlePendingMobileAuthRequest(pendingRequestProxy, delegate: self)
-    }
-
-    func confirmTransaction(for entity: MobileAuthRequestEntity, automatically: Bool) {
-        appState.system.isProcessing = false
-        if automatically {
-            if let transaction = pendingTransaction(id: entity.transactionId!) {
-                entity.confirmation?(true)
-                appState.pendingTransactions.remove(transaction)
-                appState.setSystemInfo(string: "Transaction with message \(entity.message ?? "") confirmed")
-                pushInteractor.updateBadge(nil)
-
-            }
-        } else {
-            //TODO: For now transaction is confirmed automatically. This would change in next PR's.
-            //We need to show a confirmation dialog for PIN/Biometric/Finger etc...
         }
     }
 
@@ -351,7 +230,6 @@ extension SDKInteractorReal {
         @Injected var interactors: Interactors
         return interactors.authenticatorRegistrationInteractor
     }
-    
 }
 
 //MARK: - Private Protocol Extension
@@ -396,8 +274,5 @@ private extension SDKInteractorReal {
     func mapSDKConfigModel(_ model: SDKConfigModel) -> OneginiSDKiOS.ConfigModel {
         return ConfigModel(dictionary: model.dictionary)
     }
-    
-    func pendingTransaction(id: String) -> PendingMobileAuthRequestEntity? {
-         appState.pendingTransactions.first { $0.pendingTransaction?.transactionId == id }
-    }
+
 }
