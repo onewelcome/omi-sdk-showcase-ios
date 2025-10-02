@@ -47,6 +47,8 @@
 		57CC76282E86773E00E7D7B2 /* IdentityProviderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC76272E86773E00E7D7B2 /* IdentityProviderType.swift */; };
 		57CC76332E868D6C00E7D7B2 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC76322E868D6000E7D7B2 /* DummyData.swift */; };
 		57CC76352E86AD7900E7D7B2 /* SDKError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC76342E86AD7900E7D7B2 /* SDKError.swift */; };
+		57CC76772E8BE38300E7D7B2 /* ScannerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC76762E8BE37F00E7D7B2 /* ScannerState.swift */; };
+		57CC76792E8BF86C00E7D7B2 /* AuthenticatorInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC76782E8BF86C00E7D7B2 /* AuthenticatorInteractor.swift */; };
 		57E9E1382DB2426C00168A93 /* Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1372DB2425F00168A93 /* Selection.swift */; };
 		57E9E13A2DB2484D00168A93 /* RegistrationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E1392DB2484600168A93 /* RegistrationInteractor.swift */; };
 		57E9E13C2DB271AA00168A93 /* SheetViewForWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */; };
@@ -140,6 +142,8 @@
 		57CC76272E86773E00E7D7B2 /* IdentityProviderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityProviderType.swift; sourceTree = "<group>"; };
 		57CC76322E868D6000E7D7B2 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		57CC76342E86AD7900E7D7B2 /* SDKError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKError.swift; sourceTree = "<group>"; };
+		57CC76762E8BE37F00E7D7B2 /* ScannerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerState.swift; sourceTree = "<group>"; };
+		57CC76782E8BF86C00E7D7B2 /* AuthenticatorInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatorInteractor.swift; sourceTree = "<group>"; };
 		57E9E1372DB2425F00168A93 /* Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selection.swift; sourceTree = "<group>"; };
 		57E9E1392DB2484600168A93 /* RegistrationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationInteractor.swift; sourceTree = "<group>"; };
 		57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewForWebView.swift; sourceTree = "<group>"; };
@@ -224,6 +228,7 @@
 				5748DC1C2E4236C500B860D3 /* SDKInteractor+ChangePinDelegate.swift */,
 				5748DC1A2E42365B00B860D3 /* SDKInteractor+RegistrationDelegate.swift */,
 				57A5BDFD2E3B96260041015B /* SDKInteractor+MobileAuthRequestDelegate.swift */,
+				57CC76782E8BF86C00E7D7B2 /* AuthenticatorInteractor.swift */,
 				57CC761C2E83E11200E7D7B2 /* AuthenticatorRegistrationInteractor.swift */,
 				57E9E1392DB2484600168A93 /* RegistrationInteractor.swift */,
 				57EB55E42E03E3420072E496 /* PinPadInteractor.swift */,
@@ -236,6 +241,7 @@
 		578BC3112D43A5DC00713CF7 /* AppState */ = {
 			isa = PBXGroup;
 			children = (
+				57CC76762E8BE37F00E7D7B2 /* ScannerState.swift */,
 				57BDC9A42E2FB3AA00534D7E /* EnrollmentState.swift */,
 				57B8FA982E17C80B007EBECE /* PinPadState.swift */,
 				57F464812D4383C000C64156 /* AppState.swift */,
@@ -558,9 +564,11 @@
 				9E72F91B2E1E9D1900FB4637 /* UserState.swift in Sources */,
 				57BDC9A52E2FB3B600534D7E /* EnrollmentState.swift in Sources */,
 				57CC76332E868D6C00E7D7B2 /* DummyData.swift in Sources */,
+				57CC76792E8BF86C00E7D7B2 /* AuthenticatorInteractor.swift in Sources */,
 				578DC4EB2D9E88BE008D2576 /* SDKConfigModel.swift in Sources */,
 				9E72F98A2E2FAA3E00FB4637 /* QRScannerInteractor.swift in Sources */,
 				5748DC1B2E42365B00B860D3 /* SDKInteractor+RegistrationDelegate.swift in Sources */,
+				57CC76772E8BE38300E7D7B2 /* ScannerState.swift in Sources */,
 				578BC30D2D439BED00713CF7 /* System.swift in Sources */,
 				57A5BE002E3B969B0041015B /* PendingMobileAuthRequestEntity.swift in Sources */,
 				578BC3212D4A305C00713CF7 /* ContentView.swift in Sources */,

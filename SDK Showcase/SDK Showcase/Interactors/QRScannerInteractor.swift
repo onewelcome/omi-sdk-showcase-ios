@@ -4,32 +4,31 @@ import Foundation
 
 //MARK: - Protocol
 protocol QRScannerInteractor {
-    func scan()
+    func scan(to: QRScannerDelegate)
     func cancelScanning()
-    func handleCode(_ code: String)
+    func scanned(code: String)
+}
+
+protocol QRScannerDelegate {
+    func didStartScanning()
+    func didCancelScanning()
+    func didFinishScanning(code: String)
 }
 
 //MARK: - Real methods
 class QRScannerInteractorReal: QRScannerInteractor {
-    @Injected var appState: AppState
+    var delegate: QRScannerDelegate?
     
-    func scan() {
-        appState.system.shouldShowQRScanner = true
+    func scan(to receiver: QRScannerDelegate) {
+        delegate = receiver
+        delegate?.didStartScanning()
     }
     
     func cancelScanning() {
-        appState.system.shouldShowQRScanner = false
+        delegate?.didCancelScanning()
     }
     
-    func handleCode(_ code: String) {
-        appState.system.shouldShowQRScanner = false
-        sdkInteractor.handleOtp(code)
-    }
-}
-
-private extension QRScannerInteractorReal {
-    var sdkInteractor: SDKInteractor {
-        @Injected var interactors: Interactors
-        return interactors.sdkInteractor
+    func scanned(code: String) {
+        delegate?.didFinishScanning(code: code)
     }
 }

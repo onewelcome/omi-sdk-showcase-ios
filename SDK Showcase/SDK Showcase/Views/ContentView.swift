@@ -83,7 +83,7 @@ struct ContentView: View {
         .sheet(isPresented: $system.shouldShowPinPad) {
             SheetViewForPinPad()
         }
-        .sheet(isPresented: $system.shouldShowQRScanner) {
+        .sheet(isPresented: $system.shouldShowScanner) {
             SheetViewForQRScanner()
         }
         .onChange(of: appstate.registeredUsers) {
@@ -163,7 +163,7 @@ extension ContentView {
         case .register:
             startRegistration(authenticatorName: selection.name)
         case .loginWithOtp:
-            showQRScanner()
+            authenticatorInteractor.loginWithOTP()
         case .pending:
             handlePending(transacationId: selection.name)
         case .authenticate:

@@ -73,6 +73,7 @@ class RegistrationInteractorReal: RegistrationInteractor {
         appState.addRegisteredUser(userData)
         appState.system.setEnrollmentState(.unenrolled)
         appState.system.setPinPadState(.hidden)
+        appState.system.setScannerState(.hidden)
         browserChallenge = nil
         customChallenge = nil
         appState.setSystemInfo(string: "Profile \(profileId) has been registered successfully.")
@@ -104,9 +105,11 @@ extension RegistrationInteractorReal {
         if stateless {
             challenge.sender.respond(with: nil, to: challenge)
         } else {
-            //You can ask the user about the response in different ways (e.g. by scanning the QR code, asking for a password, etc.)
-            //TODO: add some mapping for different IDPs in the next PR
-            challenge.sender.respond(with: DummyData.customRegistrationChallenge, to: challenge)
+            /// You can ask the user about the response in different ways, e.g. by scanning the QR code:
+            qrScannerInteractor.scan(to: self)
+        
+            /// or asking for a password, or simply return some dummy response:
+            // challenge.sender.respond(with: DummyData.customRegistrationChallenge, to: challenge)
         }
     }
     
@@ -124,6 +127,22 @@ extension RegistrationInteractorReal {
     }
 }
 
+extension RegistrationInteractorReal: QRScannerDelegate {
+    func didStartScanning() {
+        appState.system.setScannerState(.showForRegistration)
+    }
+
+    func didCancelScanning() {
+        appState.system.setScannerState(.hidden)
+    }
+
+    func didFinishScanning(code: String) {
+        guard let customChallenge else { return }
+        customChallenge.sender.respond(with: code, to: customChallenge)
+        appState.system.setScannerState(.hidden)
+    }
+}
+
 private extension RegistrationInteractorReal {
     var sdkInteractor: SDKInteractor {
         @Injected var interactors: Interactors
@@ -138,6 +157,11 @@ private extension RegistrationInteractorReal {
     var pinPadInteractor: PinPadInteractor {
         @Injected var interactors: Interactors
         return interactors.pinPadInteractor
+    }
+    
+    var qrScannerInteractor: QRScannerInteractor {
+        @Injected var interactors: Interactors
+        return interactors.qrScannerInteractor
     }
 
     var device: AppState.DeviceData { appState.deviceData }

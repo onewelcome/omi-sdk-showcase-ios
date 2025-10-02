@@ -5,6 +5,7 @@ import Foundation
 struct Interactors {
     var categoriesInteractor: CategoriesInteractor
     var sdkInteractor: SDKInteractor
+    var authenticatorInteractor: AuthenticatorInteractor
     var authenticatorRegistrationInteractor: AuthenticatorRegistrationInteractor
     var registrationInteractor: RegistrationInteractor
     var pinPadInteractor: PinPadInteractor

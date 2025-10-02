@@ -121,11 +121,7 @@ extension ContentView {
         registrationInteractor.cancelRegistration()
         system.isProcessing = false
     }
-    
-    func showQRScanner() {
-        qrScannerInteractor.scan()
-    }
-    
+
     func handlePending(transacationId: String) {
         sdkInteractor.handlePendingTransaction(id: transacationId)
     }
@@ -136,6 +132,11 @@ extension ContentView {
     var sdkInteractor: SDKInteractor {
         @Injected var interactors: Interactors
         return interactors.sdkInteractor
+    }
+    
+    var authenticatorInteractor: AuthenticatorInteractor {
+        @Injected var interactors: Interactors
+        return interactors.authenticatorInteractor
     }
     
     var authenticatorRegistrationInteractor: AuthenticatorRegistrationInteractor {
@@ -151,11 +152,6 @@ extension ContentView {
     var pinPadInteractor: PinPadInteractor {
         @Injected var interactors: Interactors
         return interactors.pinPadInteractor
-    }
-    
-    var qrScannerInteractor: QRScannerInteractor {
-        @Injected var interactors: Interactors
-        return interactors.qrScannerInteractor
     }
 
     var initializationStatus: String {
