@@ -9,6 +9,10 @@ protocol MobileAuthRequestInteractor {
     func handleOtp(_ code: String)
     func handlePendingTransaction(id: String)
     func fetchPendingTransactionNames() async -> [String]
+    func fetchEnrollment()
+    func enrollForMobileAuthentication()
+
+    var isMobileAuthEnrolled: Bool { get }
 }
 
 class MobileAuthRequestInteractorReal: MobileAuthRequestInteractor {
@@ -17,6 +21,28 @@ class MobileAuthRequestInteractorReal: MobileAuthRequestInteractor {
 
     init(appState: AppState) {
         self.appState = appState
+    }
+    
+    func enrollForMobileAuthentication() {
+        guard precheck() else { return }
+        userClient.enrollMobileAuth { [self] error in
+            appState.system.isProcessing = false
+            if let error {
+                appState.setSystemInfo(string: error.localizedDescription)
+            } else {
+                appState.system.setEnrollmentState(.mobile)
+                appState.setSystemInfo(string: "User successfully enrolled for mobile authentication!")
+            }
+        }
+    }
+
+    func fetchEnrollment() {
+        if isMobileAuthEnrolled {
+            appState.system.setEnrollmentState(.mobile)
+        }
+        if isPushRegistered {
+            appState.system.setEnrollmentState(.push)
+        }
     }
     
     func fetchPendingTransactionNames() async -> [String] {
@@ -93,6 +119,10 @@ class MobileAuthRequestInteractorReal: MobileAuthRequestInteractor {
         }
     }
     
+    func pendingTransaction(id: String) -> PendingMobileAuthRequestEntity? {
+         appState.pendingTransactions.first { $0.pendingTransaction?.transactionId == id }
+    }
+    
     var isMobileAuthEnrolled: Bool {
         guard let profileId = appState.system.userState.userId,
               userClient.isMobileAuthEnrolled(for: ProfileProxy(profileId: profileId)) else {
@@ -102,10 +132,14 @@ class MobileAuthRequestInteractorReal: MobileAuthRequestInteractor {
         return true
     }
     
-    func pendingTransaction(id: String) -> PendingMobileAuthRequestEntity? {
-         appState.pendingTransactions.first { $0.pendingTransaction?.transactionId == id }
+    var isPushRegistered: Bool {
+        guard let profileId = appState.system.userState.userId,
+              userClient.isPushMobileAuthEnrolled(for: ProfileProxy(profileId: profileId)) else {
+            return false
+        }
+        
+        return true
     }
-    
     
     func precheck() -> Bool {
         let stateless = userClient.isStateless && userClient.accessToken != nil

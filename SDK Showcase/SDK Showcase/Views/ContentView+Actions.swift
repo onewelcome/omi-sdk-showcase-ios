@@ -24,8 +24,8 @@ extension ContentView {
             case .success:
                 system.unsetInfo()
                 system.isSDKInitialized = true
-                sdkInteractor.fetchUserProfiles()
-                sdkInteractor.fetchEnrollment()
+                registrationInteractor.fetchUserProfiles()
+                mobileAuthRequestInteractor.fetchEnrollment()
             case .failure(let error):
                 errorValue = error.localizedDescription
                 system.setInfo(errorValue)
@@ -57,11 +57,11 @@ extension ContentView {
     }
     
     func enrollForMobileAuthentication() {
-        sdkInteractor.enrollForMobileAuthentication()
+        mobileAuthRequestInteractor.enrollForMobileAuthentication()
     }
     
     func registerForPushes() {
-        sdkInteractor.registerForPushNotifications()
+        pushNotitificationsInteractor.registerForPushNotifications()
     }
     
     func registerAuthenticator() {
@@ -86,18 +86,18 @@ extension ContentView {
     
     func updateUsersSelection() {
         guard category.type == .userAuthentication else { return }
-        category.selection = sdkInteractor.userAuthenticatorOptionNames.map { Selection(name: $0, type: .authenticate, logo: "person.crop.circle") }
+        category.selection = registrationInteractor.userAuthenticatorOptionNames.map { Selection(name: $0, type: .authenticate, logo: "person.crop.circle") }
     }
     
     func updateLogout() {
         guard category.type == .userLogout else { return }
         let userId = appstate.system.userState.userId
-        category.selection = sdkInteractor.userAuthenticatorOptionNames.filter { $0 == userId }.map { Selection(name: $0, type: .logout, logo: "person.crop.circle") }
+        category.selection = registrationInteractor.userAuthenticatorOptionNames.filter { $0 == userId }.map { Selection(name: $0, type: .logout, logo: "person.crop.circle") }
     }
     
     func updateDeregister() {
         guard category.type == .userDeregistation else { return }
-        category.selection = sdkInteractor.userAuthenticatorOptionNames.map { Selection(name: $0, type: .deregister, logo: "person.crop.circle") }
+        category.selection = registrationInteractor.userAuthenticatorOptionNames.map { Selection(name: $0, type: .deregister, logo: "person.crop.circle") }
     }
     
     func pendingTransactionsTask() {
@@ -159,6 +159,11 @@ extension ContentView {
         return interactors.pinPadInteractor
     }
 
+    var pushNotitificationsInteractor: PushNotitificationsInteractor {
+        @Injected var interactors: Interactors
+        return interactors.pushInteractor
+    }
+    
     var initializationStatus: String {
         system.isSDKInitialized ? "✅ SDK initialized" : "❌ SDK not initialized \(errorValue)"
     }
@@ -170,7 +175,7 @@ extension ContentView {
         case .registering:
             "⏳ Registration in progress..."
         case .registered, .unauthenticated:
-            "👥 \(sdkInteractor.numberOfRegisteredUsers) registered users"
+            "👥 \(registrationInteractor.numberOfRegisteredUsers) registered users"
         case .authenticated(let userId):
             "👤 User authenticated as \(userId)"
         case .stateless:

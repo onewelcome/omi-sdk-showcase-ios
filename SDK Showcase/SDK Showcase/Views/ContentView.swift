@@ -59,7 +59,9 @@ struct ContentView: View {
                             }).disabled(selection.disabled)
                         }
                     }
-                    AuthenticatorsSheet(showConfirmationDialog: $showConfirmationDialog, selectedOption: selectedOption)
+                    if showConfirmationDialog {
+                        AuthenticatorsSheet(showConfirmationDialog: $showConfirmationDialog, selectedOption: selectedOption)
+                    }
                 }
                 
                 Section(content: {

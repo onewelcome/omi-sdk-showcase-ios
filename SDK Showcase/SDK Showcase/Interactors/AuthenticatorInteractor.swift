@@ -87,7 +87,7 @@ extension AuthenticatorInteractorReal: AuthenticationDelegate {
         appState.unsetSystemInfo()
         appState.system.setUserState(.authenticated(userProfile.profileId))
         appState.system.setPinPadState(.hidden)
-        sdkInteractor.fetchEnrollment()
+        mobileAuthRequestInteractor.fetchEnrollment()
         appState.system.isProcessing = false
     }
     

@@ -7,7 +7,11 @@ import OneginiSDKiOS
 //MARK: - Protocol the SDK interacts with
 protocol RegistrationInteractor {
     var registerUrl: String { get set }
-    
+    var userAuthenticatorOptionNames: [String] { get }
+    var numberOfRegisteredUsers: Int { get }
+
+    func fetchUserProfiles()
+
     func setBrowserChallenge(_ challenge: BrowserRegistrationChallenge)
     func setCustomChallenge(_ challenge: CustomRegistrationChallenge)
     func setStateless(_ stateless: Bool)
@@ -31,6 +35,14 @@ class RegistrationInteractorReal: RegistrationInteractor {
         self.registerUrl = registerUrl
         self.appState = appState
     }
+    
+    var userAuthenticatorOptionNames: [String] {
+        return appState.registeredUsers.map { $0.userId }
+    }
+    
+    var numberOfRegisteredUsers: Int {
+        return appState.registeredUsers.filter { $0.isStateless == false }.map { $0.userId }.count
+    }
 
     func setBrowserChallenge(_ challenge: any BrowserRegistrationChallenge) {
         self.registerUrl = challenge.url.absoluteString
@@ -53,6 +65,12 @@ class RegistrationInteractorReal: RegistrationInteractor {
         register(with: idp ?? IdentityProviderProxy.default.name, stateless: stateless)
     }
     
+    func fetchUserProfiles() {
+        appState.resetRegisteredUsers()
+        userClient.userProfiles
+            .map { AppState.UserData(userId: $0.profileId, authenticatorsNames: authenticatorRegistrationInteractor.authenticatorNames(for: $0.profileId)) }
+            .forEach { appState.addRegisteredUser($0) }
+    }
     
     func register(with provider: String, stateless: Bool) {
         appState.system.isProcessing = true
