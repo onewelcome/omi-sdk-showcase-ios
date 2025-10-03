@@ -19,7 +19,6 @@ class PushNotitificationsInteractorReal: NSObject, PushNotitificationsInteractor
     private let userClient = SharedUserClient.instance
 
     func registerForPushNotifications() {
-        //guard precheck() else { return }
         guard mobileAuthRequestInteractor.isMobileAuthEnrolled else {
             appState.setSystemInfo(string: "You are not enrolled for mobile authentication. Please enroll first!")
             return

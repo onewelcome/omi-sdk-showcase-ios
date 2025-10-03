@@ -32,7 +32,7 @@ class AuthenticatorInteractorReal: AuthenticatorInteractor {
             appState.setSystemInfo(string: "Stateless user is authenticated automatically.")
             return
         }
-        guard let userProfile = userClient.userProfiles.first(where: { user in user.profileId == profileName }) else {
+        guard let userProfile = userClient.userProfiles.first(where: { $0.profileId == profileName }) else {
             fatalError("No user profile for profile `\(profileName)`")
         }
 
