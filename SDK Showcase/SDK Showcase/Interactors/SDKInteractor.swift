@@ -17,10 +17,6 @@ protocol SDKInteractor {
     func setDeviceConfigCacheDuration(_ cacheDuration: TimeInterval)
     func setHttpRequestTimeout(_ requestTimeout: TimeInterval)
     func setStoreCookies(_ storeCookies: Bool)
- 
-    func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void)
-    func logout(optionName: String)
-    func deregister(optionName: String)
 }
 
 //MARK: - Real methods
@@ -31,7 +27,6 @@ class SDKInteractorReal: SDKInteractor {
     private static let staticBuilder = ClientBuilder()
     private var device: AppState.DeviceData { appState.deviceData }
     private var client: Client?
-    private let userClient = SharedUserClient.instance
     var builder: ClientBuilder
 
     init(appState: AppState, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder) {
@@ -99,42 +94,6 @@ class SDKInteractorReal: SDKInteractor {
 
     func clearDeviceData() {
         appState.reset()
-    }
-
-    func logout(optionName: String) {
-        userClient.logoutUser { [self] profile, error in
-            if profile != nil {
-                appState.system.setUserState(.unauthenticated)
-                appState.setSystemInfo(string: "Profile \(optionName) has been logged out.")
-            } else {
-                appState.setSystemInfo(string: "Logout failed. The profile is not authenticated most likely.")
-            }
-        }
-    }
-    
-    func deregister(optionName: String) {
-        guard let userProfile = userClient.userProfiles.first(where: { user in user.profileId == optionName }) else {
-            if optionName == UserState.stateless.rawValue {
-                appState.setSystemInfo(string: "Deregistration cannot be performed for the stateless user.")
-            } else {
-                appState.setSystemInfo(string: "Deregistration failed. The profile has been already unregistered.")
-            }
-            return
-        }
-        userClient.deregister(user: userProfile) { [self] error in
-            if error != nil {
-                appState.setSystemInfo(string: "Deregistration failed. The profile has not been found.")
-            } else {
-                appState.remove(profileId: userProfile.profileId)
-                appState.setSystemInfo(string: "Profile \(optionName) has been deregister.")
-            }
-        }
-    }
-    
-    func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void) {
-        userClient.validatePolicyCompliance(for: pin) { error in
-            completion(error)
-        }
     }
 }
 

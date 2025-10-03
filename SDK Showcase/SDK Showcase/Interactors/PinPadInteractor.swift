@@ -79,12 +79,18 @@ class PinPadInteractorReal: PinPadInteractor {
             return
         }
         
-        interactor.validatePolicy(for: pin) { [self] error in
+        validatePolicy(for: pin) { [self] error in
             if let error {
                 showError(error)
             } else {
                 handleValidatedPin(pin)
             }
+        }
+    }
+    
+    func validatePolicy(for pin: String, completion: @escaping (Error?) -> Void) {
+        userClient.validatePolicyCompliance(for: pin) { error in
+            completion(error)
         }
     }
     

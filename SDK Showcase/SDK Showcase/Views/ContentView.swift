@@ -172,9 +172,9 @@ extension ContentView {
             selectedOption = selection
             showConfirmationDialog = true
         case .logout:
-            sdkInteractor.logout(optionName: selection.name)
+            authenticatorInteractor.logout(optionName: selection.name)
         case .deregister:
-            sdkInteractor.deregister(optionName: selection.name)
+            registrationInteractor.deregister(optionName: selection.name)
         case .unknown:
             fatalError("Selection `\(selection.name)` not handled!")
         }

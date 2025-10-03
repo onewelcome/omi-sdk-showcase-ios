@@ -5,6 +5,7 @@ import OneginiSDKiOS
 
 protocol AuthenticatorInteractor {
     func authenticateUser(profileName: String, optionName: String)
+    func logout(optionName: String)
     func loginWithOTP()
     func fetchIdentityProviders() -> [IdentityProvider]
 }
@@ -42,6 +43,18 @@ class AuthenticatorInteractorReal: AuthenticatorInteractor {
         appState.system.isProcessing = true
         userClient.authenticateUserWith(profile: userProfile, authenticator: authenticator, delegate: self)
     }
+    
+    func logout(optionName: String) {
+        userClient.logoutUser { [self] profile, error in
+            if profile != nil {
+                appState.system.setUserState(.unauthenticated)
+                appState.setSystemInfo(string: "Profile \(optionName) has been logged out.")
+            } else {
+                appState.setSystemInfo(string: "Logout failed. The profile is not authenticated most likely.")
+            }
+        }
+    }
+    
 }
 
 extension AuthenticatorInteractorReal: QRScannerDelegate {

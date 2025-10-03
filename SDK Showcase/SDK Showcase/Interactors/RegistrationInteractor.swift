@@ -18,6 +18,7 @@ protocol RegistrationInteractor {
     func register(with provider: String, stateless: Bool)
 
     func register(with idp: String?)
+    func deregister(optionName: String)
     func cancelRegistration()
     func didReceiveBrowserRegistrationRedirect(_ url: URL)
 }
@@ -63,6 +64,25 @@ class RegistrationInteractorReal: RegistrationInteractor {
             return
         }
         register(with: idp ?? IdentityProviderProxy.default.name, stateless: stateless)
+    }
+    
+    func deregister(optionName: String) {
+        guard let userProfile = userClient.userProfiles.first(where: { user in user.profileId == optionName }) else {
+            if optionName == UserState.stateless.rawValue {
+                appState.setSystemInfo(string: "Deregistration cannot be performed for the stateless user.")
+            } else {
+                appState.setSystemInfo(string: "Deregistration failed. The profile has been already unregistered.")
+            }
+            return
+        }
+        userClient.deregister(user: userProfile) { [self] error in
+            if error != nil {
+                appState.setSystemInfo(string: "Deregistration failed. The profile has not been found.")
+            } else {
+                appState.remove(profileId: userProfile.profileId)
+                appState.setSystemInfo(string: "Profile \(optionName) has been deregister.")
+            }
+        }
     }
     
     func fetchUserProfiles() {
