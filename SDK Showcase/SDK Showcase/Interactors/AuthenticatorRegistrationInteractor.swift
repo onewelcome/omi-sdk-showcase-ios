@@ -34,7 +34,7 @@ class AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationInteract
     }
     
     func unregisteredAuthenticatorNames(for userId: String) -> [String] {
-        return userClient.authenticators(.nonRegistered, for: ProfileProxy(profileId: userId)).map { $0.name }
+        return userClient.authenticators(.nonRegistered, for: UserProfileImplementation(profileId: userId)).map { $0.name }
     }
 
     
@@ -42,7 +42,7 @@ class AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationInteract
         if userId == UserState.stateless.rawValue {
             return [UserState.stateless.rawValue]
         } else {
-            return userClient.authenticators(.registered, for: ProfileProxy(profileId: userId)).map { $0.name }
+            return userClient.authenticators(.registered, for: UserProfileImplementation(profileId: userId)).map { $0.name }
         }
     }
     
@@ -57,7 +57,7 @@ class AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationInteract
     
     var isMobileAuthEnrolled: Bool {
         guard let profileId = appState.system.userState.userId,
-              userClient.isMobileAuthEnrolled(for: ProfileProxy(profileId: profileId)) else {
+              userClient.isMobileAuthEnrolled(for: UserProfileImplementation(profileId: profileId)) else {
             return false
         }
         
@@ -66,7 +66,7 @@ class AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationInteract
     
     var isPushRegistered: Bool {
         guard let profileId = appState.system.userState.userId,
-              userClient.isPushMobileAuthEnrolled(for: ProfileProxy(profileId: profileId)) else {
+              userClient.isPushMobileAuthEnrolled(for: UserProfileImplementation(profileId: profileId)) else {
             return false
         }
         
@@ -80,11 +80,11 @@ extension AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationDele
         challenge.sender.respond(with: DummyData.customAuthFinishRegistrationChallenge, to: challenge)
     }
 
-    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didFailToRegister authenticator: any OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, error: any Error) {
+    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didFailToRegister authenticator: OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, error: any Error) {
         appState.setSystemInfo(string: error.localizedDescription)
     }
     
-    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didRegister authenticator: any OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, info customAuthInfo: (any OneginiSDKiOS.CustomInfo)?) {
+    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didRegister authenticator: OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, info customAuthInfo: (any OneginiSDKiOS.CustomInfo)?) {
         appState.setSystemInfo(string: "Authenticator `\(authenticator.name)` registered successfully.")
     }
 

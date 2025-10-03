@@ -359,7 +359,7 @@ private extension SDKInteractorReal {
 
     var isMobileAuthEnrolled: Bool {
         guard let profileId = appState.system.userState.userId,
-              userClient.isMobileAuthEnrolled(for: ProfileProxy(profileId: profileId)) else {
+              userClient.isMobileAuthEnrolled(for: UserProfileImplementation(profileId: profileId)) else {
             return false
         }
         
@@ -368,7 +368,7 @@ private extension SDKInteractorReal {
     
     var isPushRegistered: Bool {
         guard let profileId = appState.system.userState.userId,
-              userClient.isPushMobileAuthEnrolled(for: ProfileProxy(profileId: profileId)) else {
+              userClient.isPushMobileAuthEnrolled(for: UserProfileImplementation(profileId: profileId)) else {
             return false
         }
         
@@ -394,7 +394,7 @@ private extension SDKInteractorReal {
     }
     
     func mapSDKConfigModel(_ model: SDKConfigModel) -> OneginiSDKiOS.ConfigModel {
-        return ConfigModel(dictionary: model.dictionary)
+        return ConfigModel(dictionary: model.dictionary)!
     }
     
     func pendingTransaction(id: String) -> PendingMobileAuthRequestEntity? {
