@@ -11,10 +11,6 @@ protocol AuthenticatorRegistrationInteractor {
 
 class AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationInteractor {
     @ObservedObject var appState: AppState
-    var pinPadInteractor: PinPadInteractor {
-        @Injected var interactors: Interactors
-        return interactors.pinPadInteractor
-    }
     private let userClient = SharedUserClient.instance
 
     init(appState: AppState) {
@@ -45,23 +41,37 @@ class AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationInteract
             return userClient.authenticators(.registered, for: ProfileProxy(profileId: userId)).map { $0.name }
         }
     }
+}
+
+extension AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationDelegate {
     
-    func fetchEnrollment() {
-        if isMobileAuthEnrolled {
-            appState.system.setEnrollmentState(.mobile)
+    func userClient(_ userClient: any UserClient, didReceivePinChallenge challenge: any PinChallenge) {
+        pinPadInteractor.setPinChallenge(challenge)
+        if let _ = challenge.error {
+            appState.setSystemInfo(string: "Wrong previous PIN, please try again (\(challenge.remainingFailureCount))")
+            return
         }
-        if isPushRegistered {
-            appState.system.setEnrollmentState(.push)
-        }
+        appState.system.isProcessing = false
+        pinPadInteractor.showPinPad(for: .biometricFallback)
     }
     
-    var isMobileAuthEnrolled: Bool {
-        guard let profileId = appState.system.userState.userId,
-              userClient.isMobileAuthEnrolled(for: ProfileProxy(profileId: profileId)) else {
-            return false
-        }
-        
-        return true
+    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didReceiveCustomAuthFinishRegistrationChallenge challenge: any OneginiSDKiOS.CustomAuthFinishRegistrationChallenge) {
+        challenge.sender.respond(with: DummyData.customAuthFinishRegistrationChallenge, to: challenge)
+    }
+    
+    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didFailToRegister authenticator: any OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, error: any Error) {
+        appState.setSystemInfo(string: error.localizedDescription)
+    }
+    
+    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didRegister authenticator: any OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, info customAuthInfo: (any OneginiSDKiOS.CustomInfo)?) {
+        appState.setSystemInfo(string: "Authenticator `\(authenticator.name)` registered successfully.")
+    }
+}
+
+private extension AuthenticatorRegistrationInteractorReal {
+    var pinPadInteractor: PinPadInteractor {
+        @Injected var interactors: Interactors
+        return interactors.pinPadInteractor
     }
     
     var isPushRegistered: Bool {
@@ -72,20 +82,4 @@ class AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationInteract
         
         return true
     }
-}
-
-extension AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationDelegate {
-
-    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didReceiveCustomAuthFinishRegistrationChallenge challenge: any OneginiSDKiOS.CustomAuthFinishRegistrationChallenge) {
-        challenge.sender.respond(with: DummyData.customAuthFinishRegistrationChallenge, to: challenge)
-    }
-
-    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didFailToRegister authenticator: any OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, error: any Error) {
-        appState.setSystemInfo(string: error.localizedDescription)
-    }
-    
-    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didRegister authenticator: any OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, info customAuthInfo: (any OneginiSDKiOS.CustomInfo)?) {
-        appState.setSystemInfo(string: "Authenticator `\(authenticator.name)` registered successfully.")
-    }
-
 }

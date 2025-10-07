@@ -21,10 +21,14 @@ struct PinPad: View {
     var body: some View {
         VStack {
             switch system.pinPadState {
+            case .authenticating:
+                Text("Provide the PIN to authenticate")
+            case .biometricFallback:
+                Text("Confirm the PIN as a backup for biometric authentication")
             case .creating:
-                Text("Create PIN")
+                Text("Create a PIN")
             case .created:
-                Text("Confirm PIN")
+                Text("Confirm the PIN")
             case .changing:
                 Text("Provide the current PIN")
             case .hidden:

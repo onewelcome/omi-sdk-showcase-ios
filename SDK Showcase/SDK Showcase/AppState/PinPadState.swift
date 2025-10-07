@@ -4,5 +4,7 @@ enum PinPadState {
     case hidden
     case creating
     case created
+    case authenticating
     case changing
+    case biometricFallback
 }
