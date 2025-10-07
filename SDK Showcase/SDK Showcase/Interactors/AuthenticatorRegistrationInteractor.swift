@@ -59,11 +59,11 @@ extension AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationDele
         challenge.sender.respond(with: DummyData.customAuthFinishRegistrationChallenge, to: challenge)
     }
     
-    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didFailToRegister authenticator: any OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, error: any Error) {
+    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didFailToRegister authenticator: OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, error: any Error) {
         appState.setSystemInfo(string: error.localizedDescription)
     }
     
-    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didRegister authenticator: any OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, info customAuthInfo: (any OneginiSDKiOS.CustomInfo)?) {
+    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didRegister authenticator: OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, info customAuthInfo: (any OneginiSDKiOS.CustomInfo)?) {
         appState.setSystemInfo(string: "Authenticator `\(authenticator.name)` registered successfully.")
     }
 }

@@ -123,7 +123,7 @@ class MobileAuthRequestInteractorReal: MobileAuthRequestInteractor {
     
     var isMobileAuthEnrolled: Bool {
         guard let profileId = appState.system.userState.userId,
-              userClient.isMobileAuthEnrolled(for: ProfileProxy(profileId: profileId)) else {
+              userClient.isMobileAuthEnrolled(for: UserProfileImplementation(profileId: profileId)) else {
             return false
         }
         
@@ -132,7 +132,7 @@ class MobileAuthRequestInteractorReal: MobileAuthRequestInteractor {
     
     var isPushRegistered: Bool {
         guard let profileId = appState.system.userState.userId,
-              userClient.isPushMobileAuthEnrolled(for: ProfileProxy(profileId: profileId)) else {
+              userClient.isPushMobileAuthEnrolled(for: UserProfileImplementation(profileId: profileId)) else {
             return false
         }
         
@@ -190,8 +190,8 @@ extension MobileAuthRequestInteractorReal: MobileAuthRequestDelegate {
         confirmTransaction(for: mobileAuthEntity, automatically: true)
         appState.system.isProcessing = false
     }
-    
-    func userClient(_ userClient: any UserClient, didFailToHandleRequest request: any MobileAuthRequest, authenticator: (any Authenticator)?, error: any Error) {
+
+    func userClient(_ userClient: any UserClient, didFailToHandleRequest request: any MobileAuthRequest, authenticator: Authenticator?, error: any Error) {
         appState.setSystemInfo(string: error.localizedDescription)
         pushInteractor.updateBadge(nil)
         appState.system.isProcessing = false
