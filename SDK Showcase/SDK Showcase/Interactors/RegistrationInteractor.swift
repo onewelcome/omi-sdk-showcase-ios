@@ -7,25 +7,26 @@ import OneginiSDKiOS
 //MARK: - Protocol the SDK interacts with
 protocol RegistrationInteractor {
     var registerUrl: String { get set }
-    
+    var userAuthenticatorOptionNames: [String] { get }
+    var numberOfRegisteredUsers: Int { get }
+
+    func fetchUserProfiles()
+
     func setBrowserChallenge(_ challenge: BrowserRegistrationChallenge)
     func setCustomChallenge(_ challenge: CustomRegistrationChallenge)
     func setStateless(_ stateless: Bool)
-    
+    func register(with provider: String, stateless: Bool)
+
     func register(with idp: String?)
+    func deregister(optionName: String)
     func cancelRegistration()
-    func didReceiveBrowserRegistrationChallenge(_ challenge: any BrowserRegistrationChallenge)
-    func didReceiveCustomRegistrationFinishChallenge(_ challenge: any CustomRegistrationChallenge)
     func didReceiveBrowserRegistrationRedirect(_ url: URL)
-    func didReceiveCreatePinChallenge(_ challenge: any CreatePinChallenge)
-    func didFailToRegisterUser(with error: Error)
-    func didRegisterUser(profileId: String)
 }
 
 //MARK: - Real methods
 class RegistrationInteractorReal: RegistrationInteractor {
-
     @ObservedObject var appState: AppState
+    private let userClient = SharedUserClient.instance
     private var browserChallenge: BrowserRegistrationChallenge?
     private var customChallenge: CustomRegistrationChallenge?
     private var stateless = false
@@ -34,6 +35,14 @@ class RegistrationInteractorReal: RegistrationInteractor {
     init(registerUrl: String = "", appState: AppState) {
         self.registerUrl = registerUrl
         self.appState = appState
+    }
+    
+    var userAuthenticatorOptionNames: [String] {
+        return appState.registeredUsers.map { $0.userId }
+    }
+    
+    var numberOfRegisteredUsers: Int {
+        return appState.registeredUsers.filter { $0.isStateless == false }.map { $0.userId }.count
     }
 
     func setBrowserChallenge(_ challenge: any BrowserRegistrationChallenge) {
@@ -54,7 +63,44 @@ class RegistrationInteractorReal: RegistrationInteractor {
             appState.setSystemInfo(string: "SDK not initialized")
             return
         }
-        sdkInteractor.register(with: idp ?? IdentityProviderProxy.default.name, stateless: stateless)
+        register(with: idp ?? IdentityProviderProxy.default.name, stateless: stateless)
+    }
+    
+    func deregister(optionName: String) {
+        guard let userProfile = userClient.userProfiles.first(where: { user in user.profileId == optionName }) else {
+            if optionName == UserState.stateless.rawValue {
+                appState.setSystemInfo(string: "Deregistration cannot be performed for the stateless user.")
+            } else {
+                appState.setSystemInfo(string: "Deregistration failed. The profile has been already unregistered.")
+            }
+            return
+        }
+        userClient.deregister(user: userProfile) { [self] error in
+            if error != nil {
+                appState.setSystemInfo(string: "Deregistration failed. The profile has not been found.")
+            } else {
+                appState.remove(profileId: userProfile.profileId)
+                appState.setSystemInfo(string: "Profile \(optionName) has been deregister.")
+            }
+        }
+    }
+    
+    func fetchUserProfiles() {
+        appState.resetRegisteredUsers()
+        userClient.userProfiles
+            .map { AppState.UserData(userId: $0.profileId, authenticatorsNames: authenticatorRegistrationInteractor.authenticatorNames(for: $0.profileId)) }
+            .forEach { appState.addRegisteredUser($0) }
+    }
+    
+    func register(with provider: String, stateless: Bool) {
+        appState.system.isProcessing = true
+        let scopes = ["read", "openid", "email"]
+        let provider = userClient.identityProviders.first(where: { $0.name == provider })
+        if stateless {
+            userClient.registerStatelessUserWith(identityProvider: provider, scopes: scopes, delegate: self)
+        } else {
+            userClient.registerUserWith(identityProvider: provider, scopes: scopes, delegate: self)
+        }
     }
     
     func cancelRegistration() {
@@ -82,13 +128,7 @@ class RegistrationInteractorReal: RegistrationInteractor {
 
 //MARK: - SDK Delegates
 extension RegistrationInteractorReal {
-    
-    func didReceiveCreatePinChallenge(_ challenge: any OneginiSDKiOS.CreatePinChallenge) {
-        pinPadInteractor.setCreatePinChallenge(challenge)
-        appState.system.setUserState(.unauthenticated)
-        pinPadInteractor.showPinPad(for: .creating)
-    }
-    
+
     func didReceiveBrowserRegistrationRedirect(_ url: URL) {
         guard let browserChallenge else { return }
         browserChallenge.sender.respond(with: url, to: browserChallenge)
@@ -165,4 +205,40 @@ private extension RegistrationInteractorReal {
     }
 
     var device: AppState.DeviceData { appState.deviceData }
+}
+
+extension RegistrationInteractorReal: RegistrationDelegate {
+    func userClient(_ userClient: any OneginiSDKiOS.UserClient, didReceiveCreatePinChallenge challenge: any OneginiSDKiOS.CreatePinChallenge) {
+        appState.system.isProcessing = false
+        if let error = challenge.error {
+            pinPadInteractor.setCreatePinChallenge(challenge)
+            pinPadInteractor.showError(error)
+            return
+        }
+
+        appState.system.setUserState(.unauthenticated)
+        pinPadInteractor.setCreatePinChallenge(challenge)
+        pinPadInteractor.showPinPad(for: .creating)
+    }
+
+    func userClient(_ userClient: any UserClient, didRegisterUser profile: any UserProfile, with identityProvider: any IdentityProvider, info: (any CustomInfo)?) {
+        appState.system.isProcessing = false
+        didRegisterUser(profileId: profile.profileId)
+    }
+    
+    func userClient(_ userClient: any UserClient, didReceiveBrowserRegistrationChallenge challenge: any BrowserRegistrationChallenge) {
+        appState.system.isProcessing = false
+        didReceiveBrowserRegistrationChallenge(challenge)
+    }
+    
+    func userClient(_ userClient: any UserClient, didFailToRegisterUserWith identityProvider: any IdentityProvider, error: any Error) {
+        appState.system.isProcessing = false
+        didFailToRegisterUser(with: error)
+    }
+
+    func userClient(_ userClient: any UserClient, didReceiveCustomRegistrationFinishChallenge challenge: any CustomRegistrationChallenge) {
+        appState.system.isProcessing = false
+        didReceiveCustomRegistrationFinishChallenge(challenge)
+    }
+
 }

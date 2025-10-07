@@ -21,5 +21,13 @@ extension AppState {
             
             navPath.append(navCategory)
         }
+        
+        func backHome() {
+            guard !navPath.isEmpty else {
+                return
+            }
+            
+            navPath.removeAll()
+        }
     }
 }

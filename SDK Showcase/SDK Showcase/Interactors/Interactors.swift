@@ -7,6 +7,7 @@ struct Interactors {
     var sdkInteractor: SDKInteractor
     var authenticatorInteractor: AuthenticatorInteractor
     var authenticatorRegistrationInteractor: AuthenticatorRegistrationInteractor
+    var mobileAuthRequestInteractor: MobileAuthRequestInteractor
     var registrationInteractor: RegistrationInteractor
     var pinPadInteractor: PinPadInteractor
     var qrScannerInteractor: QRScannerInteractor

@@ -4,7 +4,7 @@ import SwiftUI
 import WebKit
 
 class BrowserViewModel: NSObject, ObservableObject {
-    private var browserInteractor: RegistrationInteractor {
+    private var registrationInteractor: RegistrationInteractor {
         @Injected var interactors: Interactors
         return interactors.registrationInteractor
     }
@@ -46,7 +46,7 @@ class BrowserViewModel: NSObject, ObservableObject {
     
     func handleRedirectURL(_ url: URL) {
         rediredURL = url
-        browserInteractor.didReceiveBrowserRegistrationRedirect(url)
+        registrationInteractor.didReceiveBrowserRegistrationRedirect(url)
     }
 }
 

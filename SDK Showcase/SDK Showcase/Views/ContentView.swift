@@ -59,7 +59,9 @@ struct ContentView: View {
                             }).disabled(selection.disabled)
                         }
                     }
-                    AuthenticatorsSheet(showConfirmationDialog: $showConfirmationDialog, selectedOption: selectedOption)
+                    if showConfirmationDialog {
+                        AuthenticatorsSheet(showConfirmationDialog: $showConfirmationDialog, selectedOption: selectedOption)
+                    }
                 }
                 
                 Section(content: {
@@ -106,7 +108,7 @@ struct ContentView: View {
             updateDeregister()
             updateMobileAuthenticationCategorySelection()
             pendingTransactionsTask()
-            guard category.type == .initialization else { return }
+            guard category.type == .initialization, UserDefaults.standard.bool(forKey: "autoinitialize") else { return }
             initializeSDK(automatically: true)
         }
         
@@ -170,9 +172,9 @@ extension ContentView {
             selectedOption = selection
             showConfirmationDialog = true
         case .logout:
-            sdkInteractor.logout(optionName: selection.name)
+            authenticatorInteractor.logout(optionName: selection.name)
         case .deregister:
-            sdkInteractor.deregister(optionName: selection.name)
+            registrationInteractor.deregister(optionName: selection.name)
         case .unknown:
             fatalError("Selection `\(selection.name)` not handled!")
         }
