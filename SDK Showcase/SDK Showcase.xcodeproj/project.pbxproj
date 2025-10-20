@@ -868,7 +868,7 @@
 			repositoryURL = "OneWelcome.SDKSPM-dev";
 			requirement = {
 				kind = exactVersion;
-				version = "13.0.0-BETA";
+				version = 13.0.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
