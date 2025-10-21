@@ -106,6 +106,6 @@ class SDKInteractorReal: SDKInteractor {
 private extension SDKInteractorReal {
     
     func mapSDKConfigModel(_ model: SDKConfigModel) -> OneginiSDKiOS.ConfigModel {
-        return ConfigModel(dictionary: model.dictionary)!
+        return ConfigModel(dictionary: model.dictionary)! // TODO: remove force unwrap?
     }
 }
