@@ -24,6 +24,7 @@ class AppState: ObservableObject {
         let authenticators = authenticatorRegistrationInteractor.authenticatorNames(for: profileId)
         let userData = AppState.UserData(userId: profileId, authenticatorsNames: authenticators)
         registeredUsers.remove(userData)
+        system.setUserState(.unauthenticated)
     }
     
     func setSystemInfo(string: String) {

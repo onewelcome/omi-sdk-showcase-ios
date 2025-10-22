@@ -80,7 +80,6 @@ class RegistrationInteractorReal: RegistrationInteractor {
                 appState.setSystemInfo(string: "Deregistration failed. The profile has not been found.")
             } else {
                 appState.remove(profileId: userProfile.profileId)
-                appState.system.setUserState(.unauthenticated)
                 appState.setSystemInfo(string: "Profile \(optionName) has been deregister.")
             }
         }
