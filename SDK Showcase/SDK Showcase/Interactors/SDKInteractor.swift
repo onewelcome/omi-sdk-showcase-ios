@@ -37,6 +37,7 @@ class SDKInteractorReal: SDKInteractor {
     
     func initializeSDK(result: @escaping SDKResult) {
         guard !appState.system.isSDKInitialized else {
+            appState.system.isProcessing = false
             appState.setSystemInfo(string: "SDK is already initialized.")
             return
         }
