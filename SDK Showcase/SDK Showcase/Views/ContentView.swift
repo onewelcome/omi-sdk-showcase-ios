@@ -176,7 +176,7 @@ extension ContentView {
         case .deregister:
             registrationInteractor.deregister(optionName: selection.name)
         case .token:
-            appstate.setSystemInfo(string: selection.name)
+            authenticatorInteractor.showToken(selection.name)
         case .unknown:
             fatalError("Selection `\(selection.name)` not handled!")
         }

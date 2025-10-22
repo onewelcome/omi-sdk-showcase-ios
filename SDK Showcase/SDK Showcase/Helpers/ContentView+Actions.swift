@@ -111,11 +111,11 @@ extension ContentView {
     
     func updateTokens() {
         guard category.type == .tokens  else { return }
-        if let token1 = authenticatorInteractor.accessToken {
-            category.selections.append(Selection(name: "Access token:\n\(token1)", type: .token))
+        if let _ = authenticatorInteractor.accessToken {
+            category.selections.append(Selection(name: Token.access.rawValue, type: .token))
         }
-        if let token2 = authenticatorInteractor.openIDtoken {
-            category.selections.append(Selection(name: "OpenID token:\n\(token2)", type: .token))
+        if let _ = authenticatorInteractor.openIDtoken {
+            category.selections.append(Selection(name: Token.openID.rawValue, type: .token))
         }
     }
 }
