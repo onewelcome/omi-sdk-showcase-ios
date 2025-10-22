@@ -33,9 +33,9 @@ class AuthenticatorInteractorReal: AuthenticatorInteractor {
     func showToken(_ token: String) {
         switch Token(rawValue: token) {
         case .access:
-            appState.setSystemInfo(string: accessToken ?? "")
+            appState.setSystemInfo(string: accessToken?.truncated() ?? "")
         case .openID:
-            appState.setSystemInfo(string: openIDtoken ?? "")
+            appState.setSystemInfo(string: openIDtoken?.truncated() ?? "")
         default:
             break
         }
