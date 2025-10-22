@@ -15,7 +15,8 @@ extension ContentView {
     }
     
     func initializeSDK(automatically: Bool) {
-        guard category.type == .initialization, UserDefaults.standard.bool(forKey: "autoinitialize") else { return }
+        guard category.type == .initialization else { return }
+
         UserDefaults.standard.set(automatically, forKey: "autoinitialize")
         errorValue.removeAll()
         /// You can comment the below line if the app is configured with the configurator and do have OneginiConfigModel set.

@@ -108,7 +108,8 @@ struct ContentView: View {
             updateLogout()
             updateDeregister()
             updateMobileAuthenticationCategorySelection()
-            pendingTransactionsTask()            
+            pendingTransactionsTask()
+            guard UserDefaults.standard.bool(forKey: "autoinitialize") else { return }
             initializeSDK(automatically: true)
         }
         
