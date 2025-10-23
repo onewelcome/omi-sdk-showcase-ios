@@ -192,23 +192,6 @@ extension MobileAuthRequestInteractorReal: MobileAuthRequestDelegate {
     }
 
     func userClient(_ userClient: any UserClient, didFailToHandleRequest request: any MobileAuthRequest, authenticator: Authenticator?, error: any Error) {
-        // it is original error
-        print((error as NSError).userInfo)
-        do {
-            let params = ["authenticated" : "true",
-                          "token" : "C8035E15B835A043FF8958E0086B1B31C730BD97A181D7E390789334DF86A7ACDDD31CA3359F2EC237ACF1B8E4F4C9121F086D3FB116D169B27CB039413A1A1A"]
-            let profile = UserProfileImplementation(profileId: appState.system.userState.userId!)
-            let encryptedParameters = try MobileAuthenticationCryptor().encryptAnswerParameters(params,
-                                                                                                profile: profile)
-            print(encryptedParameters)
-            
-//            let ongEncryptedParameters = try ONGMobileAuthenticationCryptor().encryptAnswerParameters(params, profile:  ONGUserProfile(id: profile.profileId))
-//            print(ongEncryptedParameters)
-            
-            
-        } catch {
-            print(error)
-        }
         appState.setSystemInfo(string: error.localizedDescription)
         pushInteractor.updateBadge(nil)
         appState.system.isProcessing = false
