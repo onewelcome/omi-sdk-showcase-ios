@@ -24,6 +24,7 @@ class AppState: ObservableObject {
         let authenticators = authenticatorRegistrationInteractor.authenticatorNames(for: profileId)
         let userData = AppState.UserData(userId: profileId, authenticatorsNames: authenticators)
         registeredUsers.remove(userData)
+        system.setUserState(.unauthenticated)
     }
     
     func setSystemInfo(string: String) {
@@ -39,7 +40,7 @@ class AppState: ObservableObject {
     }
     
     func addRegisteredUser(_ newUser: UserData) {
-        system.setUserState(newUser.isStateless ? .stateless : .registered)
+        system.setUserState(newUser.isStateless ? .stateless : .authenticated(newUser.userId))
         registeredUsers.insert(newUser)
     }
 }

@@ -20,6 +20,7 @@ class PushNotitificationsInteractorReal: NSObject, PushNotitificationsInteractor
 
     func registerForPushNotifications() {
         guard mobileAuthRequestInteractor.isMobileAuthEnrolled else {
+            appState.system.isProcessing = false
             appState.setSystemInfo(string: "You are not enrolled for mobile authentication. Please enroll first!")
             return
         }

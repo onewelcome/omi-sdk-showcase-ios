@@ -12,6 +12,7 @@ enum Categories: String {
     case userLogout = "User logout"
     case userDeregistation = "User deregistration"
     case pinChange = "PIN change"
+    case tokens = "Tokens"
 }
 
 struct Category: AppModel {
@@ -21,7 +22,7 @@ struct Category: AppModel {
     }
     let description: String
     let options: [Option]
-    var selection: [Selection]
+    var selections: [Selection]
     let requiredActions: [Action]
     let optionalActions: [Action]
 }
