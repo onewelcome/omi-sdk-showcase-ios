@@ -8,6 +8,10 @@ protocol AuthenticatorInteractor {
     func logout(optionName: String)
     func loginWithOTP()
     func fetchIdentityProviders() -> [IdentityProvider]
+    
+    func showToken(_ token: String)
+    var openIDtoken: String? { get }
+    var accessToken: String? { get }
 }
 
 class AuthenticatorInteractorReal: AuthenticatorInteractor {
@@ -16,6 +20,25 @@ class AuthenticatorInteractorReal: AuthenticatorInteractor {
 
     init(appState: AppState) {
         self.appState = appState
+    }
+    
+    var openIDtoken: String? {
+        return userClient.idToken
+    }
+    
+    var accessToken: String? {
+        return userClient.accessToken
+    }
+    
+    func showToken(_ token: String) {
+        switch Token(rawValue: token) {
+        case .access:
+            appState.setSystemInfo(string: accessToken?.truncated() ?? "")
+        case .openID:
+            appState.setSystemInfo(string: openIDtoken?.truncated() ?? "")
+        default:
+            break
+        }
     }
     
     func loginWithOTP() {

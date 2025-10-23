@@ -44,9 +44,9 @@ struct ContentView: View {
                     }
                 }
                 
-                if !category.selection.isEmpty {
+                if !category.selections.isEmpty {
                     Section(header: Text("Select")) {
-                        ForEach(category.selection, id:\.self) { selection in
+                        ForEach(category.selections, id:\.self) { selection in
                             Button(action: {
                                 buttonAction(for: selection)
                             }, label: {
@@ -54,7 +54,7 @@ struct ContentView: View {
                                     if let logo = selection.logo {
                                         Image(systemName: logo)
                                     }
-                                    Text(selection.name)
+                                    Text(selection.name.truncated())
                                 }
                             }).disabled(selection.disabled)
                         }
@@ -102,13 +102,14 @@ struct ContentView: View {
             updateLogout()
         }
         .task {
+            updateTokens()
             updateUsersSelection()
             updateIdentityProviders()
             updateLogout()
             updateDeregister()
             updateMobileAuthenticationCategorySelection()
             pendingTransactionsTask()
-            guard category.type == .initialization, UserDefaults.standard.bool(forKey: "autoinitialize") else { return }
+            guard UserDefaults.standard.bool(forKey: "autoinitialize") else { return }
             initializeSDK(automatically: true)
         }
         
@@ -175,6 +176,8 @@ extension ContentView {
             authenticatorInteractor.logout(optionName: selection.name)
         case .deregister:
             registrationInteractor.deregister(optionName: selection.name)
+        case .token:
+            authenticatorInteractor.showToken(selection.name)
         case .unknown:
             fatalError("Selection `\(selection.name)` not handled!")
         }

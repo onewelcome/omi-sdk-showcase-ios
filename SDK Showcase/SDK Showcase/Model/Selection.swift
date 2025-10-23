@@ -10,6 +10,7 @@ enum Selections: String {
     case deregister
     case authenticate
     case register
+    case token
 }
 
 struct Selection: AppModel {

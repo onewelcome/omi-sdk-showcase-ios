@@ -15,6 +15,8 @@ extension ContentView {
     }
     
     func initializeSDK(automatically: Bool) {
+        guard category.type == .initialization else { return }
+
         UserDefaults.standard.set(automatically, forKey: "autoinitialize")
         errorValue.removeAll()
         /// You can comment the below line if the app is configured with the configurator and do have OneginiConfigModel set.
@@ -76,35 +78,45 @@ extension ContentView {
     
     func updateMobileAuthenticationCategorySelection() {
         guard category.type == .mobileAuthentication, appstate.system.enrollmentState != EnrollmentState.unenrolled else { return }
-        category.selection = [Selection(name: Selections.loginWithOtp.rawValue)]
+        category.selections = [Selection(name: Selections.loginWithOtp.rawValue)]
     }
     
     func updateIdentityProviders() {
         guard category.type == .userRegistation else { return }
-        category.selection = authenticatorInteractor.fetchIdentityProviders().map { Selection(name: $0.name, type: .register) }
+        category.selections = authenticatorInteractor.fetchIdentityProviders().map { Selection(name: $0.name, type: .register) }
     }
     
     func updateUsersSelection() {
         guard category.type == .userAuthentication else { return }
-        category.selection = registrationInteractor.userAuthenticatorOptionNames.map { Selection(name: $0, type: .authenticate, logo: "person.crop.circle") }
+        category.selections = registrationInteractor.userAuthenticatorOptionNames.map { Selection(name: $0, type: .authenticate, logo: "person.crop.circle") }
     }
     
     func updateLogout() {
         guard category.type == .userLogout else { return }
         let userId = appstate.system.userState.userId
-        category.selection = registrationInteractor.userAuthenticatorOptionNames.filter { $0 == userId }.map { Selection(name: $0, type: .logout, logo: "person.crop.circle") }
+        category.selections = registrationInteractor.userAuthenticatorOptionNames.filter { $0 == userId }.map { Selection(name: $0, type: .logout, logo: "person.crop.circle") }
     }
     
     func updateDeregister() {
         guard category.type == .userDeregistation else { return }
-        category.selection = registrationInteractor.userAuthenticatorOptionNames.map { Selection(name: $0, type: .deregister, logo: "person.crop.circle") }
+        category.selections = registrationInteractor.userAuthenticatorOptionNames.map { Selection(name: $0, type: .deregister, logo: "person.crop.circle") }
     }
     
     func pendingTransactionsTask() {
         guard category.type == .pendingTransactions else { return }
         Task {
             let pendingTransactions = await mobileAuthRequestInteractor.fetchPendingTransactionNames()
-            category.selection = pendingTransactions.map { Selection(name: $0, type: .pending, logo: "doc.badge.clock") }
+            category.selections = pendingTransactions.map { Selection(name: $0, type: .pending, logo: "doc.badge.clock") }
+        }
+    }
+    
+    func updateTokens() {
+        guard category.type == .tokens  else { return }
+        if let _ = authenticatorInteractor.accessToken {
+            category.selections.append(Selection(name: Token.access.rawValue, type: .token))
+        }
+        if let _ = authenticatorInteractor.openIDtoken {
+            category.selections.append(Selection(name: Token.openID.rawValue, type: .token))
         }
     }
 }
