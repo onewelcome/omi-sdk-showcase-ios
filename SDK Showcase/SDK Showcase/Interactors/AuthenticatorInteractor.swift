@@ -109,6 +109,8 @@ extension AuthenticatorInteractorReal: AuthenticationDelegate {
         switch SDKError(error) {
         case .biometricAuthenticationFallback:
             pinPadInteractor.showPinPad(for: .biometricFallback)
+        case .authenticationFailed:
+            appState.setSystemInfo(string: "Wrong PIN, please try again (\(challenge.remainingFailureCount))")
         default:
             appState.setSystemInfo(string: error.localizedDescription)
         }
@@ -128,10 +130,12 @@ extension AuthenticatorInteractorReal: AuthenticationDelegate {
     }
     
     func userClient(_ userClient: UserClient, didFailToAuthenticateUser userProfile: UserProfile, authenticator: Authenticator, error: Error) {
-        appState.setSystemInfo(string: "Authentication failed")
         if SDKError(error) == .accountDeregistered {
             appState.remove(profileId: userProfile.profileId)
             pinPadInteractor.showPinPad(for: .hidden)
+            appState.setSystemInfo(string: "Too many wrong attempts. Profile has been deregistered.")
+        } else {
+            appState.setSystemInfo(string: "Authentication failed")
         }
         appState.system.isProcessing = false
     }

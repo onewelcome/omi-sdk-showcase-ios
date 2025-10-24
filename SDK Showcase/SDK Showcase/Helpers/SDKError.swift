@@ -6,6 +6,7 @@ enum SDKError: Int, Error {
     case unknown
     case accountDeregistered = 9003
     case registrationCancelled = 9006
+    case authenticationFailed = 9009
     case biometricAuthenticationFallback = 9030
     case statelessDisabled = 9034
     
@@ -15,6 +16,8 @@ enum SDKError: Int, Error {
             self = .accountDeregistered
         case 9006:
             self = .registrationCancelled
+        case 9009:
+            self = .authenticationFailed
         case 9030:
             self = .biometricAuthenticationFallback
         case 9034:
