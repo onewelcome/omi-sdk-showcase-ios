@@ -106,7 +106,7 @@ class MobileAuthRequestInteractorReal: MobileAuthRequestInteractor {
         appState.system.isProcessing = false
         if automatically {
             if let transaction = pendingTransaction(id: entity.transactionId!) {
-                entity.confirmation?(true) // TODO: after that isMobileAuthEnrolled changes from true to false
+                entity.confirmation?(true)
                 appState.pendingTransactions.remove(transaction)
                 appState.setSystemInfo(string: "Transaction with message \(entity.message ?? "") confirmed")
                 pushInteractor.updateBadge(nil)
