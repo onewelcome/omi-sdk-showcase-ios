@@ -110,8 +110,6 @@ class RegistrationInteractorReal: RegistrationInteractor {
             customChallenge.sender.cancel(customChallenge, withUnderlyingError: nil)
         }
         switch appState.system.userState {
-        case .stateless:
-            break
         case .sso:
             if let userId = userClient.authenticatedUserProfile?.profileId {
                 appState.system.setUserState(.authenticated(userId))
@@ -119,7 +117,8 @@ class RegistrationInteractorReal: RegistrationInteractor {
                 appState.system.setUserState(.registered)
             }
         default:
-            appState.system.setUserState(.unauthenticated)
+            let stateless = userClient.isStateless && userClient.accessToken != nil
+            appState.system.setUserState(stateless ? .stateless : .unauthenticated)
         }
         appState.system.isProcessing = false
     }
