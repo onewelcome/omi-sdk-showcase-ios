@@ -53,7 +53,6 @@ class PinPadInteractorReal: PinPadInteractor {
     
     func changePin() {
         guard userClient.authenticatedUserProfile != nil else {
-            appState.system.isProcessing = false
             appState.setSystemInfo(string: "You must be authenticated to change your PIN")
             return
         }
@@ -169,7 +168,6 @@ extension PinPadInteractorReal: ChangePinDelegate {
     }
 
     func userClient(_ userClient: any UserClient, didFailToChangePinForUser profile: any UserProfile, error: any Error) {
-        appState.system.isProcessing = false
         appState.setSystemInfo(string: error.localizedDescription)
     }
 }

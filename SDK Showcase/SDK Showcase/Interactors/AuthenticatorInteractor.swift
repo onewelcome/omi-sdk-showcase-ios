@@ -8,8 +8,9 @@ protocol AuthenticatorInteractor {
     func logout(optionName: String)
     func loginWithOTP()
     func fetchIdentityProviders() -> [IdentityProvider]
-    
+    func sso()
     func showToken(_ token: String)
+    
     var openIDtoken: String? { get }
     var accessToken: String? { get }
 }
@@ -78,6 +79,20 @@ class AuthenticatorInteractorReal: AuthenticatorInteractor {
         }
     }
     
+    func sso() {
+        guard userClient.accessToken != nil, let dashboardUrl = URL(string: SDKConfigModel.defaultPersonalDashboardURL) else {
+            appState.setSystemInfo(string: "You must be authenticated first.")
+            return
+        }
+
+        userClient.appToWebSingleSignOn(with: dashboardUrl) { [self] url, token, error in
+            guard let url, error == nil else {
+                appState.setSystemInfo(string: error?.localizedDescription ?? "An unknown error occured.")
+                return
+            }
+            appState.system.setUserState(.sso(url.absoluteString))
+        }
+    }
 }
 
 extension AuthenticatorInteractorReal: QRScannerDelegate {

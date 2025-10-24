@@ -12,6 +12,7 @@ enum Options: String {
     case enroll = "Enroll for mobile authentication"
     case pushes = "Register for push notifications"
     case cancel = "Cancel registration"
+    case sso = "Single Sign On"
 }
 
 struct Option: AppModel {

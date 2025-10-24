@@ -109,14 +109,26 @@ class RegistrationInteractorReal: RegistrationInteractor {
         } else if let customChallenge {
             customChallenge.sender.cancel(customChallenge, withUnderlyingError: nil)
         }
-        appState.system.setUserState(stateless ? .stateless : .unauthenticated)
+        switch appState.system.userState {
+        case .stateless:
+            break
+        case .sso:
+            if let userId = userClient.authenticatedUserProfile?.profileId {
+                appState.system.setUserState(.authenticated(userId))
+            } else {
+                appState.system.setUserState(.registered)
+            }
+        default:
+            appState.system.setUserState(.unauthenticated)
+        }
+        appState.system.isProcessing = false
     }
     
     func didRegisterUser(profileId: String) {
         let userData = AppState.UserData(userId: profileId,
                                          isStateless: stateless,
                                          authenticatorsNames: authenticatorRegistrationInteractor.authenticatorNames(for: profileId))
-        appState.addRegisteredUser(userData)
+        appState.addRegisteredUser(userData, authenticate: true)
         appState.system.setEnrollmentState(.unenrolled)
         appState.system.setPinPadState(.hidden)
         appState.system.setScannerState(.hidden)

@@ -19,10 +19,12 @@ extension AppState {
                 
         var shouldShowBrowser: Bool {
             get {
-                if case .registering(let type) = userState {
+                switch userState {
+                case .registering(let type):
                     return type == .browser
-                }
-                else {
+                case .sso:
+                    return true
+                default:
                     return false
                 }
             }
