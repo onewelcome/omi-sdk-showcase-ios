@@ -11,7 +11,7 @@
 		<key>UIImageName</key>
 		<string>AppLogo</string>
 		<key>UIColorName</key>
-		<string>AccentColor</string>
+		<string>LaunchScreenBackgroundColor</string>
 	</dict>
 </dict>
 </plist>

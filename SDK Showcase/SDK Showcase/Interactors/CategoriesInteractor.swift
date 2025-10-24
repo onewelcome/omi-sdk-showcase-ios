@@ -28,7 +28,7 @@ class CategoriesInteractorReal: CategoriesInteractor {
                      options: [Option(name: Options.initialize.rawValue,
                                       logo: "figure.run"),
                                Option(name: Options.autoinitialize.rawValue,
-                                                logo: "autostartstop"),
+                                      logo: "autostartstop"),
                                Option(name: Options.reset.rawValue)],
                      selections: [],
                      requiredActions: [Action(name: "setConfigModel",
