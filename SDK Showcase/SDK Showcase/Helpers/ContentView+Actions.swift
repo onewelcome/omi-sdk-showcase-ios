@@ -49,7 +49,7 @@ extension ContentView {
             case .failure(let error):
                 errorValue = error.localizedDescription
                 system.setInfo(errorValue)
-                appstate.setSystemInfo(string: "There was an error resetting the SDK. Try again later.")
+                appstate.setSystemInfo(string: "There was an error resetting the SDK: \(errorValue)")
             }
         }
     }
