@@ -28,6 +28,7 @@ class AppState: ObservableObject {
     }
     
     func setSystemInfo(string: String) {
+        system.isProcessing = false
         system.setInfo(string)
     }
 
@@ -39,8 +40,8 @@ class AppState: ObservableObject {
         registeredUsers.removeAll()
     }
     
-    func addRegisteredUser(_ newUser: UserData) {
-        system.setUserState(newUser.isStateless ? .stateless : .authenticated(newUser.userId))
+    func addRegisteredUser(_ newUser: UserData, authenticate: Bool = false) {
+        system.setUserState(newUser.isStateless ? .stateless : (authenticate ? .authenticated(newUser.userId) : .registered))
         registeredUsers.insert(newUser)
     }
 }

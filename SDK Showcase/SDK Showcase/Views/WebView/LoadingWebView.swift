@@ -10,17 +10,17 @@ struct LoadingWebView: View {
     let url: URL?
     
     var body: some View {
-        ZStack {
-            if let error = error {
-                Text(error.localizedDescription)
-                    .foregroundColor(.pink)
-            } else if let url {
+        if let error = error {
+            Text(error.localizedDescription)
+                .foregroundColor(.pink)
+        } else if let url {
+            ZStack {
                 BrowserView(browserViewModel: BrowserViewModel(url: url),
                             isLoading: $isLoading,
                             errorString: $errorMessage,
                             redirectURL: $redirectURL)
-                    .edgesIgnoringSafeArea(.all)
-                    
+                .edgesIgnoringSafeArea(.all)
+                
                 if isLoading {
                     Spinner()
                 }
@@ -34,9 +34,9 @@ struct LoadingWebView: View {
                         .cornerRadius(15)
                         .foregroundColor(.red)
                 }
-            } else {
-                Text("Sorry, we could not load this url.")
             }
+        } else {
+            Text("Sorry, we could not load this url.")
         }
     }
 }

@@ -145,13 +145,11 @@ class MobileAuthRequestInteractorReal: MobileAuthRequestInteractor {
         
         guard !stateless else {
             appState.setSystemInfo(string: "Stateless user cannot proceed.")
-            appState.system.isProcessing = false
             return false
         }
         
         if !check {
             appState.setSystemInfo(string: "You must be authenticated first.")
-            appState.system.isProcessing = false
         }
         
         return check
@@ -194,6 +192,5 @@ extension MobileAuthRequestInteractorReal: MobileAuthRequestDelegate {
     func userClient(_ userClient: any UserClient, didFailToHandleRequest request: any MobileAuthRequest, authenticator: Authenticator?, error: any Error) {
         appState.setSystemInfo(string: error.localizedDescription)
         pushInteractor.updateBadge(nil)
-        appState.system.isProcessing = false
     }
 }

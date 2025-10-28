@@ -104,6 +104,14 @@ class CategoriesInteractorReal: CategoriesInteractor {
                      selections: [],
                      requiredActions: [],
                      optionalActions: []),
+            Category(name: Categories.sso.rawValue,
+                     description: "App-to-web single sign-on (SSO) allows you to take a session from your mobile application and extend it to a browser on the same device. This is useful for giving a seamless experience to your users when they transition from the mobile application to the website where more functionality likely exists. This functionality can only be used when using the IDAAS-core identity providers. This can be configured in the IDAAS-core.",
+                     options: [Option(name: Options.sso.rawValue,
+                                      logo: "signpost.right")],
+                     selections: [],
+                     requiredActions: [],
+                     optionalActions: []),
+
         ]
         self.cache = categories
         return categories

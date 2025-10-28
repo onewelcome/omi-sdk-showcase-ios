@@ -58,6 +58,10 @@ extension ContentView {
         pinPadInteractor.changePin()
     }
     
+    func sso() {
+        authenticatorInteractor.sso()
+    }
+    
     func enrollForMobileAuthentication() {
         mobileAuthRequestInteractor.enrollForMobileAuthentication()
     }
@@ -186,6 +190,8 @@ extension ContentView {
             "🚫 No user registered"
         case .registering:
             "⏳ Registration in progress..."
+        case .sso:
+            "🔑 SSO in progress..."
         case .registered, .unauthenticated:
             "👥 \(registrationInteractor.numberOfRegisteredUsers) registered users"
         case .authenticated(let userId):

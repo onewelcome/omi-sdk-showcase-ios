@@ -80,7 +80,7 @@ struct ContentView: View {
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $system.shouldShowBrowser) {
-            SheetViewForWebView(urlString: registrationInteractor.registerUrl)
+            SheetViewForWebView(urlString: setupSheetViewForWebview())
         }
         .sheet(isPresented: $system.shouldShowPinPad) {
             SheetViewForPinPad()
@@ -154,6 +154,8 @@ extension ContentView {
             registerAuthenticator()
         case .cancel:
             cancelRegistration()
+        case .sso:
+            sso()
         default:
             fatalError("Option `\(option.name)` not handled!")
         }
@@ -181,5 +183,18 @@ extension ContentView {
         case .unknown:
             fatalError("Selection `\(selection.name)` not handled!")
         }
+    }
+    
+    func setupSheetViewForWebview() -> String {
+        var urlStringForWebview = ""
+        switch system.userState {
+        case .registering:
+            urlStringForWebview = registrationInteractor.registerUrl
+        case .sso(let url):
+            urlStringForWebview = url
+        default:
+            break
+        }
+        return urlStringForWebview
     }
 }

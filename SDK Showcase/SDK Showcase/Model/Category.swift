@@ -13,6 +13,7 @@ enum Categories: String {
     case userDeregistation = "User deregistration"
     case pinChange = "PIN change"
     case tokens = "Tokens"
+    case sso = "App2Web (SSO)"
 }
 
 struct Category: AppModel {
