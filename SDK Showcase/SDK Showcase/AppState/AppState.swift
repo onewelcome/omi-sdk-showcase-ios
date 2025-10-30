@@ -18,6 +18,8 @@ class AppState: ObservableObject {
         deviceData.reset()
         resetRegisteredUsers()
         pendingTransactions.removeAll()
+        routing.navPath.removeAll()
+        UserDefaults.standard.set(false, forKey: "autoinitialize")
     }
     
     func remove(profileId: String) {

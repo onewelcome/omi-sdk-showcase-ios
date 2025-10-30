@@ -45,12 +45,12 @@ extension ContentView {
             case .success:
                 system.unsetInfo()
                 system.isSDKInitialized = false
+                appstate.setSystemInfo(string: "The SDK has been reset successfully.")
             case .failure(let error):
                 errorValue = error.localizedDescription
                 system.setInfo(errorValue)
-                system.isSDKInitialized = false
+                appstate.setSystemInfo(string: "There was an error resetting the SDK: \(errorValue)")
             }
-            system.isProcessing = false
         }
     }
     
