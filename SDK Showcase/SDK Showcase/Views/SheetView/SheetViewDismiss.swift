@@ -3,9 +3,9 @@ import SwiftUI
 
 struct SheetViewDismiss: View {
     @Environment(\.dismiss) var dismiss
-    @ObservedObject private var system: AppState.System = {
-        @Injected var appState: AppState
-        return appState.system
+    @ObservedObject private var system: ShowcaseApp.System = {
+        @Injected var app: ShowcaseApp
+        return app.system
     }()
     @Injected private var pinPadInteractor: PinPadInteractor
     @Injected private var browserInteractor: RegistrationInteractor

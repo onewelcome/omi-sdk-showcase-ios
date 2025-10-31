@@ -4,9 +4,9 @@ import SwiftUI
 
 struct PinPad: View {
     @Injected private var interactor: PinPadInteractor
-    @ObservedObject private var system: AppState.System = {
-        @Injected var appState: AppState
-        return appState.system
+    @ObservedObject private var system: ShowcaseApp.System = {
+        @Injected var app: ShowcaseApp
+        return app.system
     }()
     @State private var errorText = ""
     @State private var pin = "" {

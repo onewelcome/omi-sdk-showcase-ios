@@ -3,9 +3,9 @@
 import SwiftUI
 
 struct AuthenticatorsSheet: View {
-    @ObservedObject private var system: AppState.System = {
-        @Injected var appState: AppState
-        return appState.system
+    @ObservedObject private var system: ShowcaseApp.System = {
+        @Injected var app: ShowcaseApp
+        return app.system
     }()
     var showConfirmationDialog: Binding<Bool>
     var selectedOption: Selection?

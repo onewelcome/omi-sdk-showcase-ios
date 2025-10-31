@@ -1,7 +1,5 @@
 //  Copyright © 2025 Onewelcome Mobile Identity. All rights reserved.
 
-import Foundation
-
 //MARK: - Protocol
 protocol QRScannerInteractor {
     func scan(to: QRScannerDelegate)

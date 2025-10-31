@@ -1,12 +1,10 @@
 //  Copyright © 2025 Onewelcome Mobile Identity. All rights reserved.
 
-import UIKit
 import OneginiSDKiOS
 
 //MARK: - Protocol
 protocol PushNotitificationsInteractor {
     func registerForPushNotifications()
-
     func didRegisterForRemoteNotificationsWithDeviceToken(_ deviceToken: Data)
     func didFailToRegisterForRemoteNotificationsWithError(_ error: any Error)
     func updateBadge(_ value: Int?)
@@ -14,29 +12,29 @@ protocol PushNotitificationsInteractor {
 
 //MARK: - Real methods
 class PushNotitificationsInteractorReal: NSObject, PushNotitificationsInteractor {
-    @Injected var appState: AppState
+    @Injected var app: ShowcaseApp
     private var completion: ((_ token: Data?, _ error: Error?) -> Void)?
     private let userClient = SharedUserClient.instance
 
     func registerForPushNotifications() {
         guard mobileAuthRequestInteractor.isMobileAuthEnrolled else {
-            appState.setSystemInfo(string: "You are not enrolled for mobile authentication. Please enroll first!")
+            app.setSystemInfo(string: "You are not enrolled for mobile authentication. Please enroll first!")
             return
         }
         registerForPushNotifications { [self] (token, error) in
             guard let token else {
-                appState.setSystemInfo(string: error?.localizedDescription ?? "Failed to register for push notifications.")
+                app.setSystemInfo(string: error?.localizedDescription ?? "Failed to register for push notifications.")
                 return
             }
             userClient.enrollPushMobileAuth(with: token) { [self] error in
-                appState.system.isProcessing = false
+                app.system.isProcessing = false
                 if let error {
-                    appState.setSystemInfo(string: error.localizedDescription)
+                    app.setSystemInfo(string: error.localizedDescription)
                 } else {
-                    appState.system.setEnrollmentState(.push)
+                    app.system.setEnrollmentState(.push)
                     let token = token.map { String(format: "%02.2hhx", $0) }.joined()
                     print("token=\(token)")
-                    appState.setSystemInfo(string: "User successfully registed for push notifications!\n\nToken: \(token)")
+                    app.setSystemInfo(string: "User successfully registed for push notifications!\n\nToken: \(token)")
                 }
             }
         }
@@ -50,7 +48,7 @@ class PushNotitificationsInteractorReal: NSObject, PushNotitificationsInteractor
                     UIApplication.shared.registerForRemoteNotifications()
                 }
             } else {
-                appState.setSystemInfo(string: "Permission for push notifications denied.")
+                app.setSystemInfo(string: "Permission for push notifications denied.")
             }
         }
     }
@@ -66,7 +64,7 @@ class PushNotitificationsInteractorReal: NSObject, PushNotitificationsInteractor
     }
     
     func updateBadge(_ value: Int?) {
-        UNUserNotificationCenter.current().setBadgeCount(value ?? appState.pendingTransactions.count)
+        UNUserNotificationCenter.current().setBadgeCount(value ?? app.pendingTransactions.count)
     }
 }
 

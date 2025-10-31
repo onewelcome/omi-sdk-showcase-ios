@@ -10,11 +10,11 @@ protocol AuthenticatorRegistrationInteractor {
 }
 
 class AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationInteractor {
-    @ObservedObject var appState: AppState
+    @ObservedObject var app: ShowcaseApp
     private let userClient = SharedUserClient.instance
 
-    init(appState: AppState) {
-        self.appState = appState
+    init(app: ShowcaseApp) {
+        self.app = app
     }
 
     func registerAuthenticator(name: String, for profile: String) {
@@ -23,7 +23,7 @@ class AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationInteract
         }
         
         guard let authenticator = userClient.authenticators(.nonRegistered, for: userProfile).first(where: { $0.name == name }) else {
-            appState.setSystemInfo(string: "No authenticator named `\(name)` unregistered for user `\(profile)`")
+            app.setSystemInfo(string: "No authenticator named `\(name)` unregistered for user `\(profile)`")
             return
         }
         userClient.register(authenticator: authenticator, delegate: self)
@@ -48,10 +48,10 @@ extension AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationDele
     func userClient(_ userClient: any UserClient, didReceivePinChallenge challenge: any PinChallenge) {
         pinPadInteractor.setPinChallenge(challenge)
         if let _ = challenge.error {
-            appState.setSystemInfo(string: "Wrong previous PIN, please try again (\(challenge.remainingFailureCount))")
+            app.setSystemInfo(string: "Wrong previous PIN, please try again (\(challenge.remainingFailureCount))")
             return
         }
-        appState.system.isProcessing = false
+        app.system.isProcessing = false
         pinPadInteractor.showPinPad(for: .biometricFallback)
     }
     
@@ -60,11 +60,11 @@ extension AuthenticatorRegistrationInteractorReal: AuthenticatorRegistrationDele
     }
     
     func userClient(_ userClient: any OneginiSDKiOS.UserClient, didFailToRegister authenticator: OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, error: any Error) {
-        appState.setSystemInfo(string: error.localizedDescription)
+        app.setSystemInfo(string: error.localizedDescription)
     }
     
     func userClient(_ userClient: any OneginiSDKiOS.UserClient, didRegister authenticator: OneginiSDKiOS.Authenticator, for userProfile: any OneginiSDKiOS.UserProfile, info customAuthInfo: (any OneginiSDKiOS.CustomInfo)?) {
-        appState.setSystemInfo(string: "Authenticator `\(authenticator.name)` registered successfully.")
+        app.setSystemInfo(string: "Authenticator `\(authenticator.name)` registered successfully.")
     }
 }
 
@@ -75,7 +75,7 @@ private extension AuthenticatorRegistrationInteractorReal {
     }
     
     var isPushRegistered: Bool {
-        guard let profileId = appState.system.userState.userId,
+        guard let profileId = app.system.userState.userId,
               userClient.isPushMobileAuthEnrolled(for: UserProfileImplementation(profileId: profileId)) else {
             return false
         }

@@ -13,7 +13,7 @@ struct Alert: View {
         }
     }
 
-    @Injected private var appState: AppState
+    @Injected private var app: ShowcaseApp
     @State private(set) var text = ""
     
     var body: some View {
@@ -23,7 +23,7 @@ struct Alert: View {
                 .bold()
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + visibilityTime) {
-                        appState.unsetSystemInfo()
+                        app.unsetSystemInfo()
                     }
                 }
         }
@@ -33,7 +33,7 @@ struct Alert: View {
         .background(Color.gray.opacity(0.8))
         .cornerRadius(15)
         .onTapGesture {
-            appState.unsetSystemInfo()
+            app.unsetSystemInfo()
         }
     }
 }

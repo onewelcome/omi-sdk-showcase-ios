@@ -2,10 +2,11 @@
 
 import Foundation
 
-extension AppState {
+extension ShowcaseApp {
     class System: Equatable, ObservableObject {
         @Published var isSDKInitialized = false
         @Published var isProcessing = false
+        @Published var store = PersistenceStore(store: UserDefaultsStore())
 
         @Published private(set) var lastInfoDescription: String? = nil
         @Published private(set) var userState: UserState = .notRegistered
@@ -13,6 +14,15 @@ extension AppState {
         @Published private(set) var pinPadState: PinPadState = .hidden
         @Published private(set) var scannerState: ScannerState = .hidden
 
+        var autoinitializeSDK: Bool {
+            get {
+                store.autoinitializeSDK
+            }
+            set {
+                store.autoinitializeSDK = newValue
+            }
+        }
+        
         var hasError: Bool {
             lastInfoDescription != nil
         }
@@ -81,8 +91,8 @@ extension AppState {
     }
 }
 
-extension AppState.System {
-    static func == (lhs: AppState.System, rhs: AppState.System) -> Bool {
+extension ShowcaseApp.System {
+    static func == (lhs: ShowcaseApp.System, rhs: ShowcaseApp.System) -> Bool {
         lhs.isSDKInitialized == rhs.isSDKInitialized &&
         lhs.enrollmentState == rhs.enrollmentState
     }

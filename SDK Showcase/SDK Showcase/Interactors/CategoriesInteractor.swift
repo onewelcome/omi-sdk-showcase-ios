@@ -1,8 +1,5 @@
 //  Copyright © 2025 Onewelcome Mobile Identity. All rights reserved.
 
-import Foundation
-import SwiftUI
-
 //MARK: - Protocol
 protocol CategoriesInteractor {
     func loadCategories() -> [Category]

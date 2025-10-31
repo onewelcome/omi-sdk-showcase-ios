@@ -2,7 +2,7 @@
 
 import Foundation
 
-extension AppState {
+extension ShowcaseApp {
     class DeviceData: ObservableObject {
         var deviceId: String?
         @Published var model: SDKConfigModel?
@@ -18,8 +18,8 @@ extension AppState {
     }
 }
 
-extension AppState.DeviceData: Equatable {
-    static func == (lhs: AppState.DeviceData, rhs: AppState.DeviceData) -> Bool {
+extension ShowcaseApp.DeviceData: Equatable {
+    static func == (lhs: ShowcaseApp.DeviceData, rhs: ShowcaseApp.DeviceData) -> Bool {
         lhs.deviceId == rhs.deviceId
     }
 }
