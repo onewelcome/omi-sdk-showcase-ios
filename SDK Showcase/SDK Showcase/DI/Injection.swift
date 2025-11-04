@@ -17,7 +17,7 @@ private extension Injection {
         let container = Container()
         internalContainer = container
         
-        container.register(AppState.self) { _ in AppState() }
+        container.register(ShowcaseApp.self) { _ in ShowcaseApp() }
             .inObjectScope(.container)
 
         container.register(CategoriesInteractor.self)  { _ in CategoriesInteractorReal() }
@@ -33,23 +33,23 @@ private extension Injection {
             .inObjectScope(.container)
         
         container.register(SDKInteractor.self) { resolver in
-            SDKInteractorReal(appState: resolver.resolve(AppState.self)!)}
+            SDKInteractorReal(app: resolver.resolve(ShowcaseApp.self)!)}
             .inObjectScope(.container)
         
         container.register(MobileAuthRequestInteractor.self) { resolver in
-            MobileAuthRequestInteractorReal(appState: resolver.resolve(AppState.self)!)}
+            MobileAuthRequestInteractorReal(app: resolver.resolve(ShowcaseApp.self)!)}
             .inObjectScope(.container)
         
         container.register(AuthenticatorInteractor.self) { resolver in
-            AuthenticatorInteractorReal(appState: resolver.resolve(AppState.self)!)}
+            AuthenticatorInteractorReal(app: resolver.resolve(ShowcaseApp.self)!)}
             .inObjectScope(.container)
 
         container.register(AuthenticatorRegistrationInteractor.self) { resolver in
-            AuthenticatorRegistrationInteractorReal(appState: resolver.resolve(AppState.self)!)}
+            AuthenticatorRegistrationInteractorReal(app: resolver.resolve(ShowcaseApp.self)!)}
             .inObjectScope(.container)
 
         container.register(RegistrationInteractor.self)  { resolver in
-            RegistrationInteractorReal(appState: resolver.resolve(AppState.self)!)}
+            RegistrationInteractorReal(app: resolver.resolve(ShowcaseApp.self)!)}
             .inObjectScope(.container)
         
         container.register(PinPadInteractor.self)  { resolver in

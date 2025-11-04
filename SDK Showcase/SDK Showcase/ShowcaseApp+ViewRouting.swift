@@ -1,8 +1,8 @@
 //  Copyright © 2025 Onewelcome Mobile Identity. All rights reserved.
 
-import SwiftUI
+import Foundation
 
-extension AppState {
+extension ShowcaseApp {
     class ViewRouting: ObservableObject {
         @Injected var categoriesInteractor: CategoriesInteractor
         @Published var navPath = [Category]()

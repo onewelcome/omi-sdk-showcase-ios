@@ -2,31 +2,37 @@
 
 import Foundation
 
-class AppState: ObservableObject {
-    var authenticatorRegistrationInteractor: AuthenticatorRegistrationInteractor {
-        @Injected var interactors: Interactors
-        return interactors.authenticatorRegistrationInteractor
-    }
+class ShowcaseApp: ObservableObject {
     @Published var system = System()
     @Published var routing = ViewRouting()
     @Published var deviceData = DeviceData()
     @Published var registeredUsers = Set<UserData>()
     @Published var pendingTransactions = Set<PendingMobileAuthRequestEntity>()
     
+    private var authenticatorRegistrationInteractor: AuthenticatorRegistrationInteractor {
+        @Injected var interactors: Interactors
+        return interactors.authenticatorRegistrationInteractor
+    }
+
     func reset() {
         system.reset()
         deviceData.reset()
         resetRegisteredUsers()
         pendingTransactions.removeAll()
-        routing.navPath.removeAll()
-        UserDefaults.standard.set(false, forKey: "autoinitialize")
+        routing.backHome()
+        system.autoinitializeSDK = false
     }
     
     func remove(profileId: String) {
         let authenticators = authenticatorRegistrationInteractor.authenticatorNames(for: profileId)
-        let userData = AppState.UserData(userId: profileId, authenticatorsNames: authenticators)
+        let userData = ShowcaseApp.UserData(userId: profileId, authenticatorsNames: authenticators)
         registeredUsers.remove(userData)
         system.setUserState(.unauthenticated)
+    }
+    
+    func removePendingTransaction(transactionId: String) {
+        guard let toRemove = pendingTransactions.first(where: { $0.pendingTransaction?.transactionId == transactionId }) else { return }
+        pendingTransactions.remove(toRemove)
     }
     
     func setSystemInfo(string: String) {
@@ -50,8 +56,8 @@ class AppState: ObservableObject {
 
 //MARK: - Equatable
 
-extension AppState: Equatable {
-    static func == (lhs: AppState, rhs: AppState) -> Bool {
+extension ShowcaseApp: Equatable {
+    static func == (lhs: ShowcaseApp, rhs: ShowcaseApp) -> Bool {
         lhs.system == rhs.system &&
         lhs.registeredUsers == rhs.registeredUsers
     }

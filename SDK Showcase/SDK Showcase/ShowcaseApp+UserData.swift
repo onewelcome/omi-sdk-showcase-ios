@@ -2,7 +2,7 @@
 
 import Foundation
 
-extension AppState {
+extension ShowcaseApp {
     class UserData: Equatable, ObservableObject {
         let userId: String
         let isStateless: Bool
@@ -14,14 +14,14 @@ extension AppState {
             self.authenticatorsNames = authenticatorsNames
         }
         
-        static func == (lhs: AppState.UserData, rhs: AppState.UserData) -> Bool {
+        static func == (lhs: ShowcaseApp.UserData, rhs: ShowcaseApp.UserData) -> Bool {
             lhs.userId == rhs.userId &&
             lhs.isStateless == rhs.isStateless
         }
     }
 }
 
-extension AppState.UserData: Hashable {
+extension ShowcaseApp.UserData: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(userId)
         hasher.combine(isStateless)

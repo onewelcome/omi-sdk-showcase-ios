@@ -4,64 +4,65 @@ import SwiftUI
 import OneginiSDKiOS
 
 protocol MobileAuthRequestInteractor {
+    var isMobileAuthEnrolled: Bool { get }
+
     func handlePushMobileAuthenticationRequest(userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void)
     func handleOtp(_ code: String)
-    func handlePendingTransaction(id: String)
+    func handlePendingTransaction(id: String, confirmed: Bool)
     func fetchPendingTransactionNames() async -> [String]
     func fetchEnrollment()
     func enrollForMobileAuthentication()
-
-    var isMobileAuthEnrolled: Bool { get }
 }
 
 class MobileAuthRequestInteractorReal: MobileAuthRequestInteractor {
     private let userClient = SharedUserClient.instance
-    @ObservedObject var appState: AppState
+    private var entityToBeConfirmed: MobileAuthRequestEntity?
+    @ObservedObject var app: ShowcaseApp
 
-    init(appState: AppState) {
-        self.appState = appState
+    init(app: ShowcaseApp) {
+        self.app = app
     }
     
     func enrollForMobileAuthentication() {
         guard precheck() else { return }
         userClient.enrollMobileAuth { [self] error in
-            appState.system.isProcessing = false
+            app.system.isProcessing = false
             if let error {
-                appState.setSystemInfo(string: error.localizedDescription)
+                app.setSystemInfo(string: error.localizedDescription)
             } else {
-                appState.system.setEnrollmentState(.mobile)
-                appState.setSystemInfo(string: "User successfully enrolled for mobile authentication!")
+                app.system.setEnrollmentState(.mobile)
+                app.setSystemInfo(string: "User successfully enrolled for mobile authentication!")
             }
         }
     }
 
     func fetchEnrollment() {
         if isMobileAuthEnrolled {
-            appState.system.setEnrollmentState(.mobile)
+            app.system.setEnrollmentState(.mobile)
         }
         if isPushRegistered {
-            appState.system.setEnrollmentState(.push)
+            app.system.setEnrollmentState(.push)
         }
     }
     
     func fetchPendingTransactionNames() async -> [String] {
         guard precheck() else { return [] }
         guard isMobileAuthEnrolled else {
-            appState.setSystemInfo(string: "You are not enrolled for mobile authentication. Please enroll first!")
+            app.setSystemInfo(string: "You are not enrolled for mobile authentication. Please enroll first!")
             return []
         }
-        appState.system.isProcessing = true
+        app.system.isProcessing = true
 
         return await withCheckedContinuation { continuation in
             userClient.pendingPushMobileAuthRequests { [self] requests, error in
-                appState.system.isProcessing = false
+                app.system.isProcessing = false
                 guard let requests else {
                     pushInteractor.updateBadge(0)
                     continuation.resume(returning: [])
                     return
                 }
                 for request in requests {
-                    appState.pendingTransactions.insert(PendingMobileAuthRequestEntity(pendingTransaction: request))
+                    app.pendingTransactions.insert(PendingMobileAuthRequestEntity(pendingTransaction: request))
                 }
                 let requestsToReturn = requests.compactMap(\.transactionId)
                 continuation.resume(returning: requestsToReturn)
@@ -72,57 +73,100 @@ class MobileAuthRequestInteractorReal: MobileAuthRequestInteractor {
     
     func handleOtp(_ code: String) {
         guard userClient.canHandleOTPMobileAuthRequest(otp: code) else {
-            appState.setSystemInfo(string: "Invalid otp code or previous request in progress.")
+            app.setSystemInfo(string: "Invalid otp code or previous request in progress.")
             return
         }
         userClient.handleOTPMobileAuthRequest(otp: code, delegate: self)
     }
     
     func handlePushMobileAuthenticationRequest(userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void) {
-        print("push: \(userInfo)")
+        defer { completionHandler() }
         guard let pendingTransaction = userClient.pendingMobileAuthRequest(from: userInfo) else {
-            appState.setSystemInfo(string: "Push notification not handled. User is not authenticated most likely.")
-            completionHandler()
+            app.setSystemInfo(string: "Push notification not handled. User is not authenticated most likely.")
             return
         }
         
         let mobileAuthRequest = PendingMobileAuthRequestEntity(pendingTransaction: pendingTransaction, delegate: self)
-        appState.pendingTransactions.insert(mobileAuthRequest)
-        appState.routing.navigate(to: .pendingTransactions)
-        completionHandler()
+        app.pendingTransactions.insert(mobileAuthRequest)
+        app.routing.navigate(to: .pendingTransactions)
     }
     
-    func handlePendingTransaction(id: String) {
+    func handlePendingTransaction(id: String, confirmed: Bool) {
         guard let transaction = pendingTransaction(id: id),
               let pendingRequestProxy = transaction.pendingTransaction else {
             return
         }
-        
-        appState.system.isProcessing = true
+        transaction.isConfirmed = confirmed
+        app.system.isProcessing = true
         userClient.handlePendingMobileAuthRequest(pendingRequestProxy, delegate: self)
     }
     
     func confirmTransaction(for entity: MobileAuthRequestEntity, automatically: Bool) {
-        appState.system.isProcessing = false
+        entityToBeConfirmed = entity
         if automatically {
-            if let transaction = pendingTransaction(id: entity.transactionId!) {
-                entity.confirmation?(true)
-                appState.pendingTransactions.remove(transaction)
-                appState.setSystemInfo(string: "Transaction with message \(entity.message ?? "") confirmed")
-                pushInteractor.updateBadge(nil)
-            }
+            handleEntity(entity)
         } else {
-            //TODO: For now transaction is confirmed automatically. This would change in next PR's.
-            //We need to show a confirmation dialog for PIN/Biometric/Finger etc...
+            handleChallengeForEntity(entity)
+        }
+    }
+    
+    func handleEntity(_ entity: MobileAuthRequestEntity) {
+        defer {
+            pushInteractor.updateBadge(nil)
+        }
+        guard let transactionId = entity.transactionId, let transaction = pendingTransaction(id: transactionId) else {
+            entity.confirmation?(false)
+            app.setSystemInfo(string: "There is no transaction to confirm.")
+            entityToBeConfirmed = nil
+            return
+        }
+
+        entity.confirmation?(transaction.isConfirmed)
+        app.setSystemInfo(string: "The transaction with message:\n\n\"\(entity.message ?? "")\"\n\n\(transaction.isConfirmed ? "✅ has been confirmed" : "❌ has been declined").")
+        app.pendingTransactions.remove(transaction)
+    }
+    
+    func handleChallengeForEntity(_ entity: MobileAuthRequestEntity) {
+        defer {
+            pushInteractor.updateBadge(nil)
+        }
+        guard let transactionId = entity.transactionId, let transaction = pendingTransaction(id: transactionId) else {
+            entity.confirmation?(false)
+            app.setSystemInfo(string: "There is no transaction to confirm.")
+            entityToBeConfirmed = nil
+            return
+        }
+            
+        if let pinChallenge = entity.pinChallenge {
+            if transaction.isConfirmed {
+                pinPadInteractor.setPinChallenge(pinChallenge)
+                pinPadInteractor.showPinPad(for: .authenticating)
+            } else {
+                pinChallenge.sender.cancel(pinChallenge)
+                app.removePendingTransaction(transactionId: transactionId)
+                entityToBeConfirmed = nil
+            }
+        }
+        else if let biometricChallenge = entity.biometricChallenge {
+            if transaction.isConfirmed {
+                biometricChallenge.sender.respond(with: "User authentication", to: biometricChallenge)
+            } else {
+                biometricChallenge.sender.cancel(biometricChallenge)
+                app.removePendingTransaction(transactionId: transactionId)
+                entityToBeConfirmed = nil
+            }
+        }
+        else {
+            app.setSystemInfo(string: "The transaction should be authenticated first.")
         }
     }
     
     func pendingTransaction(id: String) -> PendingMobileAuthRequestEntity? {
-         appState.pendingTransactions.first { $0.pendingTransaction?.transactionId == id }
+        app.pendingTransactions.first { $0.pendingTransaction?.transactionId == id }
     }
     
     var isMobileAuthEnrolled: Bool {
-        guard let profileId = appState.system.userState.userId,
+        guard let profileId = app.system.userState.userId,
               userClient.isMobileAuthEnrolled(for: UserProfileImplementation(profileId: profileId)) else {
             return false
         }
@@ -131,7 +175,7 @@ class MobileAuthRequestInteractorReal: MobileAuthRequestInteractor {
     }
     
     var isPushRegistered: Bool {
-        guard let profileId = appState.system.userState.userId,
+        guard let profileId = app.system.userState.userId,
               userClient.isPushMobileAuthEnrolled(for: UserProfileImplementation(profileId: profileId)) else {
             return false
         }
@@ -144,12 +188,12 @@ class MobileAuthRequestInteractorReal: MobileAuthRequestInteractor {
         let check = userClient.authenticatedUserProfile != nil && userClient.accessToken != nil
         
         guard !stateless else {
-            appState.setSystemInfo(string: "Stateless user cannot proceed.")
+            app.setSystemInfo(string: "Stateless user cannot proceed.")
             return false
         }
         
         if !check {
-            appState.setSystemInfo(string: "You must be authenticated first.")
+            app.setSystemInfo(string: "You must be authenticated first.")
         }
         
         return check
@@ -186,11 +230,42 @@ extension MobileAuthRequestInteractorReal: MobileAuthRequestDelegate {
         mobileAuthEntity.confirmation = confirmation
         
         confirmTransaction(for: mobileAuthEntity, automatically: true)
-        appState.system.isProcessing = false
+    }
+    
+    func userClient(_ userClient: any UserClient, didReceiveBiometricChallenge challenge: any BiometricChallenge, for request: any MobileAuthRequest) {
+        let mobileAuthEntity = MobileAuthRequestEntity()
+        mobileAuthEntity.message = request.message
+        mobileAuthEntity.transactionId = request.transactionId
+        mobileAuthEntity.userProfile = request.userProfile
+        mobileAuthEntity.authenticatorType = .biometric
+        mobileAuthEntity.biometricChallenge = challenge
+        
+        confirmTransaction(for: mobileAuthEntity, automatically: false)
+    }
+    
+    func userClient(_ userClient: any UserClient, didReceivePinChallenge challenge: any PinChallenge, for request: any MobileAuthRequest) {
+        let mobileAuthEntity = MobileAuthRequestEntity()
+        mobileAuthEntity.message = request.message
+        mobileAuthEntity.transactionId = request.transactionId
+        mobileAuthEntity.userProfile = request.userProfile
+        mobileAuthEntity.authenticatorType = .pin
+        mobileAuthEntity.pinChallenge = challenge
+        
+        confirmTransaction(for: mobileAuthEntity, automatically: false)
     }
 
     func userClient(_ userClient: any UserClient, didFailToHandleRequest request: any MobileAuthRequest, authenticator: Authenticator?, error: any Error) {
-        appState.setSystemInfo(string: error.localizedDescription)
+        app.setSystemInfo(string: error.localizedDescription)
         pushInteractor.updateBadge(nil)
+    }
+    
+    func userClient(_ userClient: any UserClient, didHandleRequest request: any MobileAuthRequest, authenticator: Authenticator?, info customAuthenticatorInfo: (any CustomInfo)?) {
+        guard let entityToBeConfirmed, let transactionId = entityToBeConfirmed.transactionId else { return }
+        
+        pinPadInteractor.showPinPad(for: .hidden)
+        app.setSystemInfo(string: "The transaction with message:\n\n\"\(entityToBeConfirmed.message ?? "")\"\n\n✅ has been confirmed.")
+        app.removePendingTransaction(transactionId: transactionId)
+        pushInteractor.updateBadge(nil)
+        self.entityToBeConfirmed = nil
     }
 }

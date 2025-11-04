@@ -6,6 +6,7 @@ class PendingMobileAuthRequestEntity {
     var pendingTransaction: PendingMobileAuthRequest? = nil
     var otp: String? = nil
     var delegate: MobileAuthRequestDelegate? = nil
+    var isConfirmed = false
     
     init(pendingTransaction: PendingMobileAuthRequest? = nil, otp: String? = nil, delegate: MobileAuthRequestDelegate? = nil) {
         self.pendingTransaction = pendingTransaction

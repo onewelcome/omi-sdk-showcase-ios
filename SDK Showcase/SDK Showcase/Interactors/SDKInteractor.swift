@@ -9,7 +9,6 @@ protocol SDKInteractor {
 
     func initializeSDK(result: @escaping SDKResult)
     func resetSDK(result: @escaping SDKResult)
-    
     func setConfigModel(_ model: SDKConfigModel)
     func setCertificates(_ certs: [String])
     func setPublicKey(_ key: String)
@@ -22,22 +21,22 @@ protocol SDKInteractor {
 //MARK: - Real methods
 
 class SDKInteractorReal: SDKInteractor {
-    @ObservedObject var appState: AppState
+    @ObservedObject var app: ShowcaseApp
 
     private static let staticBuilder = ClientBuilder()
-    private var device: AppState.DeviceData { appState.deviceData }
+    private var device: ShowcaseApp.DeviceData { app.deviceData }
     private var client: Client?
     var builder: ClientBuilder
 
-    init(appState: AppState, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder) {
-        self.appState = appState
+    init(app: ShowcaseApp, client: Client? = nil, builder: ClientBuilder = SDKInteractorReal.staticBuilder) {
+        self.app = app
         self.client = client
         self.builder = builder
     }
     
     func initializeSDK(result: @escaping SDKResult) {
-        guard !appState.system.isSDKInitialized else {
-            appState.setSystemInfo(string: "SDK is already initialized.")
+        guard !app.system.isSDKInitialized else {
+            app.setSystemInfo(string: "SDK is already initialized.")
             return
         }
 
@@ -46,7 +45,7 @@ class SDKInteractorReal: SDKInteractor {
                 if let error {
                     return result(.failure(error))
                 } else {
-                    appState.routing.backHome()
+                    app.routing.backHome()
                     return result(.success)
                 }
             }
@@ -98,7 +97,7 @@ class SDKInteractorReal: SDKInteractor {
     }
 
     func clearDeviceData() {
-        appState.reset()
+        app.reset()
     }
 }
 

@@ -5,13 +5,13 @@ import SwiftUI
 struct RootView: View {
     @State private var showAlert = false
     @State private var isProcessing = false
-    @ObservedObject private var appstate: AppState = {
-        @Injected var appState: AppState
-        return appState
+    @ObservedObject private var app: ShowcaseApp = {
+        @Injected var app: ShowcaseApp
+        return app
     }()
-    @ObservedObject  var system: AppState.System = {
-        @Injected var appState: AppState
-        return appState.system
+    @ObservedObject var system: ShowcaseApp.System = {
+        @Injected var app: ShowcaseApp
+        return app.system
     }()
     private var interactor: CategoriesInteractor {
         @Injected var interactors: Interactors
@@ -20,7 +20,7 @@ struct RootView: View {
 
     var body: some View {
         ZStack {
-            NavigationStack(path: $appstate.routing.navPath) {
+            NavigationStack(path: $app.routing.navPath) {
                 HeaderView()
                 List(interactor.loadCategories()) { category in
                     NavigationLink(value: category) {
@@ -32,14 +32,14 @@ struct RootView: View {
                 }
             }
             .onAppear {
-                if UserDefaults.standard.bool(forKey: "autoinitialize") {
-                    appstate.system.isProcessing = true
-                    appstate.routing.navigate(to: .initialization)
+                if app.system.autoinitializeSDK {
+                    app.system.isProcessing = true
+                    app.routing.navigate(to: .initialization)
                 }
             }
             
             if system.hasError {
-                Alert(text: appstate.system.lastInfoDescription ?? "")
+                Alert(text: app.system.lastInfoDescription ?? "")
             }
             
             if system.isProcessing {

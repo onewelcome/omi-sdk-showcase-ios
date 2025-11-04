@@ -4,13 +4,13 @@ import Foundation
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var appstate: AppState = {
-        @Injected var appState: AppState
-        return appState
+    @ObservedObject var app: ShowcaseApp = {
+        @Injected var app: ShowcaseApp
+        return app
     }()
-    @ObservedObject var system: AppState.System = {
-        @Injected var appState: AppState
-        return appState.system
+    @ObservedObject var system: ShowcaseApp.System = {
+        @Injected var app: ShowcaseApp
+        return app.system
     }()
 
     @State internal var category: Category
@@ -60,7 +60,11 @@ struct ContentView: View {
                         }
                     }
                     if showConfirmationDialog {
-                        AuthenticatorsSheet(showConfirmationDialog: $showConfirmationDialog, selectedOption: selectedOption)
+                        if category.type == .pendingTransactions {
+                            PendingTransactionConfirmationSheet(showConfirmationDialog: $showConfirmationDialog, selectedOption: selectedOption)
+                        } else {
+                            AuthenticatorsSheet(showConfirmationDialog: $showConfirmationDialog, selectedOption: selectedOption)
+                        }
                     }
                 }
                 
@@ -88,17 +92,17 @@ struct ContentView: View {
         .sheet(isPresented: $system.shouldShowScanner) {
             SheetViewForQRScanner()
         }
-        .onChange(of: appstate.registeredUsers) {
+        .onChange(of: app.registeredUsers) {
             updateUsersSelection()
             updateDeregister()
         }
-        .onChange(of: appstate.system.enrollmentState) {
+        .onChange(of: app.system.enrollmentState) {
             updateMobileAuthenticationCategorySelection()
         }
-        .onChange(of: appstate.pendingTransactions) {
+        .onChange(of: app.pendingTransactions) {
             pendingTransactionsTask()
         }
-        .onChange(of: appstate.system.userState) {
+        .onChange(of: app.system.userState) {
             updateLogout()
         }
         .task {
@@ -109,7 +113,7 @@ struct ContentView: View {
             updateDeregister()
             updateMobileAuthenticationCategorySelection()
             pendingTransactionsTask()
-            guard UserDefaults.standard.bool(forKey: "autoinitialize") else { return }
+            guard app.system.autoinitializeSDK else { return }
             initializeSDK(automatically: true)
         }
         
@@ -169,9 +173,7 @@ extension ContentView {
             startRegistration(authenticatorName: selection.name)
         case .loginWithOtp:
             authenticatorInteractor.loginWithOTP()
-        case .pending:
-            handlePending(transacationId: selection.name)
-        case .authenticate:
+        case .pending, .authenticate:
             selectedOption = selection
             showConfirmationDialog = true
         case .logout:

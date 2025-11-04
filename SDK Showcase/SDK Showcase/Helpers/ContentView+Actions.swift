@@ -17,7 +17,7 @@ extension ContentView {
     func initializeSDK(automatically: Bool) {
         guard category.type == .initialization else { return }
 
-        UserDefaults.standard.set(automatically, forKey: "autoinitialize")
+        app.system.autoinitializeSDK = automatically
         errorValue.removeAll()
         /// You can comment the below line if the app is configured with the configurator and do have OneginiConfigModel set.
         setBuilder()
@@ -45,11 +45,11 @@ extension ContentView {
             case .success:
                 system.unsetInfo()
                 system.isSDKInitialized = false
-                appstate.setSystemInfo(string: "The SDK has been reset successfully.")
+                app.setSystemInfo(string: "The SDK has been reset successfully.")
             case .failure(let error):
                 errorValue = error.localizedDescription
                 system.setInfo(errorValue)
-                appstate.setSystemInfo(string: "There was an error resetting the SDK: \(errorValue)")
+                app.setSystemInfo(string: "There was an error resetting the SDK: \(errorValue)")
             }
         }
     }
@@ -75,13 +75,13 @@ extension ContentView {
             selectedOption = nil
             showConfirmationDialog = true
         } else {
-            appstate.setSystemInfo(string: "You must be authenticated to perform this action.")
+            app.setSystemInfo(string: "You must be authenticated to perform this action.")
         }
         system.isProcessing = false
     }
     
     func updateMobileAuthenticationCategorySelection() {
-        guard category.type == .mobileAuthentication, appstate.system.enrollmentState != EnrollmentState.unenrolled else { return }
+        guard category.type == .mobileAuthentication, app.system.enrollmentState != EnrollmentState.unenrolled else { return }
         category.selections = [Selection(name: Selections.loginWithOtp.rawValue)]
     }
     
@@ -97,7 +97,7 @@ extension ContentView {
     
     func updateLogout() {
         guard category.type == .userLogout else { return }
-        let userId = appstate.system.userState.userId
+        let userId = app.system.userState.userId
         category.selections = registrationInteractor.userAuthenticatorOptionNames.filter { $0 == userId }.map { Selection(name: $0, type: .logout, logo: "person.crop.circle") }
     }
     
@@ -128,7 +128,7 @@ extension ContentView {
 //MARK: - Actions for Selections
 extension ContentView {
     
-    func startRegistration(authenticatorName: String? = nil) {
+    func startRegistration(authenticatorName: String) {
         registrationInteractor.setStateless(value(for: "Stateless"))
         registrationInteractor.register(with: authenticatorName)
     }
@@ -136,10 +136,6 @@ extension ContentView {
     func cancelRegistration() {
         registrationInteractor.cancelRegistration()
         system.isProcessing = false
-    }
-
-    func handlePending(transacationId: String) {
-        mobileAuthRequestInteractor.handlePendingTransaction(id: transacationId)
     }
 }
     

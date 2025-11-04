@@ -1,7 +1,5 @@
 //  Copyright © 2025 Onewelcome Mobile Identity. All rights reserved.
 
-import Foundation
-import SwiftUI
 import OneginiSDKiOS
 
 //MARK: - Protocol
@@ -21,7 +19,7 @@ protocol PinPadInteractor {
 
 //MARK: - Real methods
 class PinPadInteractorReal: PinPadInteractor {
-    @Injected var appState: AppState
+    @Injected var app: ShowcaseApp
     private let userClient = SharedUserClient.instance
     private var providedPin: String?
     private var pinChallenge: PinChallenge?
@@ -40,20 +38,20 @@ class PinPadInteractorReal: PinPadInteractor {
     }
     
     func showError(_ error: any Error) {
-        appState.setSystemInfo(string: error.localizedDescription)
+        app.setSystemInfo(string: error.localizedDescription)
     }
     
     func cancelChangingPIN() {
         guard let pinChallenge else { return }
         
         pinChallenge.sender.cancel(pinChallenge)
-        appState.unsetSystemInfo()
+        app.unsetSystemInfo()
         self.pinChallenge = nil
     }
     
     func changePin() {
         guard userClient.authenticatedUserProfile != nil else {
-            appState.setSystemInfo(string: "You must be authenticated to change your PIN")
+            app.setSystemInfo(string: "You must be authenticated to change your PIN")
             return
         }
         userClient.changePin(delegate: self)
@@ -63,22 +61,22 @@ class PinPadInteractorReal: PinPadInteractor {
         guard let createPinChallenge else { return }
         
         createPinChallenge.sender.cancel(createPinChallenge)
-        appState.unsetSystemInfo()
+        app.unsetSystemInfo()
         self.createPinChallenge = nil
     }
     
     func showPinPad(for state: PinPadState) {
         providedPin = nil
-        appState.system.setPinPadState(state)
+        app.system.setPinPadState(state)
     }
     
     func validate(pin: String) {
         if let providedPin, providedPin != pin {
-            appState.setSystemInfo(string: "Provided PIN does not match the previous one")
+            app.setSystemInfo(string: "Provided PIN does not match the previous one")
             return
         }
         
-        guard appState.system.pinPadState == .creating else {
+        guard app.system.pinPadState == .creating else {
             handleValidatedPin(pin)
             return
         }
@@ -99,7 +97,7 @@ class PinPadInteractorReal: PinPadInteractor {
     }
     
     func didChangePinForUser() {
-        appState.system.setPinPadState(.hidden)
+        app.system.setPinPadState(.hidden)
         pinChallenge = nil
     }
 }
@@ -111,18 +109,18 @@ private extension PinPadInteractorReal {
     }
     
     func handleValidatedPin(_ pin: String) {
-        switch appState.system.pinPadState {
+        switch app.system.pinPadState {
         case .biometricFallback:
-            appState.system.setPinPadState(.hidden)
+            app.system.setPinPadState(.hidden)
             handleChallenge(for: pin)
         case .creating:
-            appState.system.setPinPadState(.created)
+            app.system.setPinPadState(.created)
             providedPin = pin
         case .created:
-            appState.unsetSystemInfo()
+            app.unsetSystemInfo()
             handleChallenge(for: pin)
         case .changing, .authenticating:
-            appState.unsetSystemInfo()
+            app.unsetSystemInfo()
             handleChallenge(for: pin)
         case .hidden:
             break
@@ -143,8 +141,8 @@ private extension PinPadInteractorReal {
 
 extension PinPadInteractorReal: ChangePinDelegate {
     func userClient(_ userClient: any OneginiSDKiOS.UserClient, didReceiveCreatePinChallenge challenge: any OneginiSDKiOS.CreatePinChallenge) {
-        appState.system.setUserState(.unauthenticated)
-        appState.system.setPinPadState(.hidden)
+        app.system.setUserState(.unauthenticated)
+        app.system.setPinPadState(.hidden)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             guard let self else { return }
             self.setCreatePinChallenge(challenge)
@@ -155,19 +153,19 @@ extension PinPadInteractorReal: ChangePinDelegate {
     func userClient(_ userClient: any OneginiSDKiOS.UserClient, didReceivePinChallenge challenge: any OneginiSDKiOS.PinChallenge) {
         setPinChallenge(challenge)
         if let _ = challenge.error {
-            appState.setSystemInfo(string: "Wrong previous PIN, please try again (\(challenge.remainingFailureCount))")
+            app.setSystemInfo(string: "Wrong previous PIN, please try again (\(challenge.remainingFailureCount))")
             return
         }
-        appState.system.isProcessing = false
+        app.system.isProcessing = false
         showPinPad(for: .changing)
     }
     
     func userClient(_ userClient: any UserClient, didChangePinForUser profile: any UserProfile) {
-        appState.system.isProcessing = false
+        app.system.isProcessing = false
         didChangePinForUser()
     }
 
     func userClient(_ userClient: any UserClient, didFailToChangePinForUser profile: any UserProfile, error: any Error) {
-        appState.setSystemInfo(string: error.localizedDescription)
+        app.setSystemInfo(string: error.localizedDescription)
     }
 }
