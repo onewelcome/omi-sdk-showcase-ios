@@ -8,6 +8,10 @@ class ShowcaseApp: ObservableObject {
     @Published var deviceData = DeviceData()
     @Published var registeredUsers = Set<UserData>()
     @Published var pendingTransactions = Set<PendingMobileAuthRequestEntity>()
+    private var pushInteractor: PushNotitificationsInteractor {
+        @Injected var interactors: Interactors
+        return interactors.pushInteractor
+    }
     
     private var authenticatorRegistrationInteractor: AuthenticatorRegistrationInteractor {
         @Injected var interactors: Interactors
@@ -21,6 +25,7 @@ class ShowcaseApp: ObservableObject {
         pendingTransactions.removeAll()
         routing.backHome()
         system.autoinitializeSDK = false
+        pushInteractor.updateBadge(0)
     }
     
     func remove(profileId: String) {
@@ -28,6 +33,8 @@ class ShowcaseApp: ObservableObject {
         let userData = ShowcaseApp.UserData(userId: profileId, authenticatorsNames: authenticators)
         registeredUsers.remove(userData)
         system.setUserState(.unauthenticated)
+        pendingTransactions.removeAll()
+        pushInteractor.updateBadge(0)
     }
     
     func removePendingTransaction(transactionId: String) {
