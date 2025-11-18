@@ -19,8 +19,8 @@ extension ContentView {
 
         app.system.autoinitializeSDK = automatically
         errorValue.removeAll()
-        /// You can comment the below line if the app is configured with the configurator and do have OneginiConfigModel set.
-        setBuilder()
+        /// You can uncomment the below line if the app is not configured with the configurator and does not have OneginiConfigModel set.
+        //setBuilder()
         sdkInteractor.initializeSDK { result in
             switch result {
             case .success:
@@ -60,6 +60,10 @@ extension ContentView {
     
     func sso() {
         authenticatorInteractor.sso()
+    }
+    
+    func deviceAuthentication() {
+        resourceInteractor.fetchDeviceList()
     }
     
     func enrollForMobileAuthentication() {
@@ -154,6 +158,11 @@ extension ContentView {
     var authenticatorInteractor: AuthenticatorInteractor {
         @Injected var interactors: Interactors
         return interactors.authenticatorInteractor
+    }
+    
+    var resourceInteractor: ResourceInteractor {
+        @Injected var interactors: Interactors
+        return interactors.resourceInteractor
     }
     
     var authenticatorRegistrationInteractor: AuthenticatorRegistrationInteractor {

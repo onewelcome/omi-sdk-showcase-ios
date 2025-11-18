@@ -10,4 +10,5 @@ struct Interactors {
     let pinPadInteractor: PinPadInteractor
     let qrScannerInteractor: QRScannerInteractor
     let pushInteractor: PushNotitificationsInteractor
+    let resourceInteractor: ResourceInteractor
 }

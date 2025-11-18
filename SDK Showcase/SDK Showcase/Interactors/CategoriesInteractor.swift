@@ -108,6 +108,18 @@ class CategoriesInteractorReal: CategoriesInteractor {
                      selections: [],
                      requiredActions: [],
                      optionalActions: []),
+            Category(name: Categories.resources.rawValue,
+                     description: """
+                     The iOS SDK can fetch a secure resource in three ways:\n                     
+                     - For a resource that is tied to a user (such as account information or transactions), the iOS SDK can execute a secured resource access authenticated request.\n
+                     - For a resource that is tied to an application but not unique per user, for example application assets, the iOS SDK can execute an anonymous request.\n
+                     - For a resource that can be fetched without any additional authentication, but for which you would still like to use certificate pinning and jailbreak or debug detection, the iOS SDK can execute an unauthenticated requests.
+                     """,
+                     options: [Option(name: Options.deviceAuthentication.rawValue,
+                                      logo: "lock.desktopcomputer")],
+                     selections: [],
+                     requiredActions: [],
+                     optionalActions: []),
 
         ]
         self.cache = categories

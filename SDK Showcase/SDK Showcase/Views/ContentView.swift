@@ -160,6 +160,8 @@ extension ContentView {
             cancelRegistration()
         case .sso:
             sso()
+        case .deviceAuthentication:
+            deviceAuthentication()
         default:
             fatalError("Option `\(option.name)` not handled!")
         }
