@@ -60,6 +60,10 @@ private extension Injection {
             QRScannerInteractorReal() }
             .inObjectScope(.container)
         
+        container.register(ResourceInteractor.self) { resolver in
+            ResourceInteractorReal(app: resolver.resolve(ShowcaseApp.self)!)}
+            .inObjectScope(.container)
+        
         container.register(Interactors.self) { resolver in
             Interactors(categoriesInteractor: resolver.resolve(CategoriesInteractor.self)!,
                         sdkInteractor: resolver.resolve(SDKInteractor.self)!,
@@ -69,7 +73,8 @@ private extension Injection {
                         registrationInteractor: resolver.resolve(RegistrationInteractor.self)!,
                         pinPadInteractor: resolver.resolve(PinPadInteractor.self)!,
                         qrScannerInteractor: resolver.resolve(QRScannerInteractor.self)!,
-                        pushInteractor: resolver.resolve(PushNotitificationsInteractor.self)!)}
+                        pushInteractor: resolver.resolve(PushNotitificationsInteractor.self)!,
+                        resourceInteractor: resolver.resolve(ResourceInteractor.self)!)}
             .inObjectScope(.container)
         
         return container

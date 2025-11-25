@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		39EBDDB3AB79BFD567084231 /* OneginiConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F1825C6D9C15E92CCC9277 /* OneginiConfigModel.m */; };
 		57005ABF2E29054800BBE63A /* ContentView+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57005ABE2E29054800BBE63A /* ContentView+Actions.swift */; };
 		57005AE52E2A2AF400BBE63A /* PushNotitificationsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57005AE42E2A2AE200BBE63A /* PushNotitificationsInteractor.swift */; };
 		570AB2642DA90CD400BF2D7F /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570AB2632DA90CD400BF2D7F /* Binding.swift */; };
 		5723966E2DB90AB400C8A3B7 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5723966D2DB90AB400C8A3B7 /* Spinner.swift */; };
 		5730A8C12DC2448200528BC2 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5730A8C02DC2448200528BC2 /* Alert.swift */; };
+		574269EC2ECC7D0A00A48576 /* ResourceInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574269EB2ECC7D0300A48576 /* ResourceInteractor.swift */; };
+		57426A002ECC9A7000A48576 /* Devices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574269FF2ECC9A7000A48576 /* Devices.swift */; };
 		5748DC4E2E447EF800B860D3 /* ShowcaseApp+ViewRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5748DC4D2E447EF000B860D3 /* ShowcaseApp+ViewRouting.swift */; };
 		5748DC522E449CA100B860D3 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5748DC512E449CA100B860D3 /* HeaderView.swift */; };
 		5774538C2E8E7D50007864DE /* MobileAuthRequestInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774538B2E8E7D50007864DE /* MobileAuthRequestInteractor.swift */; };
@@ -69,13 +72,12 @@
 		57F4646A2D3F80E200C64156 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57F464692D3F80E200C64156 /* Preview Assets.xcassets */; };
 		57F4647B2D43831700C64156 /* Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F4647A2D43831700C64156 /* Injection.swift */; };
 		57F464822D4383C000C64156 /* ShowcaseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464812D4383C000C64156 /* ShowcaseApp.swift */; };
+		7054C68337E3C8C84722C316 /* OneginiConfigModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 899A1682FE83CCAF521B6447 /* OneginiConfigModel.h */; };
 		9E3523892E31950E00975920 /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3523882E31950E00975920 /* CameraPreview.swift */; };
 		9E72F91B2E1E9D1900FB4637 /* UserState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F91A2E1E9D1900FB4637 /* UserState.swift */; };
 		9E72F9552E2ED11700FB4637 /* SheetViewForQRCodeScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F9542E2ED11700FB4637 /* SheetViewForQRCodeScanner.swift */; };
 		9E72F9572E2ED13800FB4637 /* QRScannerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F9562E2ED13800FB4637 /* QRScannerPresenter.swift */; };
 		9E72F98A2E2FAA3E00FB4637 /* QRScannerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E72F9892E2FAA3E00FB4637 /* QRScannerInteractor.swift */; };
-		C74C414AFA857D101C71411F /* OneginiConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA6110C3FBFD511DB8EADE4 /* OneginiConfigModel.m */; };
-		D99FC8F8E1D6A51A6CDEEF03 /* OneginiConfigModel.h in Headers */ = {isa = PBXBuildFile; fileRef = D9B0665B0B42A61C01C8351A /* OneginiConfigModel.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +111,8 @@
 		570AB2692DA9406400BF2D7F /* SDK ShowcaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SDK ShowcaseTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5723966D2DB90AB400C8A3B7 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		5730A8C02DC2448200528BC2 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		574269EB2ECC7D0300A48576 /* ResourceInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceInteractor.swift; sourceTree = "<group>"; };
+		574269FF2ECC9A7000A48576 /* Devices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Devices.swift; sourceTree = "<group>"; };
 		5748DC4D2E447EF000B860D3 /* ShowcaseApp+ViewRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowcaseApp+ViewRouting.swift"; sourceTree = "<group>"; };
 		5748DC512E449CA100B860D3 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		5774538B2E8E7D50007864DE /* MobileAuthRequestInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileAuthRequestInteractor.swift; sourceTree = "<group>"; };
@@ -167,13 +171,13 @@
 		57F464692D3F80E200C64156 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		57F4647A2D43831700C64156 /* Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injection.swift; sourceTree = "<group>"; };
 		57F464812D4383C000C64156 /* ShowcaseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowcaseApp.swift; sourceTree = "<group>"; };
+		899A1682FE83CCAF521B6447 /* OneginiConfigModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OneginiConfigModel.h; path = Configuration/OneginiConfigModel.h; sourceTree = "<group>"; };
 		9E3523882E31950E00975920 /* CameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
 		9E72F91A2E1E9D1900FB4637 /* UserState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserState.swift; sourceTree = "<group>"; };
 		9E72F9542E2ED11700FB4637 /* SheetViewForQRCodeScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewForQRCodeScanner.swift; sourceTree = "<group>"; };
 		9E72F9562E2ED13800FB4637 /* QRScannerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerPresenter.swift; sourceTree = "<group>"; };
 		9E72F9892E2FAA3E00FB4637 /* QRScannerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerInteractor.swift; sourceTree = "<group>"; };
-		D9B0665B0B42A61C01C8351A /* OneginiConfigModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OneginiConfigModel.h; path = Configuration/OneginiConfigModel.h; sourceTree = "<group>"; };
-		FFA6110C3FBFD511DB8EADE4 /* OneginiConfigModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OneginiConfigModel.m; path = Configuration/OneginiConfigModel.m; sourceTree = "<group>"; };
+		B8F1825C6D9C15E92CCC9277 /* OneginiConfigModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OneginiConfigModel.m; path = Configuration/OneginiConfigModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -207,8 +211,8 @@
 		065F9E48627BA8FD210C428B /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				FFA6110C3FBFD511DB8EADE4 /* OneginiConfigModel.m */,
-				D9B0665B0B42A61C01C8351A /* OneginiConfigModel.h */,
+				B8F1825C6D9C15E92CCC9277 /* OneginiConfigModel.m */,
+				899A1682FE83CCAF521B6447 /* OneginiConfigModel.h */,
 			);
 			name = Configuration;
 			sourceTree = "<group>";
@@ -224,6 +228,7 @@
 				57CC761C2E83E11200E7D7B2 /* AuthenticatorRegistrationInteractor.swift */,
 				57E9E1392DB2484600168A93 /* RegistrationInteractor.swift */,
 				57EB55E42E03E3420072E496 /* PinPadInteractor.swift */,
+				574269EB2ECC7D0300A48576 /* ResourceInteractor.swift */,
 				9E72F9892E2FAA3E00FB4637 /* QRScannerInteractor.swift */,
 				57005AE42E2A2AE200BBE63A /* PushNotitificationsInteractor.swift */,
 			);
@@ -271,6 +276,7 @@
 		578BC31B2D4A1AD600713CF7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				574269FF2ECC9A7000A48576 /* Devices.swift */,
 				57A9BBD52EA8B90000BF750B /* Token.swift */,
 				57CC76322E868D6000E7D7B2 /* DummyData.swift */,
 				57A5BE012E3B96D60041015B /* MobileAuthRequestQueue.swift */,
@@ -401,7 +407,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D99FC8F8E1D6A51A6CDEEF03 /* OneginiConfigModel.h in Headers */,
+				7054C68337E3C8C84722C316 /* OneginiConfigModel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +538,7 @@
 				57BDC97E2E2F9AFA00534D7E /* AppDelegate.swift in Sources */,
 				57A9BBD42EA7B85600BF750B /* String+Prefix.swift in Sources */,
 				57E9E1402DB2734200168A93 /* BrowserView.swift in Sources */,
+				57426A002ECC9A7000A48576 /* Devices.swift in Sources */,
 				5748DC4E2E447EF800B860D3 /* ShowcaseApp+ViewRouting.swift in Sources */,
 				57005ABF2E29054800BBE63A /* ContentView+Actions.swift in Sources */,
 				57EB55E32E03E2C50072E496 /* PinPad.swift in Sources */,
@@ -547,6 +554,7 @@
 				9E72F9572E2ED13800FB4637 /* QRScannerPresenter.swift in Sources */,
 				57F464632D3F80DB00C64156 /* SDK_ShowcaseApp.swift in Sources */,
 				57CC76172E82ABA800E7D7B2 /* AuthenticatorsSheet.swift in Sources */,
+				574269EC2ECC7D0A00A48576 /* ResourceInteractor.swift in Sources */,
 				570AB2642DA90CD400BF2D7F /* Binding.swift in Sources */,
 				578BC3282D4A5CEA00713CF7 /* Option.swift in Sources */,
 				57E9E1422DB7AE8700168A93 /* BrowserViewModel.swift in Sources */,
@@ -586,8 +594,8 @@
 				57CC76282E86773E00E7D7B2 /* IdentityProviderType.swift in Sources */,
 				9E3523892E31950E00975920 /* CameraPreview.swift in Sources */,
 				5774538C2E8E7D50007864DE /* MobileAuthRequestInteractor.swift in Sources */,
-				C74C414AFA857D101C71411F /* OneginiConfigModel.m in Sources */,
 				57CC76352E86AD7900E7D7B2 /* SDKError.swift in Sources */,
+				39EBDDB3AB79BFD567084231 /* OneginiConfigModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
