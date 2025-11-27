@@ -66,6 +66,10 @@ extension ContentView {
         resourceInteractor.fetchDeviceList()
     }
     
+    func fetchImplicit() {
+        resourceInteractor.fetchImplicit()
+    }
+    
     func enrollForMobileAuthentication() {
         mobileAuthRequestInteractor.enrollForMobileAuthentication()
     }
