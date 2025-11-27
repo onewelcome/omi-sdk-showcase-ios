@@ -162,6 +162,8 @@ extension ContentView {
             sso()
         case .deviceAuthentication:
             deviceAuthentication()
+        case .fetchImplicit:
+            fetchImplicit()
         default:
             fatalError("Option `\(option.name)` not handled!")
         }

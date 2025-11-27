@@ -14,6 +14,7 @@ enum Options: String {
     case cancel = "Cancel registration"
     case sso = "Single Sign On"
     case deviceAuthentication = "Device authentication"
+    case fetchImplicit = "Fetch implicit"
 }
 
 struct Option: AppModel {
