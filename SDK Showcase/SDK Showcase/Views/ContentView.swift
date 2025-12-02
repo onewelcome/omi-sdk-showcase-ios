@@ -179,6 +179,7 @@ extension ContentView {
             authenticatorInteractor.loginWithOTP()
         case .pending, .authenticate:
             selectedOption = selection
+            selectedOption?.disabled = !value(for: "Implicitly")
             showConfirmationDialog = true
         case .logout:
             authenticatorInteractor.logout(optionName: selection.name)
