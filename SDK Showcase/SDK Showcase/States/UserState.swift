@@ -7,6 +7,7 @@ enum UserState: Equatable {
     case unauthenticated
     case authenticated(String)
     case stateless
+    case implicit
     case sso(String)
     
     var userId: String? {
@@ -36,6 +37,8 @@ enum UserState: Equatable {
             return "stateless"
         case .sso:
             return "sso"
+        case .implicit:
+            return "implicit"
         }
     }
 }

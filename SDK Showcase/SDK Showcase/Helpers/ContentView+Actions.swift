@@ -207,6 +207,8 @@ extension ContentView {
             "👤 User authenticated as \(userId)"
         case .stateless:
             "🤖 Stateless user authenticated"
+        case .implicit:
+            "👻 Implicitly authenticated"
         }
     }
     

@@ -8,6 +8,7 @@ protocol AuthenticatorInteractor {
     var accessToken: String? { get }
 
     func authenticateUser(profileName: String, optionName: String)
+    func implicitlyAuthenticate(profileName: String)
     func logout(optionName: String)
     func loginWithOTP()
     func fetchIdentityProviders() -> [IdentityProvider]
@@ -66,6 +67,21 @@ class AuthenticatorInteractorReal: AuthenticatorInteractor {
         }
         app.system.isProcessing = true
         userClient.authenticateUserWith(profile: userProfile, authenticator: authenticator, delegate: self)
+    }
+    
+    func implicitlyAuthenticate(profileName: String) {
+        guard let userProfile = userClient.userProfiles.first(where: { $0.profileId == profileName }) else {
+            fatalError("No user profile for profile `\(profileName)`")
+        }
+        userClient.implicitlyAuthenticate(user: userProfile, with: nil) { [app] error in
+            if let error {
+                app.system.setUserState(.unauthenticated)
+                app.setSystemInfo(string: error.localizedDescription)
+            } else {
+                app.system.setUserState(.implicit)
+                app.setSystemInfo(string: "Profile \(userProfile) has been implicitly logged in.")
+            }
+        }
     }
     
     func logout(optionName: String) {
