@@ -119,6 +119,8 @@ class CategoriesInteractorReal: CategoriesInteractor {
                      """,
                      options: [Option(name: Options.deviceAuthentication.rawValue,
                                       logo: "lock.desktopcomputer"),
+                               Option(name: Options.fetchAnonymous.rawValue,
+                                                logo: "eye.slash"),
                                Option(name: Options.fetchImplicit.rawValue,
                                                 logo: "square.and.arrow.down")],
                      selections: [],

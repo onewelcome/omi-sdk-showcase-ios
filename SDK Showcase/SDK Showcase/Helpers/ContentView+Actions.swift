@@ -63,11 +63,15 @@ extension ContentView {
     }
     
     func deviceAuthentication() {
-        resourceInteractor.fetchDeviceList()
+        resourceInteractor.sendAuthenticatedRequest()
+    }
+    
+    func anonymusResourceRequest() {
+        resourceInteractor.sendUnauthenticatedRequest() 
     }
     
     func fetchImplicit() {
-        resourceInteractor.fetchImplicit()
+        resourceInteractor.sendImplicitRequest()
     }
     
     func enrollForMobileAuthentication() {

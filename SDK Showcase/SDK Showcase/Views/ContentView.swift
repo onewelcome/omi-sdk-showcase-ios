@@ -164,6 +164,8 @@ extension ContentView {
             deviceAuthentication()
         case .fetchImplicit:
             fetchImplicit()
+        case .fetchAnonymous:
+            anonymusResourceRequest()
         default:
             fatalError("Option `\(option.name)` not handled!")
         }
