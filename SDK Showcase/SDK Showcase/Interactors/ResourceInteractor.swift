@@ -38,12 +38,28 @@ class ResourceInteractorReal: ResourceInteractor {
     
     func sendAnonymousRequest() {
         let pathToTheResource = "application-details"
-        let request = ResourceRequestFactory.makeResourceRequest(path: pathToTheResource)
-        deviceClient.sendRequest(request) { [weak self] response, error in
-            if let error {
-                self?.handleError(error)
-            } else {
-                self?.handleData("anonymous request for the resource has been fetched.")
+        
+        /// First you need to collect the token
+        deviceClient.authenticateDevice(with: [pathToTheResource]) { [weak self] error in
+            guard error == nil else {
+                self?.handleError(error!)
+                return
+            }
+            /// We collect the token for anonymous request, proceed with the request
+            let request = ResourceRequestFactory.makeResourceRequest(path: pathToTheResource)
+            self?.deviceClient.sendRequest(request) { [weak self] response, error in
+                if let error {
+                    self?.handleError(error)
+                } else {
+                    if let data = response?.data {
+                        if let appDetails = try? self?.decoder.decode(ApplicationDetails.self, from: data) {
+                            let showable = appDetails.appId + "\n(\(appDetails.appVersion))\n\(appDetails.appPlatform)"
+                            self?.handleData(showable)
+                        }
+                    } else {
+                        self?.handleData("anonymous request for the resource has been fetched.")
+                    }
+                }
             }
         }
     }
@@ -63,6 +79,7 @@ class ResourceInteractorReal: ResourceInteractor {
         }
     }
     
+
     func sendImplicitRequest() {
         let request = ResourceRequestFactory.makeResourceRequest(path: "user-id-decorated", method: .get)
         userClient.sendImplicitRequest(request) { [weak self] response, error in
