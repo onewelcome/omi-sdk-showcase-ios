@@ -28,7 +28,7 @@ class ResourceInteractorReal: ResourceInteractor {
         let pathToTheResource = "path-to-the-resource"
         let request = ResourceRequestFactory.makeResourceRequest(path: pathToTheResource)
         deviceClient.sendUnauthenticatedRequest(request) { [weak self] response, error in
-            if let error = error {
+            if let error {
                 self?.handleError(error)
             } else {
                 self?.handleData("unauthenticated request for the resource has been fetched.")
@@ -40,7 +40,7 @@ class ResourceInteractorReal: ResourceInteractor {
         let pathToTheResource = "application-details"
         let request = ResourceRequestFactory.makeResourceRequest(path: pathToTheResource)
         deviceClient.sendRequest(request) { [weak self] response, error in
-            if let error = error {
+            if let error {
                 self?.handleError(error)
             } else {
                 self?.handleData("anonymous request for the resource has been fetched.")
@@ -51,7 +51,7 @@ class ResourceInteractorReal: ResourceInteractor {
     func sendAuthenticatedRequest() {
         let request = ResourceRequestFactory.makeResourceRequest(path: "devices", method: .get)
         userClient.sendAuthenticatedRequest(request) { [weak self] response, error in
-            if let error = error {
+            if let error {
                 self?.handleError(error)
             } else {
                 if let data = response?.data,
@@ -66,7 +66,7 @@ class ResourceInteractorReal: ResourceInteractor {
     func sendImplicitRequest() {
         let request = ResourceRequestFactory.makeResourceRequest(path: "user-id-decorated", method: .get)
         userClient.sendImplicitRequest(request) { [weak self] response, error in
-            if let error = error {
+            if let error {
                 self?.handleError(error)
             } else {
                 if let data = response?.data,
