@@ -79,6 +79,7 @@ class ResourceInteractorReal: ResourceInteractor {
         }
     }
     
+
     func sendImplicitRequest() {
         let request = ResourceRequestFactory.makeResourceRequest(path: "user-id-decorated", method: .get)
         userClient.sendImplicitRequest(request) { [weak self] response, error in
