@@ -117,11 +117,11 @@ class CategoriesInteractorReal: CategoriesInteractor {
                      - For a resource that is tied to an application but not unique per user, for example application assets, the iOS SDK can execute an anonymous request.\n
                      - For a resource that can be fetched without any additional authentication, but for which you would still like to use certificate pinning and jailbreak or debug detection, the iOS SDK can execute an unauthenticated requests.
                      """,
-                     options: [Option(name: Options.deviceAuthentication.rawValue,
-                                      logo: "lock.desktopcomputer"),
-                               Option(name: Options.fetchImplicit.rawValue,
-                                                logo: "square.and.arrow.down")],
-                     selections: [],
+                     options: [],
+                     selections: [Selection(name: Selections.authenticatedRequest.rawValue),
+                                  Selection(name: Selections.implicitRequest.rawValue),
+                                  Selection(name: Selections.unauthenticatedRequest.rawValue),
+                                  Selection(name: Selections.anonymousRequest.rawValue)],
                      requiredActions: [],
                      optionalActions: []),
 

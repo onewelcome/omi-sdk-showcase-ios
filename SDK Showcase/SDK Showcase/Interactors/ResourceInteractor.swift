@@ -4,12 +4,18 @@ import OneginiSDKiOS
 import SwiftUI
 
 protocol ResourceInteractor {
-    func fetchDeviceList()
-    func fetchImplicit()
+    /// Requests performed on UserClient
+    func sendAuthenticatedRequest()
+    func sendImplicitRequest()
+    
+    /// Requests performed on UserDevice
+    func sendUnauthenticatedRequest()
+    func sendAnonymousRequest()
 }
 
 class ResourceInteractorReal: ResourceInteractor {
     private let userClient = SharedUserClient.instance
+    private let deviceClient = SharedDeviceClient.instance
     private let decoder = JSONDecoder()
     @ObservedObject var app: ShowcaseApp
 
@@ -17,31 +23,56 @@ class ResourceInteractorReal: ResourceInteractor {
         self.app = app
     }
     
-    func fetchDeviceList() {
+    func sendUnauthenticatedRequest() {
+        // Should be defined on the access
+        let pathToTheResource = "path-to-the-resource"
+        let request = ResourceRequestFactory.makeResourceRequest(path: pathToTheResource)
+        deviceClient.sendUnauthenticatedRequest(request) { [weak self] response, error in
+            if let error {
+                self?.handleError(error)
+            } else {
+                self?.handleData("unauthenticated request for the resource has been fetched.")
+            }
+        }
+    }
+    
+    func sendAnonymousRequest() {
+        let pathToTheResource = "application-details"
+        let request = ResourceRequestFactory.makeResourceRequest(path: pathToTheResource)
+        deviceClient.sendRequest(request) { [weak self] response, error in
+            if let error {
+                self?.handleError(error)
+            } else {
+                self?.handleData("anonymous request for the resource has been fetched.")
+            }
+        }
+    }
+    
+    func sendAuthenticatedRequest() {
         let request = ResourceRequestFactory.makeResourceRequest(path: "devices", method: .get)
-        userClient.sendAuthenticatedRequest(request) { [self] response, error in
-            if let error = error {
-                handleError(error)
+        userClient.sendAuthenticatedRequest(request) { [weak self] response, error in
+            if let error {
+                self?.handleError(error)
             } else {
                 if let data = response?.data,
-                   let deviceList = try? self.decoder.decode(Devices.self, from: data) {
+                   let deviceList = try? self?.decoder.decode(Devices.self, from: data) {
                    let showable = deviceList.devices.map { $0.name + " (\($0.id.truncated(10)))" }.joined(separator: "\n")
-                    handleData(showable)
+                    self?.handleData(showable)
                 }
             }
         }
     }
     
-    func fetchImplicit() {
+    func sendImplicitRequest() {
         let request = ResourceRequestFactory.makeResourceRequest(path: "user-id-decorated", method: .get)
-        userClient.sendImplicitRequest(request) { [self] response, error in
-            if let error = error {
-                handleError(error)
+        userClient.sendImplicitRequest(request) { [weak self] response, error in
+            if let error {
+                self?.handleError(error)
             } else {
                 if let data = response?.data,
                    let responseData = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: String],
                    let userIdDecorated = responseData["decorated_user_id"] {
-                    handleData(userIdDecorated)
+                    self?.handleData(userIdDecorated)
                 }
             }
         }

@@ -160,10 +160,6 @@ extension ContentView {
             cancelRegistration()
         case .sso:
             sso()
-        case .deviceAuthentication:
-            deviceAuthentication()
-        case .fetchImplicit:
-            fetchImplicit()
         default:
             fatalError("Option `\(option.name)` not handled!")
         }
@@ -187,6 +183,14 @@ extension ContentView {
             registrationInteractor.deregister(optionName: selection.name)
         case .token:
             authenticatorInteractor.showToken(selection.name)
+        case .authenticatedRequest:
+            sendAuthenticatedRequest()
+        case .unauthenticatedRequest:
+            sendUnauthenticatedRequest()
+        case .implicitRequest:
+            sendImplicitRequest()
+        case .anonymousRequest:
+            sendAnonymousRequest()
         case .unknown:
             fatalError("Selection `\(selection.name)` not handled!")
         }
