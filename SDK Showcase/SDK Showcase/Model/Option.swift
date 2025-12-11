@@ -13,9 +13,6 @@ enum Options: String {
     case pushes = "Register for push notifications"
     case cancel = "Cancel registration"
     case sso = "Single Sign On"
-    case deviceAuthentication = "Device authentication"
-    case fetchImplicit = "Fetch implicit"
-    case fetchAnonymous = "Anonymous resource"
 }
 
 struct Option: AppModel {
