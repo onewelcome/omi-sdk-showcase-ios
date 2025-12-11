@@ -66,6 +66,7 @@
 		57EB55E52E03E3420072E496 /* PinPadInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EB55E42E03E3420072E496 /* PinPadInteractor.swift */; };
 		57EB55E72E03E4D10072E496 /* SheetViewForPinPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EB55E62E03E4D10072E496 /* SheetViewForPinPad.swift */; };
 		57EB55E92E0540570072E496 /* SheetViewDismiss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EB55E82E0540570072E496 /* SheetViewDismiss.swift */; };
+		57ED25952EEAF10300B42844 /* ApplicationDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ED25942EEAF10300B42844 /* ApplicationDetails.swift */; };
 		57F464632D3F80DB00C64156 /* SDK_ShowcaseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464622D3F80DB00C64156 /* SDK_ShowcaseApp.swift */; };
 		57F464652D3F80DB00C64156 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464642D3F80DB00C64156 /* RootView.swift */; };
 		57F464672D3F80E200C64156 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57F464662D3F80E200C64156 /* Assets.xcassets */; };
@@ -164,6 +165,7 @@
 		57EB55E42E03E3420072E496 /* PinPadInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinPadInteractor.swift; sourceTree = "<group>"; };
 		57EB55E62E03E4D10072E496 /* SheetViewForPinPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewForPinPad.swift; sourceTree = "<group>"; };
 		57EB55E82E0540570072E496 /* SheetViewDismiss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewDismiss.swift; sourceTree = "<group>"; };
+		57ED25942EEAF10300B42844 /* ApplicationDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDetails.swift; sourceTree = "<group>"; };
 		57F4645F2D3F80DB00C64156 /* SDK Showcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SDK Showcase.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F464622D3F80DB00C64156 /* SDK_ShowcaseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDK_ShowcaseApp.swift; sourceTree = "<group>"; };
 		57F464642D3F80DB00C64156 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 		578BC31B2D4A1AD600713CF7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				57ED25942EEAF10300B42844 /* ApplicationDetails.swift */,
 				574269FF2ECC9A7000A48576 /* Devices.swift */,
 				57A9BBD52EA8B90000BF750B /* Token.swift */,
 				57CC76322E868D6000E7D7B2 /* DummyData.swift */,
@@ -550,6 +553,7 @@
 				578BC30B2D4397A700713CF7 /* Interactors.swift in Sources */,
 				578BC3182D43A73500713CF7 /* ShowcaseApp+UserData.swift in Sources */,
 				57CC761D2E83E13000E7D7B2 /* AuthenticatorRegistrationInteractor.swift in Sources */,
+				57ED25952EEAF10300B42844 /* ApplicationDetails.swift in Sources */,
 				578DC4E72D9E6858008D2576 /* TextResult.swift in Sources */,
 				9E72F9572E2ED13800FB4637 /* QRScannerPresenter.swift in Sources */,
 				57F464632D3F80DB00C64156 /* SDK_ShowcaseApp.swift in Sources */,
