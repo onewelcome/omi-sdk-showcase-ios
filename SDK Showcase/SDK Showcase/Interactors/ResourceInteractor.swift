@@ -4,9 +4,13 @@ import OneginiSDKiOS
 import SwiftUI
 
 protocol ResourceInteractor {
+    /// Requests performed on UserClient
     func sendAuthenticatedRequest()
     func sendImplicitRequest()
+    
+    /// Requests performed on UserDevice
     func sendUnauthenticatedRequest()
+    func sendAnonymousRequest()
 }
 
 class ResourceInteractorReal: ResourceInteractor {
@@ -27,8 +31,19 @@ class ResourceInteractorReal: ResourceInteractor {
             if let error = error {
                 self?.handleError(error)
             } else {
-                // Depends highly on the resource.
-                self?.handleData("unauthenticated resource has been fetched.")
+                self?.handleData("unauthenticated request for the resource has been fetched.")
+            }
+        }
+    }
+    
+    func sendAnonymousRequest() {
+        let pathToTheResource = "application-details"
+        let request = ResourceRequestFactory.makeResourceRequest(path: pathToTheResource)
+        deviceClient.sendRequest(request) { [weak self] response, error in
+            if let error = error {
+                self?.handleError(error)
+            } else {
+                self?.handleData("anonymous request for the resource has been fetched.")
             }
         }
     }
