@@ -73,13 +73,19 @@ class AuthenticatorInteractorReal: AuthenticatorInteractor {
         guard let userProfile = userClient.userProfiles.first(where: { $0.profileId == profileName }) else {
             fatalError("No user profile for profile `\(profileName)`")
         }
-        userClient.implicitlyAuthenticate(user: userProfile, with: nil) { [app] error in
-            if let error {
-                app.system.setUserState(.unauthenticated)
-                app.setSystemInfo(string: error.localizedDescription)
-            } else {
-                app.system.setUserState(.implicit)
-                app.setSystemInfo(string: "Profile \(userProfile) has been implicitly logged in.")
+        /// First check if the user is already authenticated implicitely
+        if let implicitUser = userClient.implicitlyAuthenticatedUserProfile, implicitUser.isEqual(to: userProfile) {
+            app.setSystemInfo(string: "Profile \(userProfile) has already been logged in implicitly.")
+        } else {
+            /// If it is not proceed with the authentication
+            userClient.implicitlyAuthenticate(user: userProfile, with: nil) { [app] error in
+                if let error {
+                    app.system.setUserState(.unauthenticated)
+                    app.setSystemInfo(string: error.localizedDescription)
+                } else {
+                    app.system.setUserState(.implicit)
+                    app.setSystemInfo(string: "Profile \(userProfile) has been implicitly logged in.")
+                }
             }
         }
     }
