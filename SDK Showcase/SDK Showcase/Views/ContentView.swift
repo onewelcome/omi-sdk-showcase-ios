@@ -85,12 +85,19 @@ struct ContentView: View {
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $system.shouldShowBrowser) {
             SheetViewForWebView(urlString: setupSheetViewForWebview())
+                .interactiveDismissDisabled()
         }
         .sheet(isPresented: $system.shouldShowPinPad) {
             SheetViewForPinPad()
+                .interactiveDismissDisabled()
         }
         .sheet(isPresented: $system.shouldShowScanner) {
             SheetViewForQRScanner()
+                .interactiveDismissDisabled()
+        }
+        .sheet(isPresented: $system.shouldShowPrompt) {
+            SheetViewForPrompt()
+                .interactiveDismissDisabled()
         }
         .onChange(of: app.registeredUsers) {
             updateUsersSelection()
