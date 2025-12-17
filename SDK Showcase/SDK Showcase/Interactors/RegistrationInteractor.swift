@@ -10,6 +10,7 @@ protocol RegistrationInteractor {
     var numberOfRegisteredUsers: Int { get }
 
     func fetchUserProfiles()
+    func setUserPrompt(_ prompt: String)
     func setBrowserChallenge(_ challenge: BrowserRegistrationChallenge)
     func setCustomChallenge(_ challenge: CustomRegistrationChallenge)
     func setStateless(_ stateless: Bool)
@@ -153,11 +154,23 @@ extension RegistrationInteractorReal {
         if stateless {
             challenge.sender.respond(with: nil, to: challenge)
         } else {
-            /// You can ask the user about the response in different ways, e.g. by scanning the QR code:
-            qrScannerInteractor.scan(to: self)
-        
-            /// or asking for a password, or simply return some dummy response:
-            // challenge.sender.respond(with: DummyData.customRegistrationChallenge, to: challenge)
+            if isTypeOfTwoStepRegistration(challenge) {
+                /// Prompt for the input
+                app.system.setPromptState(.shown)
+            } else {
+                /// You can ask the user about the response for one step registration in different ways, e.g. by asking for password or scanning the QR code:
+                qrScannerInteractor.scan(to: self)
+            }
+        }
+    }
+
+    func didReceiveCustomRegistrationInitChallenge(_ challenge: any OneginiSDKiOS.CustomRegistrationChallenge) {
+        setCustomChallenge(challenge)
+        app.system.setUserState(.registering(.api))
+        if stateless {
+            challenge.sender.respond(with: nil, to: challenge)
+        } else {
+            challenge.sender.respond(with: DummyData.customAuthInitialChallenge, to: challenge)
         }
     }
     
@@ -189,6 +202,12 @@ extension RegistrationInteractorReal: QRScannerDelegate {
         customChallenge.sender.respond(with: code, to: customChallenge)
         app.system.setScannerState(.hidden)
     }
+    
+    func setUserPrompt(_ prompt: String) {
+        guard let customChallenge else { return }
+        app.system.setPromptState(.hidden)
+        customChallenge.sender.respond(with: prompt, to: customChallenge)
+    }
 }
 
 private extension RegistrationInteractorReal {
@@ -213,6 +232,10 @@ private extension RegistrationInteractorReal {
     }
 
     var device: ShowcaseApp.DeviceData { app.deviceData }
+    
+    func isTypeOfTwoStepRegistration(_ challenge: any OneginiSDKiOS.CustomRegistrationChallenge) -> Bool {
+        return challenge.identityProvider.identifier == "New2step"
+    }
 }
 
 extension RegistrationInteractorReal: RegistrationDelegate {
@@ -249,4 +272,8 @@ extension RegistrationInteractorReal: RegistrationDelegate {
         didReceiveCustomRegistrationFinishChallenge(challenge)
     }
 
+    func userClient(_ userClient: any UserClient, didReceiveCustomRegistrationInitChallenge challenge: any CustomRegistrationChallenge) {
+        app.system.isProcessing = false
+        didReceiveCustomRegistrationInitChallenge(challenge)
+    }
 }
