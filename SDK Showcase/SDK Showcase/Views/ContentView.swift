@@ -20,11 +20,7 @@ struct ContentView: View {
     @State internal var showConfirmationDialog = false
     @State internal var selectedOption: Selection?
     
-//    self.registerUrl = "https://webauthn.io"
-//    self.registerUrl = "https://opotonniee.github.io/webauthn-playground/"
-    
     var body: some View {
-//        SheetViewForWebView(urlString: "https://opotonniee.github.io/webauthn-playground/")
         HStack {
             List {
                 Text(category.description)
@@ -87,14 +83,21 @@ struct ContentView: View {
         }
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.inline)
-//        .sheet(isPresented: $system.shouldShowBrowser) {
-//            SheetViewForWebView(urlString: setupSheetViewForWebview())
-//        }
+        .sheet(isPresented: $system.shouldShowBrowser) {
+            SheetViewForWebView(urlString: setupSheetViewForWebview())
+                .interactiveDismissDisabled()
+        }
         .sheet(isPresented: $system.shouldShowPinPad) {
             SheetViewForPinPad()
+                .interactiveDismissDisabled()
         }
         .sheet(isPresented: $system.shouldShowScanner) {
             SheetViewForQRScanner()
+                .interactiveDismissDisabled()
+        }
+        .sheet(isPresented: $system.shouldShowPrompt) {
+            SheetViewForPrompt()
+                .interactiveDismissDisabled()
         }
         .onChange(of: app.registeredUsers) {
             updateUsersSelection()
@@ -164,10 +167,6 @@ extension ContentView {
             cancelRegistration()
         case .sso:
             sso()
-        case .deviceAuthentication:
-            deviceAuthentication()
-        case .fetchImplicit:
-            fetchImplicit()
         default:
             fatalError("Option `\(option.name)` not handled!")
         }
@@ -191,6 +190,14 @@ extension ContentView {
             registrationInteractor.deregister(optionName: selection.name)
         case .token:
             authenticatorInteractor.showToken(selection.name)
+        case .authenticatedRequest:
+            sendAuthenticatedRequest()
+        case .unauthenticatedRequest:
+            sendUnauthenticatedRequest()
+        case .implicitRequest:
+            sendImplicitRequest()
+        case .anonymousRequest:
+            sendAnonymousRequest()
         case .unknown:
             fatalError("Selection `\(selection.name)` not handled!")
         }

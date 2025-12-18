@@ -11,6 +11,10 @@ enum Selections: String {
     case authenticate
     case register
     case token
+    case authenticatedRequest = "👤 Authenticated request"
+    case unauthenticatedRequest = "🖥️ Unauthencated request"
+    case implicitRequest = "👤 Implicit request"
+    case anonymousRequest = "🖥️ Anonymous request"
 }
 
 struct Selection: AppModel {

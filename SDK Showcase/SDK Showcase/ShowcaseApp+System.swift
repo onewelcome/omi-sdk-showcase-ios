@@ -13,6 +13,7 @@ extension ShowcaseApp {
         @Published private(set) var enrollmentState: EnrollmentState = .unenrolled
         @Published private(set) var pinPadState: PinPadState = .hidden
         @Published private(set) var scannerState: ScannerState = .hidden
+        @Published private(set) var promptState: PromptState = .hidden
 
         var autoinitializeSDK: Bool {
             get {
@@ -53,6 +54,10 @@ extension ShowcaseApp {
             userState = newState
         }
         
+        func setPromptState(_ newState: PromptState) {
+            promptState = newState
+        }
+        
         func setEnrollmentState(_ newState: EnrollmentState) {
             enrollmentState = newState
         }
@@ -69,6 +74,11 @@ extension ShowcaseApp {
         var shouldShowScanner: Bool {
             get { scannerState != .hidden }
             set { scannerState = newValue ? .showForOTP : .hidden }
+        }
+        
+        var shouldShowPrompt: Bool {
+            get { promptState != .hidden }
+            set { promptState = newValue ? .shown : .hidden }
         }
         
         func setInfo(_ description: String) {

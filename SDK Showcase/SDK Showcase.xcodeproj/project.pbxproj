@@ -45,6 +45,8 @@
 		57AE06702D92986B004A3CB9 /* Swinject.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57AE066F2D92986B004A3CB9 /* Swinject.xcframework */; };
 		57AE06712D92986B004A3CB9 /* Swinject.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57AE066F2D92986B004A3CB9 /* Swinject.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57AE067B2D952A43004A3CB9 /* SDKResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AE067A2D952A43004A3CB9 /* SDKResult.swift */; };
+		57B302F22EF14B770005D7CE /* PromptState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B302F12EF14B740005D7CE /* PromptState.swift */; };
+		57B302F42EF14BF10005D7CE /* SheetViewForPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B302F32EF14BEC0005D7CE /* SheetViewForPrompt.swift */; };
 		57B8FA992E17C80B007EBECE /* PinPadState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B8FA982E17C80B007EBECE /* PinPadState.swift */; };
 		57BDC97E2E2F9AFA00534D7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BDC97D2E2F9AFA00534D7E /* AppDelegate.swift */; };
 		57BDC9A52E2FB3B600534D7E /* EnrollmentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BDC9A42E2FB3AA00534D7E /* EnrollmentState.swift */; };
@@ -66,6 +68,7 @@
 		57EB55E52E03E3420072E496 /* PinPadInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EB55E42E03E3420072E496 /* PinPadInteractor.swift */; };
 		57EB55E72E03E4D10072E496 /* SheetViewForPinPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EB55E62E03E4D10072E496 /* SheetViewForPinPad.swift */; };
 		57EB55E92E0540570072E496 /* SheetViewDismiss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EB55E82E0540570072E496 /* SheetViewDismiss.swift */; };
+		57ED25952EEAF10300B42844 /* ApplicationDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ED25942EEAF10300B42844 /* ApplicationDetails.swift */; };
 		57F464632D3F80DB00C64156 /* SDK_ShowcaseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464622D3F80DB00C64156 /* SDK_ShowcaseApp.swift */; };
 		57F464652D3F80DB00C64156 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F464642D3F80DB00C64156 /* RootView.swift */; };
 		57F464672D3F80E200C64156 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57F464662D3F80E200C64156 /* Assets.xcassets */; };
@@ -142,6 +145,8 @@
 		57AE06692D8C20F5004A3CB9 /* SDKInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKInteractor.swift; sourceTree = "<group>"; };
 		57AE066F2D92986B004A3CB9 /* Swinject.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Swinject.xcframework; path = "SDK Showcase/Supporting Files/Swinject.xcframework"; sourceTree = "<group>"; };
 		57AE067A2D952A43004A3CB9 /* SDKResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKResult.swift; sourceTree = "<group>"; };
+		57B302F12EF14B740005D7CE /* PromptState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptState.swift; sourceTree = "<group>"; };
+		57B302F32EF14BEC0005D7CE /* SheetViewForPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewForPrompt.swift; sourceTree = "<group>"; };
 		57B8FA982E17C80B007EBECE /* PinPadState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinPadState.swift; sourceTree = "<group>"; };
 		57BDC97D2E2F9AFA00534D7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		57BDC9A32E2FAA7900534D7E /* SDK Showcase.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SDK Showcase.entitlements"; sourceTree = "<group>"; };
@@ -164,6 +169,7 @@
 		57EB55E42E03E3420072E496 /* PinPadInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinPadInteractor.swift; sourceTree = "<group>"; };
 		57EB55E62E03E4D10072E496 /* SheetViewForPinPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewForPinPad.swift; sourceTree = "<group>"; };
 		57EB55E82E0540570072E496 /* SheetViewDismiss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewDismiss.swift; sourceTree = "<group>"; };
+		57ED25942EEAF10300B42844 /* ApplicationDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDetails.swift; sourceTree = "<group>"; };
 		57F4645F2D3F80DB00C64156 /* SDK Showcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SDK Showcase.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F464622D3F80DB00C64156 /* SDK_ShowcaseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDK_ShowcaseApp.swift; sourceTree = "<group>"; };
 		57F464642D3F80DB00C64156 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -238,6 +244,7 @@
 		578BC3112D43A5DC00713CF7 /* States */ = {
 			isa = PBXGroup;
 			children = (
+				57B302F12EF14B740005D7CE /* PromptState.swift */,
 				57CC76762E8BE37F00E7D7B2 /* ScannerState.swift */,
 				57BDC9A42E2FB3AA00534D7E /* EnrollmentState.swift */,
 				57B8FA982E17C80B007EBECE /* PinPadState.swift */,
@@ -276,6 +283,7 @@
 		578BC31B2D4A1AD600713CF7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				57ED25942EEAF10300B42844 /* ApplicationDetails.swift */,
 				574269FF2ECC9A7000A48576 /* Devices.swift */,
 				57A9BBD52EA8B90000BF750B /* Token.swift */,
 				57CC76322E868D6000E7D7B2 /* DummyData.swift */,
@@ -342,6 +350,7 @@
 				578A946C2EB2446D00C10448 /* PendingTransactionConfirmationSheet.swift */,
 				57CC76162E82ABA800E7D7B2 /* AuthenticatorsSheet.swift */,
 				57E9E13B2DB271AA00168A93 /* SheetViewForWebView.swift */,
+				57B302F32EF14BEC0005D7CE /* SheetViewForPrompt.swift */,
 				57EB55E62E03E4D10072E496 /* SheetViewForPinPad.swift */,
 				57EB55E82E0540570072E496 /* SheetViewDismiss.swift */,
 				9E72F9542E2ED11700FB4637 /* SheetViewForQRCodeScanner.swift */,
@@ -550,6 +559,8 @@
 				578BC30B2D4397A700713CF7 /* Interactors.swift in Sources */,
 				578BC3182D43A73500713CF7 /* ShowcaseApp+UserData.swift in Sources */,
 				57CC761D2E83E13000E7D7B2 /* AuthenticatorRegistrationInteractor.swift in Sources */,
+				57ED25952EEAF10300B42844 /* ApplicationDetails.swift in Sources */,
+				57B302F42EF14BF10005D7CE /* SheetViewForPrompt.swift in Sources */,
 				578DC4E72D9E6858008D2576 /* TextResult.swift in Sources */,
 				9E72F9572E2ED13800FB4637 /* QRScannerPresenter.swift in Sources */,
 				57F464632D3F80DB00C64156 /* SDK_ShowcaseApp.swift in Sources */,
@@ -595,6 +606,7 @@
 				9E3523892E31950E00975920 /* CameraPreview.swift in Sources */,
 				5774538C2E8E7D50007864DE /* MobileAuthRequestInteractor.swift in Sources */,
 				57CC76352E86AD7900E7D7B2 /* SDKError.swift in Sources */,
+				57B302F22EF14B770005D7CE /* PromptState.swift in Sources */,
 				39EBDDB3AB79BFD567084231 /* OneginiConfigModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

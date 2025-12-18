@@ -62,12 +62,20 @@ extension ContentView {
         authenticatorInteractor.sso()
     }
     
-    func deviceAuthentication() {
-        resourceInteractor.fetchDeviceList()
+    func sendAuthenticatedRequest() {
+        resourceInteractor.sendAuthenticatedRequest()
     }
     
-    func fetchImplicit() {
-        resourceInteractor.fetchImplicit()
+    func sendUnauthenticatedRequest() {
+        resourceInteractor.sendUnauthenticatedRequest()
+    }
+    
+    func sendAnonymousRequest() {
+        resourceInteractor.sendAnonymousRequest()
+    }
+    
+    func sendImplicitRequest() {
+        resourceInteractor.sendImplicitRequest()
     }
     
     func enrollForMobileAuthentication() {
