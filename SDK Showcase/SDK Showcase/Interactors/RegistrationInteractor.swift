@@ -45,8 +45,6 @@ class RegistrationInteractorReal: RegistrationInteractor {
 
     func setBrowserChallenge(_ challenge: any BrowserRegistrationChallenge) {
         self.registerUrl = challenge.url.absoluteString
-        self.registerUrl = "https://webauthn.io"
-        self.registerUrl = "https://opotonniee.github.io/webauthn-playground/"
         self.browserChallenge = challenge
     }
     

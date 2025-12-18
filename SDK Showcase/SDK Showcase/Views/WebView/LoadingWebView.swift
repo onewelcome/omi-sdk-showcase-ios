@@ -2,7 +2,7 @@
 import SwiftUI
 
 struct LoadingWebView: View {
-    @State private var isLoading = true
+    @State private var isLoading = false // TODO: temporaray
     @State private var errorMessage = ""
     @State private var error: Error? = nil
     @State private var redirectURL: URL? = nil

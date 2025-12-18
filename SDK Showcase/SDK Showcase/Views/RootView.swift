@@ -28,8 +28,6 @@ struct RootView: View {
 //                    }
 //                }
                 LoadingWebView(url: URL(string: "https://mobile.in.test.onewelcome.net/mobile/"))
-//                LoadingWebView(url: URL(string: "https://opotonniee.github.io/webauthn-playground/"))
-//                SafariView(url: URL(string: "https://opotonniee.github.io/webauthn-playground/")!)
                 .navigationDestination(for: Category.self) { category in
                     ContentView(category: category)
                 }
