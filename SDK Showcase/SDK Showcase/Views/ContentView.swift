@@ -20,7 +20,11 @@ struct ContentView: View {
     @State internal var showConfirmationDialog = false
     @State internal var selectedOption: Selection?
     
+//    self.registerUrl = "https://webauthn.io"
+//    self.registerUrl = "https://opotonniee.github.io/webauthn-playground/"
+    
     var body: some View {
+//        SheetViewForWebView(urlString: "https://opotonniee.github.io/webauthn-playground/")
         HStack {
             List {
                 Text(category.description)
@@ -83,9 +87,9 @@ struct ContentView: View {
         }
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $system.shouldShowBrowser) {
-            SheetViewForWebView(urlString: setupSheetViewForWebview())
-        }
+//        .sheet(isPresented: $system.shouldShowBrowser) {
+//            SheetViewForWebView(urlString: setupSheetViewForWebview())
+//        }
         .sheet(isPresented: $system.shouldShowPinPad) {
             SheetViewForPinPad()
         }

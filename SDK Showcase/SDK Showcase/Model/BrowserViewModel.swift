@@ -3,7 +3,11 @@
 import SwiftUI
 import WebKit
 
-class BrowserViewModel: NSObject, ObservableObject {
+class BrowserViewModel: NSObject, ObservableObject, WKScriptMessageHandler {
+    // Odbiór z JS
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        print("message body: \(message.body)")
+    }
     private var registrationInteractor: RegistrationInteractor {
         @Injected var interactors: Interactors
         return interactors.registrationInteractor

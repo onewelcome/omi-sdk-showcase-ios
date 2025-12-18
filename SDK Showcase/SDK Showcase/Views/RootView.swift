@@ -5,13 +5,13 @@ import SwiftUI
 struct RootView: View {
     @State private var showAlert = false
     @State private var isProcessing = false
-    @ObservedObject private var app: ShowcaseApp = {
-        @Injected var app: ShowcaseApp
-        return app
+    @ObservedObject private var appstate: ShowcaseApp = {
+        @Injected var appState: ShowcaseApp
+        return appState
     }()
-    @ObservedObject var system: ShowcaseApp.System = {
-        @Injected var app: ShowcaseApp
-        return app.system
+    @ObservedObject  var system: ShowcaseApp.System = {
+        @Injected var appState: ShowcaseApp
+        return appState.system
     }()
     private var interactor: CategoriesInteractor {
         @Injected var interactors: Interactors
@@ -20,31 +20,34 @@ struct RootView: View {
 
     var body: some View {
         ZStack {
-            NavigationStack(path: $app.routing.navPath) {
+            NavigationStack(path: $appstate.routing.navPath) {
                 HeaderView()
-                List(interactor.loadCategories()) { category in
-                    NavigationLink(value: category) {
-                        Text(category.name)
-                    }
-                }
+//                List(interactor.loadCategories()) { category in
+//                    NavigationLink(value: category) {
+//                        Text(category.name)
+//                    }
+//                }
+                LoadingWebView(url: URL(string: "https://mobile.in.test.onewelcome.net/mobile/"))
+//                LoadingWebView(url: URL(string: "https://opotonniee.github.io/webauthn-playground/"))
+//                SafariView(url: URL(string: "https://opotonniee.github.io/webauthn-playground/")!)
                 .navigationDestination(for: Category.self) { category in
                     ContentView(category: category)
                 }
             }
             .onAppear {
-                if app.system.autoinitializeSDK {
-                    app.system.isProcessing = true
-                    app.routing.navigate(to: .initialization)
-                }
+//                if UserDefaults.standard.bool(forKey: "autoinitialize") {
+//                    appstate.system.isProcessing = true
+//                    appstate.routing.navigate(to: .initialization)
+//                }
             }
             
-            if system.hasError {
-                Alert(text: app.system.lastInfoDescription ?? "")
-            }
-            
-            if system.isProcessing {
-                Spinner()
-            }
+//            if system.hasError {
+//                Alert(text: appstate.system.lastInfoDescription ?? "")
+//            }
+//            
+//            if system.isProcessing {
+//                Spinner()
+//            }
         }
     }
 }
