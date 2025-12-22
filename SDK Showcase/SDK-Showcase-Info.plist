@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera is required to use QR code registration</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>FaceID is used for an optional biometric authentication</string>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string>AppLogo</string>
+		<key>UIColorName</key>
+		<string>AccentColor</string>
+	</dict>
+</dict>
+</plist>

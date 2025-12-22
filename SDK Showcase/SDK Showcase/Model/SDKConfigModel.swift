@@ -1,0 +1,28 @@
+//  Copyright © 2025 Onewelcome Mobile Identity. All rights reserved.
+
+struct SDKConfigModel {
+    let dictionary: [String: String]
+    let appIdentifier: String? = nil
+    let appPlatform: String? = nil
+    let appVersion: String? = nil
+    let serverType: String? = nil
+    let serverVersion: String? = nil
+    let baseURL: String? = nil
+    let resourceBaseURL: String? = nil
+    let redirectURL: String? = nil
+    let appScheme: String? = nil
+    
+    /// Default config model
+    static let `default` = SDKConfigModel(dictionary: defaultDictionary)
+    static let defaultDictionary = ["ONGAppIdentifier": "showcase",
+                                    "ONGAppPlatform": "ios",
+                                    "ONGAppVersion": "1.0.1",
+                                    "ONGServerType": "access",
+                                    "ONGAppBaseURL": "https://mobile-security-proxy.in.prod.onewelcome.net",
+                                    "ONGResourceBaseURL": "https://mobile-security-proxy.in.prod.onewelcome.net/resources/",
+                                    "ONGRedirectURL": "showcase://loginsucess"]
+    static let defaultPublicKey = "78AADC6226DD5793560063F0DDDF1F63BD81002C05831A6B2126F5B31C2A112A"
+    static let defaultCert = "MIIEkDCCA3igAwIBAgIRAIK3ZQXQzIr6cowSqEK3qOowDQYJKoZIhvcNAQELBQAwTDEgMB4GA1UECxMXR2xvYmFsU2lnbiBSb290IENBIC0gUjMxEzARBgNVBAoTCkdsb2JhbFNpZ24xEzARBgNVBAMTCkdsb2JhbFNpZ24wHhcNMjUwMTIyMDQwNjI3WhcNMjcwMTIyMDAwMDAwWjBYMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTEuMCwGA1UEAxMlR2xvYmFsU2lnbiBBdGxhcyBSMyBEViBUTFMgQ0EgMjAyNSBRMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMyoB0IupG7uesoJu04ahMOS+4z34aqYj7C2lMDbbPOWZSmfnhC8fnoWA8Fh/2A6HmkiZNiDEwbe31MvxqKtqPJeafhrpmDACZ6pRQ9I172rrxfTeFlmaUzh2kaVWPwl+rFuFcMoJzFpcKNZiaVR3SRsARka5S2BENu/C46oJ8cNTWwa6UfBLHWnexaAO9ek/vSIUYQHZN1TdJV85nq0nwOKhxTCaDRAtSWNKqp+hB7Bt70CpfeQZ5kNUsvTv8nM2Zrft2WXGTEjeKHAqDhl4K+SDBYtFVVcAMAP5agS2G5Pi6RJMm8aWnIWt0Jr45pvlyRRFy7/AoQDmt8YeHVDAc8CAwEAAaOCAV8wggFbMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUnPtVERBAoj9Fed1cLoJjk0AWR8owHwYDVR0jBBgwFoAUj/BLf6guRSSuTVD6Y5qL3uLdG7wwewYIKwYBBQUHAQEEbzBtMC4GCCsGAQUFBzABhiJodHRwOi8vb2NzcDIuZ2xvYmFsc2lnbi5jb20vcm9vdHIzMDsGCCsGAQUFBzAChi9odHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9yb290LXIzLmNydDA2BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL3Jvb3QtcjMuY3JsMCEGA1UdIAQaMBgwCAYGZ4EMAQIBMAwGCisGAQQBoDIKAQMwDQYJKoZIhvcNAQELBQADggEBAAH2bqL3uf9QrGd0o+R5qzRHEsLsXA3Ygc/vwcAjZ3Dzctw2dKfZftQN6PA82HjXzPKM1+FAcjdz5DXQKJqqIBFPFSdQkZknBQDguNQ+zRpI4RnXncmKw1eBJEgSDSxd9EnWqt2OULs0pt67DXzA7ku/kGBitVWEWLmiSjZXfpkVtwSZtNux6Vr92wy9wzBu6Ze/MGRxmhmy6DYlybDsL2pAlRANTtVOVcO0Znq4IaE8UbY8N70nXaqVAlNykgFZogIABeEiY4T3LVDUKC9LOLKiA6ic9ygfVwSb/3wQm3e8raR5jHaoobE+v1dn9rCxc7BFtBwVvbO81i9DsdCnYD4="
+    static let defaultPersonalDashboardURL = "https://login-mobile.in.prod.onewelcome.net/personal/dashboard"
+    
+}
