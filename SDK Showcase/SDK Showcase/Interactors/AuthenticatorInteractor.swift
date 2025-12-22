@@ -66,7 +66,13 @@ class AuthenticatorInteractorReal: AuthenticatorInteractor {
             return
         }
         app.system.isProcessing = true
-        userClient.authenticateUserWith(profile: userProfile, authenticator: authenticator, delegate: self)
+        
+        let loginAction = { [weak self] in
+            guard let self else { return }
+            userClient.authenticateUserWith(profile: userProfile, authenticator: authenticator, delegate: self)
+        }
+        
+        performLoginAction(loginAction)
     }
     
     func implicitlyAuthenticate(profileName: String) {
@@ -77,16 +83,21 @@ class AuthenticatorInteractorReal: AuthenticatorInteractor {
         if let implicitUser = userClient.implicitlyAuthenticatedUserProfile, implicitUser.isEqual(to: userProfile) {
             app.setSystemInfo(string: "Profile \(userProfile) has already been logged in implicitly.")
         } else {
-            /// If it is not proceed with the authentication
-            userClient.implicitlyAuthenticate(user: userProfile, with: nil) { [app] error in
-                if let error {
-                    app.system.setUserState(.unauthenticated)
-                    app.setSystemInfo(string: error.localizedDescription)
-                } else {
-                    app.system.setUserState(.implicit)
-                    app.setSystemInfo(string: "Profile \(userProfile) has been implicitly logged in.")
+            let loginAction = { [weak self] in
+                /// If it is not proceed with the authentication
+                self?.userClient.implicitlyAuthenticate(user: userProfile, with: nil) { [weak self] error in
+                    guard let self else { return }
+                    if let error {
+                        app.system.setUserState(.unauthenticated)
+                        app.setSystemInfo(string: error.localizedDescription)
+                    } else {
+                        app.system.setUserState(.implicit)
+                        app.setSystemInfo(string: "Profile \(userProfile) has been implicitly logged in.")
+                    }
                 }
             }
+
+            performLoginAction(loginAction)
         }
     }
     
@@ -195,5 +206,16 @@ private extension AuthenticatorInteractorReal {
     var mobileAuthRequestInteractor: MobileAuthRequestInteractor {
         @Injected var interactors: Interactors
         return interactors.mobileAuthRequestInteractor
+    }
+    
+    func performLoginAction(_ loginAction: @escaping () -> ()?) {
+        /// Logout previously authenticated user if any
+        if userClient.authenticatedUserProfile != nil || userClient.implicitlyAuthenticatedUserProfile != nil {
+            userClient.logoutUser { user, error in
+                loginAction()
+            }
+        } else {
+            loginAction()
+        }
     }
 }
