@@ -44,6 +44,8 @@ struct BrowserWebView: UIViewRepresentable {
     let url: URL
     
     func makeUIView(context: Context) -> WKWebView {
+        let webView = WKWebView()
+        viewModel.webView = webView
 //        let contentController = WKUserContentController()
 //        contentController.add(viewModel, name: "webauthn")
 //        let config = WKWebViewConfiguration()
@@ -58,8 +60,6 @@ struct BrowserWebView: UIViewRepresentable {
 //        viewModel.webView = webView
         var request = URLRequest(url: url)
         request.timeoutInterval = 10.0
-        
-        let webView = WKWebView()
         webView.load(request)
 //        webView.loadHTMLString("""
 //                <html>
