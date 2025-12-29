@@ -44,20 +44,77 @@ struct BrowserWebView: UIViewRepresentable {
     let url: URL
     
     func makeUIView(context: Context) -> WKWebView {
-        let webView = WKWebView()
-        viewModel.webView = webView
-//        let contentController = WKUserContentController()
-//        contentController.add(viewModel, name: "webauthn")
-//        let config = WKWebViewConfiguration()
-//        config.userContentController = contentController
-//        config.preferences.isElementFullscreenEnabled = true
-//        
-//        config.websiteDataStore = .default() // crucial for webauth
-//        config.defaultWebpagePreferences.allowsContentJavaScript = true
-//        config.preferences.javaScriptCanOpenWindowsAutomatically = true
-//        
-//        let webView = WKWebView(frame: .zero, configuration: config)
+//        let webView = WKWebView()
 //        viewModel.webView = webView
+        let contentController = WKUserContentController()
+        contentController.add(viewModel, name: "webauthn-viewModel")
+        contentController.add(WebAuthnMessageHandler(), name: "webauthn")
+        
+        // inject script
+        let injectedJS = """
+                (function () {
+                  console.log("HOOK INSTALLED");
+                  if (!navigator.credentials?.create) return;
+
+                  const originalCreate = navigator.credentials.create.bind(navigator.credentials);
+
+                  navigator.credentials.create = async function (options) {
+                    console.group("🟢 WebAuthn create() intercepted");
+
+                    // INPUT (payload wejściowy)
+                    console.log("INPUT options:", options);
+
+                    const credential = await originalCreate(options);
+
+                    // OUTPUT (payload wyjściowy)
+                    const clientDataJSON = JSON.parse(
+                      new TextDecoder().decode(credential.response.clientDataJSON)
+                    );
+
+                    console.log("OUTPUT id:", credential.id);
+                    console.log("OUTPUT clientDataJSON:", clientDataJSON);
+                    console.log(
+                      "OUTPUT attestationObject (base64url):",
+                      bufferToBase64Url(credential.response.attestationObject)
+                    );
+
+                    console.groupEnd();
+
+                    return credential;
+                  };
+
+                  function bufferToBase64Url(buffer) {
+                    const bytes = new Uint8Array(buffer);
+                    let str = "";
+                    for (const b of bytes) str += String.fromCharCode(b);
+                    return btoa(str)
+                      .replace(/\\+/g, "-")
+                      .replace(/\\//g, "_")
+                      .replace(/=+$/, "");
+                  }
+                })();
+                """
+
+                let userScript = WKUserScript(
+                    source: injectedJS,
+                    injectionTime: .atDocumentStart,
+                    forMainFrameOnly: false
+                )
+
+                contentController.addUserScript(userScript)
+        
+        
+        
+        let config = WKWebViewConfiguration()
+        config.userContentController = contentController
+        config.preferences.isElementFullscreenEnabled = true
+        
+        config.websiteDataStore = .default() // crucial for webauth
+        config.defaultWebpagePreferences.allowsContentJavaScript = true
+        config.preferences.javaScriptCanOpenWindowsAutomatically = true
+        
+        let webView = WKWebView(frame: .zero, configuration: config)
+        viewModel.webView = webView
         var request = URLRequest(url: url)
         request.timeoutInterval = 10.0
         webView.load(request)
@@ -83,6 +140,22 @@ struct BrowserWebView: UIViewRepresentable {
 //                </html>
 //                """, baseURL: nil)
 
+//        webView.evaluateJavaScript("""
+//        setTimeout(() => {
+//          navigator.credentials.create({
+//            publicKey: {
+//              challenge: new Uint8Array([9,9,9]),
+//              rp: { name: "Hook Test", id: location.hostname },
+//              user: {
+//                id: new Uint8Array([9]),
+//                name: "hook-test",
+//                displayName: "Hook Test"
+//              },
+//              pubKeyCredParams: [{ alg: -7, type: "public-key" }]
+//            }
+//          }).catch(() => {});
+//        }, 1000);
+//        """)
         // TODO: Force biometrics
 //        let context = LAContext()
 //        let reason = "log with biometrics"
@@ -115,4 +188,22 @@ struct SafariView: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) {}
+}
+
+
+final class WebAuthnMessageHandler: NSObject, WKScriptMessageHandler {
+
+    func userContentController(_ userContentController: WKUserContentController,
+                               didReceive message: WKScriptMessage) {
+        print(">> WebAuthnMessageHandler message body: \(message.body)")
+        guard message.name == "webauthn",
+              let body = message.body as? [String: Any],
+              let type = body["type"] as? String,
+              let options = body["options"] else {
+            return
+        }
+
+        print("🟢 WebAuthn \(type.uppercased())")
+        print(options)
+    }
 }

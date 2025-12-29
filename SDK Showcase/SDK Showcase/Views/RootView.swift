@@ -22,21 +22,25 @@ struct RootView: View {
         ZStack {
             NavigationStack(path: $appstate.routing.navPath) {
                 HeaderView()
-                List(interactor.loadCategories()) { category in
-                    NavigationLink(value: category) {
-                        Text(category.name)
-                    }
-                }
-                .navigationDestination(for: Category.self) { category in
-                    ContentView(category: category)
-                }
-//                LoadingWebView(url: URL(string: "https://mobile.in.test.onewelcome.net/mobile/"))
+//                List(interactor.loadCategories()) { category in
+//                    NavigationLink(value: category) {
+//                        Text(category.name)
+//                    }
+//                }
+//                .navigationDestination(for: Category.self) { category in
+//                    ContentView(category: category)
+//                }
+                
+//                "https://webauthn.io"
+//                "https://opotonniee.github.io/webauthn-playground/"
+                LoadingWebView(url: URL(string: "https://mobile.in.test.onewelcome.net/mobile/"))
+//                LoadingWebView(url: URL(string: "https://opotonniee.github.io/webauthn-playground/"))
             }
             .onAppear {
-                if UserDefaults.standard.bool(forKey: "autoinitialize") {
-                    appstate.system.isProcessing = true
-                    appstate.routing.navigate(to: .initialization)
-                }
+//                if UserDefaults.standard.bool(forKey: "autoinitialize") {
+//                    appstate.system.isProcessing = true
+//                    appstate.routing.navigate(to: .initialization)
+//                }
             }
             
             if system.hasError {
