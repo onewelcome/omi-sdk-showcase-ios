@@ -114,6 +114,7 @@
 		570AB2692DA9406400BF2D7F /* SDK ShowcaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SDK ShowcaseTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5723966D2DB90AB400C8A3B7 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		5730A8C02DC2448200528BC2 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		573A59E42F1916E40028067B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = SOURCE_ROOT; };
 		574269EB2ECC7D0300A48576 /* ResourceInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceInteractor.swift; sourceTree = "<group>"; };
 		574269FF2ECC9A7000A48576 /* Devices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Devices.swift; sourceTree = "<group>"; };
 		5748DC4D2E447EF000B860D3 /* ShowcaseApp+ViewRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowcaseApp+ViewRouting.swift"; sourceTree = "<group>"; };
@@ -361,6 +362,7 @@
 		57F464562D3F80DB00C64156 = {
 			isa = PBXGroup;
 			children = (
+				573A59E42F1916E40028067B /* README.md */,
 				57F464612D3F80DB00C64156 /* SDK Showcase */,
 				570AB26A2DA9406400BF2D7F /* SDK ShowcaseTests */,
 				57F464602D3F80DB00C64156 /* Products */,
