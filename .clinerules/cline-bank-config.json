@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "setupDate": "2026-02-03T12:34:36Z",
+  "lastUpdate": "2026-02-03T12:34:36Z",
+  "platform": "ios",
+  "platformStatus": "existing",
+  "project": "sdk-showcase",
+  "projectFullName": "OMI SDK Showcase App",
+  "projectStatus": "existing",
+  "projectType": "application",
+  "rules": {
+    "platform": [
+      "swift-ios-condensed-rules.md",
+      "swiftui-condensed-rules.md"
+    ]
+  },
+  "workflows": {
+    "project": "sdk-showcase"
+  },
+  "fileMapping": {
+    "rules/ios/condensed/swift-ios-condensed-rules.md": "Rules/ios/condensed/swift-ios-condensed-rules.md",
+    "rules/ios/condensed/swiftui-condensed-rules.md": "Rules/ios/condensed/swiftui-condensed-rules.md",
+    "workflows/project/sdk-showcase/build-app.md": "Workflows/projects/ios/sdk-showcase/build-app.md",
+    "workflows/project/sdk-showcase/run-tests.md": "Workflows/projects/ios/sdk-showcase/run-tests.md",
+    "workflows/project/sdk-showcase/run-quality-checks.md": "Workflows/projects/ios/sdk-showcase/run-quality-checks.md",
+    "workflows/project/sdk-showcase/clean-build.md": "Workflows/projects/ios/sdk-showcase/clean-build.md",
+    "workflows/project/sdk-showcase/README.md": "Workflows/projects/ios/sdk-showcase/README.md",
+    "memory-bank-rules.md": "memory-bank-rules.md",
+    "MCP/cline_mcp_settings.template.json": "MCP/cline_mcp_settings.template.json"
+  },
+  "submodulePath": "mobile-cline-bank",
+  "requiresRepoUpdate": false,
+  "pendingActions": []
+}

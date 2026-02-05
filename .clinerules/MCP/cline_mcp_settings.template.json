@@ -1,0 +1,33 @@
+{
+  "mcpServers": {
+    "mcp-atlassian": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-e", "CONFLUENCE_URL",
+        "-e", "CONFLUENCE_PERSONAL_TOKEN",
+        "-e", "CONFLUENCE_SSL_VERIFY",
+        "-e", "JIRA_URL",
+        "-e", "JIRA_PERSONAL_TOKEN",
+        "-e", "JIRA_SSL_VERIFY",
+        "-e", "HTTP_PROXY",
+        "-e", "HTTPS_PROXY",
+        "-e", "NO_PROXY",
+        "ghcr.io/sooperset/mcp-atlassian:latest"
+      ],
+      "env": {
+        "CONFLUENCE_URL": "https://confluence.gemalto.com/",
+        "CONFLUENCE_PERSONAL_TOKEN": "abcdef...",
+        "CONFLUENCE_SSL_VERIFY": "false",
+        "JIRA_URL": "https://jira.gemalto.com/",
+        "JIRA_PERSONAL_TOKEN": "ghijk...",
+        "JIRA_SSL_VERIFY": "false",
+        "HTTP_PROXY": "http://proxy.dmz.gemaltocloud.com:80",
+        "HTTPS_PROXY": "http://proxy.dmz.gemaltocloud.com:80",
+        "NO_PROXY": "localhost,127.0.0.1,192.168.99.100,*.gemalto.com,*.idp.com,*.docker.internal,*.synapse.thalescloud.io,*.thalescloud.io"
+      }
+    }
+  }
+}
