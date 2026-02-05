@@ -1,0 +1,50 @@
+{
+  "version": "2.0.0",
+  "setupDate": "2026-02-05T11:11:00Z",
+  "lastUpdate": "2026-02-05T11:11:00Z",
+  "platform": "ios",
+  "platformStatus": "existing",
+  "project": "sdk-showcase",
+  "projectFullName": "SDK Showcase (OMI SDK Demo/Showcase Application)",
+  "projectStatus": "new",
+  "projectType": "application",
+  "rules": {
+    "common": [
+      "common-rules.md",
+      "code-quality-condensed-rules.md",
+      "security-condensed-rules.md",
+      "ide-configuration-rules.md",
+      "project-setup-guide-rules.md",
+      "yaml-json-rules.md"
+    ],
+    "platform": [
+      "swift-ios-condensed-rules.md",
+      "swiftui-condensed-rules.md"
+    ]
+  },
+  "workflows": {
+    "global": [
+      "git",
+      "jira",
+      "confluence",
+      "merge-requests",
+      "documentation",
+      "team",
+      "project-setup",
+      "configuration"
+    ],
+    "project": null,
+    "projectWorkflowsGenerated": false
+  },
+  "memoryBank": {
+    "enabled": true,
+    "rulesFile": "memory-bank-rules.md"
+  },
+  "submodulePath": "mobile-cline-bank",
+  "requiresRepoUpdate": false,
+  "pendingActions": [
+    "Initialize memory bank by working with Cline on project tasks",
+    "Use 'create project workflows' command to generate SDK Showcase workflows",
+    "Run 'update cline bank' after workflows are generated"
+  ]
+}

@@ -1,0 +1,250 @@
+{
+  "config": {
+    "overwrite_strategy": "Ask"
+  },
+  "topic": {
+    "title": "SDK Showcase Documentation",
+    "path": "docs/"
+  },
+  "outline": [
+    {
+      "title": "Architecture Overview",
+      "purpose": "Explain the overall application architecture and design patterns",
+      "reader_outcomes": "Understand the SwiftUI-based architecture, dependency injection, and state management patterns"
+    },
+    {
+      "title": "Getting Started",
+      "purpose": "Guide developers through initial setup and configuration",
+      "reader_outcomes": "Successfully configure and run the SDK Showcase app"
+    },
+    {
+      "title": "Core Features",
+      "purpose": "Document the main SDK capabilities demonstrated in the app",
+      "reader_outcomes": "Understand how to implement SDK features like registration, authentication, and mobile auth"
+    },
+    {
+      "title": "Development Guide",
+      "purpose": "Provide guidance for developers extending or modifying the showcase",
+      "reader_outcomes": "Understand the codebase structure and how to add new features"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "architecture-overview",
+      "title": "Architecture Overview",
+      "intent": "architecture-overview",
+      "write": {
+        "mode": "write_file",
+        "destination": "docs/architecture-overview.md",
+        "subheading": "Architecture Overview"
+      },
+      "audience": "newcomers",
+      "depth": {
+        "min_words": 600,
+        "min_tables": 1,
+        "require_diagram": true,
+        "min_examples": 1
+      },
+      "required_sections": [
+        "Purpose & Scope",
+        "SwiftUI Architecture",
+        "Dependency Injection Pattern",
+        "State Management",
+        "Key Components",
+        "Operational Notes"
+      ],
+      "use_jsdoc": true
+    },
+    {
+      "id": "getting-started",
+      "title": "Getting Started",
+      "intent": "development-setup",
+      "write": {
+        "mode": "write_file",
+        "destination": "docs/getting-started.md",
+        "subheading": "Getting Started"
+      },
+      "audience": "newcomers",
+      "depth": {
+        "min_words": 400,
+        "min_tables": 1,
+        "require_diagram": false,
+        "min_examples": 2
+      },
+      "required_sections": [
+        "Prerequisites",
+        "Installation Steps",
+        "Configuration",
+        "Running the App",
+        "Troubleshooting"
+      ],
+      "use_jsdoc": false
+    },
+    {
+      "id": "user-registration",
+      "title": "User Registration Feature",
+      "intent": "authentication-security",
+      "write": {
+        "mode": "write_file",
+        "destination": "docs/features/user-registration.md",
+        "subheading": "User Registration"
+      },
+      "audience": "developers",
+      "depth": {
+        "min_words": 500,
+        "min_tables": 1,
+        "require_diagram": false,
+        "min_examples": 2
+      },
+      "required_sections": [
+        "Purpose & Overview",
+        "Registration Flow",
+        "Browser Registration",
+        "Custom Registration",
+        "PIN Creation",
+        "Code Examples"
+      ],
+      "use_jsdoc": true
+    },
+    {
+      "id": "authentication",
+      "title": "User Authentication Feature",
+      "intent": "authentication-security",
+      "write": {
+        "mode": "write_file",
+        "destination": "docs/features/authentication.md",
+        "subheading": "Authentication"
+      },
+      "audience": "developers",
+      "depth": {
+        "min_words": 500,
+        "min_tables": 1,
+        "require_diagram": false,
+        "min_examples": 2
+      },
+      "required_sections": [
+        "Purpose & Overview",
+        "Authentication Methods",
+        "PIN Authentication",
+        "Biometric Authentication",
+        "OTP Login",
+        "SSO Support",
+        "Code Examples"
+      ],
+      "use_jsdoc": true
+    },
+    {
+      "id": "mobile-authentication",
+      "title": "Mobile Authentication (Push) Feature",
+      "intent": "authentication-security",
+      "write": {
+        "mode": "write_file",
+        "destination": "docs/features/mobile-authentication.md",
+        "subheading": "Mobile Authentication"
+      },
+      "audience": "developers",
+      "depth": {
+        "min_words": 500,
+        "min_tables": 1,
+        "require_diagram": true,
+        "min_examples": 2
+      },
+      "required_sections": [
+        "Purpose & Overview",
+        "Enrollment Process",
+        "Push Notifications Setup",
+        "Handling Pending Transactions",
+        "OTP Handling",
+        "Transaction Confirmation Flow",
+        "Code Examples"
+      ],
+      "use_jsdoc": true
+    },
+    {
+      "id": "authenticator-management",
+      "title": "Authenticator Management Feature",
+      "intent": "authentication-security",
+      "write": {
+        "mode": "write_file",
+        "destination": "docs/features/authenticator-management.md",
+        "subheading": "Authenticator Management"
+      },
+      "audience": "developers",
+      "depth": {
+        "min_words": 400,
+        "min_tables": 1,
+        "require_diagram": false,
+        "min_examples": 2
+      },
+      "required_sections": [
+        "Purpose & Overview",
+        "Authenticator Types",
+        "Registration Process",
+        "Listing Authenticators",
+        "Code Examples"
+      ],
+      "use_jsdoc": true
+    },
+    {
+      "id": "development-guide",
+      "title": "Development Guide",
+      "intent": "development",
+      "write": {
+        "mode": "write_file",
+        "destination": "docs/development-guide.md",
+        "subheading": "Development Guide"
+      },
+      "audience": "developers",
+      "depth": {
+        "min_words": 600,
+        "min_tables": 2,
+        "require_diagram": false,
+        "min_examples": 3
+      },
+      "required_sections": [
+        "Project Structure",
+        "Key Components",
+        "Interactors Pattern",
+        "State Management",
+        "Adding New Features",
+        "Testing Approach",
+        "Best Practices"
+      ],
+      "use_jsdoc": true
+    },
+    {
+      "id": "configuration",
+      "title": "Configuration Guide",
+      "intent": "configuration-policies",
+      "write": {
+        "mode": "write_file",
+        "destination": "docs/configuration.md",
+        "subheading": "Configuration"
+      },
+      "audience": "developers",
+      "depth": {
+        "min_words": 400,
+        "min_tables": 2,
+        "require_diagram": false,
+        "min_examples": 2
+      },
+      "required_sections": [
+        "SDK Configuration Model",
+        "Token Server Setup",
+        "Certificate Pinning",
+        "Build Configuration",
+        "Environment Variables"
+      ],
+      "use_jsdoc": false
+    }
+  ],
+  "links": {
+    "openapi": []
+  },
+  "assumptions": [
+    "Developers have basic knowledge of Swift and SwiftUI",
+    "Xcode is installed and configured",
+    "Access to OMI SDK repository is configured"
+  ],
+  "open_questions": []
+}
